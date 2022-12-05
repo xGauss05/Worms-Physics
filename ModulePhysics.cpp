@@ -3,6 +3,12 @@
 #include "ModulePhysics.h"
 #include "math.h"
 
+void Body::GetPosition(int& x, int& y) const
+{
+	x = METERS_TO_PIXELS(position.x) - (width);
+	y = METERS_TO_PIXELS(position.y) - (height);
+}
+
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	debug = true;
