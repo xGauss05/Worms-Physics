@@ -25,16 +25,15 @@ void Body::ApplyExternalForce(p2Point<float> f) {
 
 // --------------------------
 
-World::World()
-{
+World::World() {
+
 }
 
-World::~World()
-{
+World::~World() {
+
 }
 
-void World::Step()
-{
+void World::Step() {
 	//	step() {
 	//		for (bodies) {
 	//			p2point<float> total = (0,0);
@@ -47,10 +46,23 @@ void World::Step()
 	//				integrator
 	// 
 
+	for (p2List_item<Body>* b = bodies.getFirst(); b; b = b->next) {
+		p2Point<float> total;
+		total.SetToZero();
+
+		// calculate all forces
+		total += CalculateGravityForce(b->data);
+		total += CalculateDragForce(b->data);
+		total += CalculateLiftForce(b->data);
+		total += b->data.externalForce;
+
+		// integrator
+		Integrate(b->data, total);
+	}
+
 }
 
-p2Point<float> World::CalculateGravityForce(Body b)
-{
+p2Point<float> World::CalculateGravityForce(Body b) {
 
 	// total = bjfs +  fasidk;
 	// return total;
@@ -58,48 +70,54 @@ p2Point<float> World::CalculateGravityForce(Body b)
 	return p2Point<float>();
 }
 
-p2Point<float> World::CalculateLiftForce(Body b)
-{
+p2Point<float> World::CalculateLiftForce(Body b) {
 	return p2Point<float>();
 }
 
-p2Point<float> World::CalculateDragForce(Body b)
-{
+p2Point<float> World::CalculateDragForce(Body b) {
 	return p2Point<float>();
 }
 
-void World::Integrate(Body& b)
-{
+void World::Integrate(Body& body, p2Point<float> force) {
+
+	switch (integrationMethod)
+	{
+	case FORWARD_EULER:
+		break;
+	case BACKWARD_EULER:
+		break;
+	case VERLET:
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 // ------------------------------------
 
-ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
-{
+ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled) {
 	debug = true;
 }
 
 // Destructor
-ModulePhysics::~ModulePhysics()
-{
+ModulePhysics::~ModulePhysics() {
 }
 
-bool ModulePhysics::Start()
-{
+bool ModulePhysics::Start() {
 	LOG("Creating Physics 2D environment");
 
 	return true;
 }
 
 // 
-update_status ModulePhysics::PreUpdate()
-{
+update_status ModulePhysics::PreUpdate() {
 	return UPDATE_CONTINUE;
 }
 
 // 
-update_status ModulePhysics::PostUpdate()
-{
+update_status ModulePhysics::PostUpdate() {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -111,8 +129,7 @@ update_status ModulePhysics::PostUpdate()
 
 
 // Called before quitting
-bool ModulePhysics::CleanUp()
-{
+bool ModulePhysics::CleanUp() {
 	LOG("Destroying physics world");
 
 	return true;

@@ -70,7 +70,7 @@ private:
 	p2Point<float> CalculateDragForce(Body b);
 	// Impulsive is externalForce / artificialForce
 
-	void Integrate(Body &b);
+	void Integrate(Body& body, p2Point<float> force);
 
 private:
 	
