@@ -49,53 +49,10 @@ private:
 	
 };
 
-
-/*
-class Force {
-public:
-
-	Force();
-	~Force();
-
-	virtual void CalculateForce(Body b);
-
-	p2Point<float> GetMagnitude() {
-		return magnitude;
-	}
-
-	Force operator+(Force F) {
-		Force ret;
-
-		ret.magnitude = magnitude + F.magnitude;
-
-		return ret;
-	}
-
-	Force operator-(Force F) {
-		Force ret;
-
-		ret.magnitude = magnitude - F.magnitude;
-
-		return ret;
-	}
-
-private:
-
-	p2Point<float> magnitude;
-
-};
-
-class GravityForce : public Force {
-public:
-	GravityForce();
-	~GravityForce();
-
-	void CalculateForce(Body b) {
-		// formula
-	}
-
-};
-*/
+// CalculateGravityForce (body){
+// total = bjfs +  fasidk;
+// return total;
+//
 
 // world
 //	step() {
