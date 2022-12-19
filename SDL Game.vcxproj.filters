@@ -86,6 +86,12 @@
     <ClInclude Include="ModulePlayer.h">
       <Filter>Header Files\Modules\Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="PerfTimer.h">
+      <Filter>Header Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp">
@@ -120,6 +126,12 @@
     </ClCompile>
     <ClCompile Include="ModulePlayer.cpp">
       <Filter>Source Files\Modules\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfTimer.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
