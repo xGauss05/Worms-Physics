@@ -3,11 +3,76 @@
 #include "ModulePhysics.h"
 #include "math.h"
 
-void Body::GetPosition(int& x, int& y) const
-{
-	x = METERS_TO_PIXELS(position.x) - (width);
-	y = METERS_TO_PIXELS(position.y) - (height);
+Body::Body() {
+
 }
+
+Body::~Body() {
+
+}
+
+p2Point<float> Body::GetPosition() const { 
+	return position; 
+}
+
+float Body::GetMass() const {
+	return mass; 
+}
+
+void Body::ApplyExternalForce(p2Point<float> f) {
+	externalForce += f;
+}
+
+// --------------------------
+
+World::World()
+{
+}
+
+World::~World()
+{
+}
+
+void World::Step()
+{
+	//	step() {
+	//		for (bodies) {
+	//			p2point<float> total = (0,0);
+	//				CalculateForces(body) {
+	//					total += CalculateGravityForce(body.mass);
+	//					total += CalculateDragForce(body.surface);
+	//					total += body.externalForce;
+	//					body.externalForce = (0, 0);
+	//				}
+	//				integrator
+	// 
+
+}
+
+p2Point<float> World::CalculateGravityForce(Body b)
+{
+
+	// total = bjfs +  fasidk;
+	// return total;
+
+	return p2Point<float>();
+}
+
+p2Point<float> World::CalculateLiftForce(Body b)
+{
+	return p2Point<float>();
+}
+
+p2Point<float> World::CalculateDragForce(Body b)
+{
+	return p2Point<float>();
+}
+
+void World::Integrate(Body& b)
+{
+}
+
+// ------------------------------------
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -52,3 +117,4 @@ bool ModulePhysics::CleanUp()
 
 	return true;
 }
+
