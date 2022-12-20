@@ -26,7 +26,13 @@ void Body::ApplyExternalForce(p2Point<float> f) {
 // --------------------------
 
 World::World() {
+	gravity.x = 0.0f;
+	gravity.y = 10.0f;
+}
 
+World::World(p2Point<float> g) {
+	gravity.x = g.x;
+	gravity.y = g.y;
 }
 
 World::~World() {
@@ -58,6 +64,9 @@ void World::Step() {
 
 		// integrator
 		Integrate(b->data, total);
+
+		// collisions
+
 	}
 
 }
@@ -80,13 +89,53 @@ p2Point<float> World::CalculateDragForce(Body b) {
 
 void World::Integrate(Body& body, p2Point<float> force) {
 
+
+	// 3: newton's 2nd law
+	// F = m * a --> a = F / m
+	p2Point<float> acceleration;
+	acceleration.x = force.x / body.GetMass();
+	acceleration.y = force.y / body.GetMass();
+
+	// m != 0
+
+	//// 4.1: backwards euler
+	//x = x + v * dt;
+	//v = v + a * dt;
+
+	//// 4.2: forwards euler
+	//v = v + a * dt;
+	//x = x + v * dt;
+
+	//// 4.3: verlet
+	//x = x + v * dt + 0.5 * a * dt * dt;
+	//v = v + a * dt;
+
+
 	switch (integrationMethod)
 	{
 	case FORWARD_EULER:
+		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
+		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+
+		body.position.x = body.position.x + body.velocity.x * App->dt;
+		body.position.y = body.position.y + body.velocity.y * App->dt;
+
 		break;
 	case BACKWARD_EULER:
+		body.position.x = body.position.x + body.velocity.x * App->dt;
+		body.position.y = body.position.y + body.velocity.y * App->dt;
+
+		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
+		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+
 		break;
 	case VERLET:
+		body.position.x = body.position.x + body.velocity.x * App->dt + 0.5f * acceleration.x * App->dt * App->dt;
+		body.position.y = body.position.y + body.velocity.y * App->dt + 0.5f * acceleration.y * App->dt * App->dt;
+
+		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
+		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+
 		break;
 	default:
 		break;

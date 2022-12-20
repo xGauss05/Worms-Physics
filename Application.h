@@ -26,13 +26,14 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
 
+	float dt;
+
 private:
 
 	p2List<Module*> list_modules;
 
 	// Frame rate variables
 	uint frames;
-	float dt;
 	Timer timer;
 	PerfTimer ptimer;
 

@@ -22,6 +22,12 @@ enum BodyType {
 	STATIC
 };
 
+enum BodyShape {
+	CIRCLE,
+	RECTANGLE,
+	//POINT
+};
+
 class Body
 {
 public:
@@ -40,16 +46,18 @@ public:
 	
 public:
 	p2Point<float> position;
+	p2Point<float> velocity;
+	p2Point<float> acceleration;
 	int width, height;
 
-	SDL_Rect* body;
+	BodyShape shape;
 	BodyType type;
 
 	p2Point<float> externalForce;
 	float dragSurface;
 
 private:
-	float mass;
+	float mass = 1;
 	
 };
 
@@ -58,6 +66,8 @@ class World {
 
 public: 
 	World();
+	World(p2Point<float> g);
+
 	~World();
 
 	void Step();
@@ -75,6 +85,8 @@ private:
 private:
 	
 	p2List<Body> bodies;
+
+	p2Point<float> gravity;
 
 	IntegrationMethod integrationMethod = VERLET;
 };
