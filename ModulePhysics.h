@@ -81,6 +81,7 @@ private:
 	// Impulsive is externalForce / artificialForce
 
 	void Integrate(Body& body, p2Point<float> force);
+	void SolveCollisions(Body bodyA, Body bodyB);
 
 private:
 	

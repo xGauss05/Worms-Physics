@@ -66,7 +66,8 @@ void World::Step() {
 		Integrate(b->data, total);
 
 		// collisions
-
+		Body b2Test;
+		SolveCollisions(b->data,b2Test);
 	}
 
 }
@@ -142,6 +143,22 @@ void World::Integrate(Body& body, p2Point<float> force) {
 	}
 
 
+}
+
+void World::SolveCollisions(Body bodyA, Body bodyB)
+{
+	if (bodyA.type == CIRCLE && bodyB.type == RECTANGLE)
+	{
+		p2Point<float> rectClosest;
+		rectClosest.x = max(bodyB.GetPosition().x, min(bodyA.GetPosition().x, bodyB.GetPosition().x + bodyB.width));
+		rectClosest.y = max(bodyB.GetPosition().y, min(bodyA.GetPosition().y, bodyB.GetPosition().y + bodyB.height));
+
+		float distance = bodyA.GetPosition().DistanceTo(rectClosest);
+		if (distance < bodyA.width /*this "width" parameter would be the radius*/)
+		{
+			LOG("Collision detected");
+		}
+	}
 }
 
 // ------------------------------------
