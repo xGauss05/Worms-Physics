@@ -27,7 +27,9 @@ void Body::ApplyExternalForce(p2Point<float> f) {
 
 World::World() {
 	gravity.x = 0.0f;
-	gravity.y = 10.0f;
+	gravity.y = 9.81f;
+
+	density = 1.293f;
 }
 
 World::World(p2Point<float> g) {
@@ -36,7 +38,7 @@ World::World(p2Point<float> g) {
 }
 
 World::~World() {
-
+	bodies.clear();
 }
 
 void World::Step() {
@@ -74,18 +76,37 @@ void World::Step() {
 
 p2Point<float> World::CalculateGravityForce(Body b) {
 
-	// total = bjfs +  fasidk;
-	// return total;
+	p2Point<float> force;
+	force.x = gravity.x * b.GetMass();
+	force.y = gravity.y * b.GetMass();
 
-	return p2Point<float>();
+	return force;
 }
 
 p2Point<float> World::CalculateLiftForce(Body b) {
-	return p2Point<float>();
+
+	p2Point<float> force;
+	
+	float constantLift = 2.0f;
+
+	// perpendicular to v
+	force.x = 0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantLift;
+	force.y = 0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantLift;
+
+	return force;
 }
 
 p2Point<float> World::CalculateDragForce(Body b) {
-	return p2Point<float>();
+
+	p2Point<float> force;
+
+	float constantDrag = 5.0f;
+
+	// parallel to v
+	force.x = 0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantDrag;
+	force.y = 0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantDrag;
+
+	return force;
 }
 
 void World::Integrate(Body& body, p2Point<float> force) {
@@ -173,6 +194,8 @@ ModulePhysics::~ModulePhysics() {
 
 bool ModulePhysics::Start() {
 	LOG("Creating Physics 2D environment");
+
+	world = new World();
 
 	return true;
 }
