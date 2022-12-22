@@ -90,8 +90,8 @@ p2Point<float> World::CalculateLiftForce(Body b) {
 	float constantLift = 2.0f;
 
 	// perpendicular to v
-	force.x = 0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantLift;
-	force.y = 0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantLift;
+	force.x = -0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantLift;
+	force.y = -0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantLift;
 
 	return force;
 }
@@ -103,8 +103,8 @@ p2Point<float> World::CalculateDragForce(Body b) {
 	float constantDrag = 5.0f;
 
 	// parallel to v
-	force.x = 0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantDrag;
-	force.y = 0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantDrag;
+	force.x = -0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantDrag;
+	force.y = -0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantDrag;
 
 	return force;
 }
