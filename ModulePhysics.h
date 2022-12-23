@@ -22,6 +22,12 @@ enum BodyType {
 	STATIC
 };
 
+enum BodyShape {
+	CIRCLE,
+	RECTANGLE,
+	//POINT
+};
+
 class Body
 {
 public:
@@ -40,16 +46,18 @@ public:
 	
 public:
 	p2Point<float> position;
+	p2Point<float> velocity;
+	p2Point<float> acceleration;
 	int width, height;
 
-	SDL_Rect* body;
+	BodyShape shape;
 	BodyType type;
 
 	p2Point<float> externalForce;
 	float dragSurface;
 
 private:
-	float mass;
+	float mass = 1;
 	
 };
 
@@ -58,6 +66,8 @@ class World {
 
 public: 
 	World();
+	World(p2Point<float> g);
+
 	~World();
 
 	void Step();
@@ -70,11 +80,16 @@ private:
 	p2Point<float> CalculateDragForce(Body b);
 	// Impulsive is externalForce / artificialForce
 
-	void Integrate(Body &b);
+	void Integrate(Body& body, p2Point<float> force);
+	void SolveCollisions(Body bodyA, Body bodyB);
 
 private:
 	
 	p2List<Body> bodies;
+
+	p2Point<float> gravity;
+
+	float density;
 
 	IntegrationMethod integrationMethod = VERLET;
 };
@@ -90,6 +105,10 @@ public:
 	update_status PreUpdate();
 	update_status PostUpdate();
 	bool CleanUp();
+
+public: 
+
+	World* world;
 
 private:
 
