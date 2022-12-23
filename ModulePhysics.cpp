@@ -178,14 +178,14 @@ void World::Integrate(Body& body, p2Point<float> force) {
 
 void World::SolveCollisions(Body bodyA, Body bodyB)
 {
-	if (bodyA.type == RECTANGLE && bodyB.type == RECTANGLE)
+	if (bodyA.shape == RECTANGLE && bodyB.shape == RECTANGLE)
 	{
 		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect))
 		{
 			LOG("Collision detected");
 		}*/
 	}
-	else if (bodyA.type == CIRCLE && bodyB.type == CIRCLE)
+	else if (bodyA.shape == CIRCLE && bodyB.shape == CIRCLE)
 	{
 		/*float distance = bodyA.GetPosition().DistanceTo(bodyB.GetPosition());
 		if (bodyA.radius + bodyB.radius < distance)
@@ -197,7 +197,7 @@ void World::SolveCollisions(Body bodyA, Body bodyB)
 		//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
 
 	}
-	else if (bodyA.type == CIRCLE && bodyB.type == RECTANGLE)
+	else if (bodyA.shape == CIRCLE && bodyB.shape == RECTANGLE)
 	{
 		p2Point<float> rectClosest;
 		rectClosest.x = max(bodyB.GetPosition().x, min(bodyA.GetPosition().x, bodyB.GetPosition().x + bodyB.width));
