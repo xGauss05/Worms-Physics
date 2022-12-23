@@ -89,6 +89,8 @@ private:
 
 	p2Point<float> gravity;
 
+	float density;
+
 	IntegrationMethod integrationMethod = VERLET;
 };
 
@@ -103,6 +105,10 @@ public:
 	update_status PreUpdate();
 	update_status PostUpdate();
 	bool CleanUp();
+
+public: 
+
+	World* world;
 
 private:
 
