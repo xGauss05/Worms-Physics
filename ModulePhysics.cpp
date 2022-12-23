@@ -74,6 +74,15 @@ void World::Step() {
 
 }
 
+p2Point<float> World::GetGravity()
+{
+	return gravity;
+}
+void World::SetGravity(p2Point<float> g)
+{
+	gravity = g;
+}
+
 p2Point<float> World::CalculateGravityForce(Body b) {
 
 	p2Point<float> force;

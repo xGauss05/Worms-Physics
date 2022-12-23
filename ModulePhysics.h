@@ -70,6 +70,9 @@ public:
 
 	~World();
 
+	p2Point<float> GetGravity();
+	void SetGravity(p2Point<float> g);
+
 	void Step();
 
 
