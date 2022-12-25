@@ -219,6 +219,10 @@ void World::Integrate(Body& body, p2Point<float> force) {
 
 void World::SolveCollisions(Body bodyA, Body bodyB)
 {
+	// separate the two bodies
+	// invert speed in one axis depending on where they hit
+	// activate on collisions
+
 	if (bodyA.shape == RECTANGLE && bodyB.shape == RECTANGLE)
 	{
 		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect	
