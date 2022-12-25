@@ -41,6 +41,9 @@ public:
 
 	void ApplyExternalForce(p2Point<float> f);
 
+	void Blit() const;
+	void Blit(SDL_Rect section) const;
+
 	//float GetRotation() const;
 	//bool Contains(int x, int y) const;
 	
@@ -48,13 +51,15 @@ public:
 	p2Point<float> position;
 	p2Point<float> velocity;
 	p2Point<float> acceleration;
-	int width, height;
+	int width, height, radius;
 
 	BodyShape shape;
 	BodyType type;
 
 	p2Point<float> externalForce;
 	float dragSurface;
+
+	SDL_Texture* texture = nullptr;
 
 private:
 	float mass = 1;

@@ -23,6 +23,43 @@ void Body::ApplyExternalForce(p2Point<float> f) {
 	externalForce += f;
 }
 
+void Body::Blit() const
+{
+	if (texture != nullptr) {
+		switch (shape)
+		{
+		case CIRCLE:
+			App->renderer->Blit(texture, position.x - radius, position.y - radius);
+			break;
+		case RECTANGLE:
+			App->renderer->Blit(texture, position.x, position.y);
+			break;
+		default:
+			break;
+		}
+
+	}
+}
+
+void Body::Blit(SDL_Rect section) const
+{
+	if (texture != nullptr) {
+		switch (shape)
+		{
+		case CIRCLE:
+			App->renderer->Blit(texture, position.x - radius, position.y - radius, &section);
+			break;
+		case RECTANGLE:
+			App->renderer->Blit(texture, position.x, position.y, &section);
+			break;
+		default:
+			break;
+		}
+
+	}
+
+}
+
 // --------------------------
 
 World::World() {
@@ -180,18 +217,20 @@ void World::SolveCollisions(Body bodyA, Body bodyB)
 {
 	if (bodyA.shape == RECTANGLE && bodyB.shape == RECTANGLE)
 	{
-		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect))
+		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect	
+		// SDL_HasIntersection( { bodyA.position.x, bodyA.position.y, bodyA.position.x + bodyA.width, bodyA.position.y + bodyA.height }, 
+		{ bodyB.position.x, bodyB.position.y, bodyB.position.x + bodyB.width, bodyB.position.y + bodyB.height } ) {}))
 		{
 			LOG("Collision detected");
 		}*/
 	}
 	else if (bodyA.shape == CIRCLE && bodyB.shape == CIRCLE)
 	{
-		/*float distance = bodyA.GetPosition().DistanceTo(bodyB.GetPosition());
+		float distance = bodyA.GetPosition().DistanceTo(bodyB.GetPosition());
 		if (bodyA.radius + bodyB.radius < distance)
 		{
 			LOG("Collision detected");
-		}*/
+		}
 
 		//Lets separate
 		//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
@@ -204,7 +243,7 @@ void World::SolveCollisions(Body bodyA, Body bodyB)
 		rectClosest.y = max(bodyB.GetPosition().y, min(bodyA.GetPosition().y, bodyB.GetPosition().y + bodyB.height));
 
 		float distance = bodyA.GetPosition().DistanceTo(rectClosest);
-		if (distance < bodyA.width /*this "width" parameter would be the radius*/)
+		if (distance < bodyA.radius /*this "width" parameter would be the radius*/)
 		{
 			LOG("Collision detected");
 		}
