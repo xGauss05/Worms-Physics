@@ -72,6 +72,8 @@ World::World() {
 World::World(p2Point<float> g) {
 	gravity.x = g.x;
 	gravity.y = g.y;
+
+	density = 1.293f;
 }
 
 World::~World() {
