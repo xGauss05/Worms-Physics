@@ -116,7 +116,7 @@ public:
 
 public: 
 
-	World* world;
+	World* world = nullptr;
 
 private:
 
