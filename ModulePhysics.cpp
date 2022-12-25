@@ -8,7 +8,9 @@ Body::Body() {
 }
 
 Body::~Body() {
-
+	if (texture != nullptr) {
+		App->textures->Unload(texture);
+	}
 }
 
 p2Point<float> Body::GetPosition() const { 
@@ -272,6 +274,8 @@ bool ModulePhysics::Start() {
 
 // 
 update_status ModulePhysics::PreUpdate() {
+	world->Step();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -290,6 +294,8 @@ update_status ModulePhysics::PostUpdate() {
 // Called before quitting
 bool ModulePhysics::CleanUp() {
 	LOG("Destroying physics world");
+
+	delete world;
 
 	return true;
 }
