@@ -10,8 +10,8 @@ Application::Application()
 	player = new ModulePlayer(this);
 	scene_intro = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
-	//debug = new ModuleDebug(this);
 	fonts = new ModuleFonts(this);
+	debug = new ModuleDebug(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -24,8 +24,8 @@ Application::Application()
 	AddModule(textures);
 	AddModule(input);
 	AddModule(audio);
-	//AddModule(debug);
 	AddModule(fonts);
+	AddModule(debug);
 	
 	// Scenes
 	AddModule(scene_intro);

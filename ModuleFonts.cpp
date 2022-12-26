@@ -20,14 +20,14 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 	int id = -1;
 
 	if (texture_path == nullptr || characters == nullptr || rows == 0) {
-		//LOG("Could not load font");
+		LOG("Could not load font");
 		return id;
 	}
 
 	SDL_Texture* tex = App->textures->Load(texture_path);
 
 	if (tex == nullptr || strlen(characters) >= MAX_FONT_CHARS) {
-		//LOG("Could not load font at %s with characters '%s'", texture_path, characters);
+		LOG("Could not load font at %s with characters '%s'", texture_path, characters);
 		return id;
 	}
 
@@ -37,7 +37,7 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 			break;
 
 	if (id == MAX_FONTS) {
-		//LOG("Cannot load font %s. Array is full (max %d).", texture_path, MAX_FONTS);
+		LOG("Cannot load font %s. Array is full (max %d).", texture_path, MAX_FONTS);
 		return id;
 	}
 
@@ -58,12 +58,12 @@ int ModuleFonts::Load(const char* texture_path, const char* characters, uint row
 	font.totalLength = strlen(characters);
 	font.columns = fonts[id].totalLength / rows;
 
-	//uint tex_w, tex_h;
-	//App->textures->GetTextureSize(tex, tex_w, tex_h);
-	//font.char_w = tex_w / font.columns;
-	//font.char_h = tex_h / font.rows;
+	uint tex_w, tex_h;
+	App->textures->GetTextureSize(tex, tex_w, tex_h);
+	font.char_w = tex_w / font.columns;
+	font.char_h = tex_h / font.rows;
 
-	//LOG("Successfully loaded BMP font from %s", texture_path);
+	LOG("Successfully loaded BMP font from %s", texture_path);
 
 	return id;
 }
@@ -72,13 +72,13 @@ void ModuleFonts::Unload(int font_id) {
 	if (font_id >= 0 && font_id < MAX_FONTS && fonts[font_id].texture != nullptr) {
 		App->textures->Unload(fonts[font_id].texture);
 		fonts[font_id].texture = nullptr;
-		//LOG("Successfully Unloaded BMP font_id %d", font_id);
+		LOG("Successfully Unloaded BMP font_id %d", font_id);
 	}
 }
 
 void ModuleFonts::BlitText(int x, int y, int font_id, const char* text) const {
 	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].texture == nullptr) {
-		//LOG("Unable to render text with bmp font id %d", font_id);
+		LOG("Unable to render text with bmp font id %d", font_id);
 		return;
 	}
 

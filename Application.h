@@ -11,8 +11,8 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
-#include "ModuleDebug.h"
 #include "ModuleFonts.h"
+#include "ModuleDebug.h"
 #include "PerfTimer.h"
 #include "Timer.h"
 
@@ -27,8 +27,8 @@ public:
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
-	//ModuleDebug* debug;
 	ModuleFonts* fonts;
+	ModuleDebug* debug;
 
 	float dt;
 
