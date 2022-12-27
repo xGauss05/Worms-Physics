@@ -8,6 +8,45 @@ Body::Body()
 
 }
 
+Body::Body(float positionX, float positionY,BodyShape shape, float width, float height, BodyType type, float mass, float dragSurface)
+{
+	this->position.x = positionX;
+	this->position.y = positionY;
+	this->shape = shape;
+	this->width = width;
+	this->height = height;
+	this->type = type;
+	this->mass = mass;
+	this->dragSurface = dragSurface;
+
+	radius = 0.0f;
+
+	velocity.SetToZero();
+	acceleration.SetToZero();
+
+	externalForce.SetToZero();
+}
+
+Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass, float dragSurface)
+{
+	this->position.x = positionX;
+	this->position.y = positionY;
+	this->shape = shape;
+	this->radius = radius;
+	this->type = type;
+	this->mass = mass;
+	this->dragSurface = dragSurface;
+
+	width = 0.0f;
+	height = 0.0f;
+	
+
+	velocity.SetToZero();
+	acceleration.SetToZero();
+
+	externalForce.SetToZero();
+}
+
 Body::~Body()
 {
 	if (texture != nullptr)
@@ -21,9 +60,35 @@ p2Point<float> Body::GetPosition() const
 	return position;
 }
 
+float Body::GetWidth() const
+{
+	return width;
+}
+float Body::GetHeight() const
+{
+	return height;
+}
+float Body::GetRadius() const
+{
+	return radius;
+}
+
 float Body::GetMass() const
 {
 	return mass;
+}
+float Body::GetDragSurface() const
+{
+	return dragSurface;
+}
+
+BodyShape Body::GetShape() const
+{
+	return shape;
+}
+BodyType Body::GetType() const
+{
+	return type;
 }
 
 void Body::ApplyExternalForce(p2Point<float> f)
@@ -46,7 +111,6 @@ void Body::Blit() const
 		default:
 			break;
 		}
-
 	}
 }
 
@@ -65,9 +129,7 @@ void Body::Blit(SDL_Rect section) const
 		default:
 			break;
 		}
-
 	}
-
 }
 
 // --------------------------
@@ -178,7 +240,7 @@ p2Point<float> World::CalculateLiftForce(Body* b) {
 	}
 
 	force.x = 0;
-	force.y = 0.5f * density * velSquaredY * b->dragSurface * constantLift;
+	force.y = 0.5f * density * velSquaredY * b->GetDragSurface() * constantLift;
 
 	return force;
 }
@@ -202,8 +264,8 @@ p2Point<float> World::CalculateDragForce(Body* b) {
 		velSquared.y = -velSquared.y;
 	}
 
-	force.x = 0.5f * density * velSquared.x * b->dragSurface * constantDrag;
-	force.y = 0.5f * density * velSquared.y * b->dragSurface * constantDrag;
+	force.x = 0.5f * density * velSquared.x * b->GetDragSurface() * constantDrag;
+	force.y = 0.5f * density * velSquared.y * b->GetDragSurface() * constantDrag;
 
 	return force;
 }
@@ -272,22 +334,22 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 	// invert speed in one axis depending on where they hit
 	// activate on collisions
 
-	if (bodyA->shape == RECTANGLE && bodyB->shape == RECTANGLE)
+	if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == RECTANGLE)
 	{
 		//This will not work at the moment, needs to be implemented with METERS_TO_PIXELS
 
-		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)(bodyA->position.x + bodyA->width), (int)(bodyA->position.y + bodyA->height) };
-		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)(bodyB->position.x + bodyB->width), (int)(bodyB->position.y + bodyB->height) };
+		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)(bodyA->position.x + bodyA->GetWidth()), (int)(bodyA->position.y + bodyA->GetHeight()) };
+		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)(bodyB->position.x + bodyB->GetWidth()), (int)(bodyB->position.y + bodyB->GetHeight()) };
 
 		if (SDL_HasIntersection(rect1, rect2));
 		{
 			LOG("Collision detected");
 		}
 	}
-	else if (bodyA->shape == CIRCLE && bodyB->shape == CIRCLE)
+	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
 	{
 		float distance = bodyA->GetPosition().DistanceTo(bodyB->GetPosition());
-		if (bodyA->radius + bodyB->radius < distance)
+		if (bodyA->GetRadius() + bodyB->GetRadius() < distance)
 		{
 			LOG("Collision detected");
 		}
@@ -296,26 +358,26 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
 
 	}
-	else if (bodyA->shape == CIRCLE && bodyB->shape == RECTANGLE)
+	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == RECTANGLE)
 	{
 		p2Point<float> rectClosest;
-		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x, bodyB->GetPosition().x + bodyB->width));
-		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y, bodyB->GetPosition().y + bodyB->height));
+		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x, bodyB->GetPosition().x + bodyB->GetWidth()));
+		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y, bodyB->GetPosition().y + bodyB->GetHeight()));
 
 		float distance = bodyA->GetPosition().DistanceTo(rectClosest);
-		if (distance < bodyA->radius /*this "width" parameter would be the radius*/)
+		if (distance < bodyA->GetRadius())
 		{
 			LOG("Collision detected");
 		}
 	}
-	else if (bodyA->shape == RECTANGLE && bodyB->shape == CIRCLE)
+	else if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == CIRCLE)
 	{
 		p2Point<float> rectClosest;
-		rectClosest.x = max(bodyA->GetPosition().x, min(bodyB->GetPosition().x, bodyA->GetPosition().x + bodyA->width));
-		rectClosest.y = max(bodyA->GetPosition().y, min(bodyB->GetPosition().y, bodyA->GetPosition().y + bodyA->height));
+		rectClosest.x = max(bodyA->GetPosition().x, min(bodyB->GetPosition().x, bodyA->GetPosition().x + bodyA->GetWidth()));
+		rectClosest.y = max(bodyA->GetPosition().y, min(bodyB->GetPosition().y, bodyA->GetPosition().y + bodyA->GetHeight()));
 
 		float distance = bodyB->GetPosition().DistanceTo(rectClosest);
-		if (distance < bodyB->radius /*this "width" parameter would be the radius*/)
+		if (distance < bodyB->GetRadius())
 		{
 			LOG("Collision detected");
 		}

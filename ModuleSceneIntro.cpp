@@ -22,7 +22,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	test1 = new Body();
+	/*test1 = new Body();
 	test1->position.x = PIXEL_TO_METERS(30);
 	test1->position.y = PIXEL_TO_METERS(0);
 	test1->velocity.x = 0.0f;
@@ -43,7 +43,22 @@ bool ModuleSceneIntro::Start()
 	p2Point<float> force;
 	force.x = 2.0f;
 	force.y = -20.0f;
+	test1->ApplyExternalForce(force);*/
+
+
+
+
+
+	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0), RECTANGLE, 2.0f, 2.0f, DYNAMIC, 1.0f, 20.0f);
+	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
+
+	App->physics->world->AddBody(test1);
+
+	p2Point<float> force;
+	force.x = 2.0f;
+	force.y = -20.0f;
 	test1->ApplyExternalForce(force);
+	
 
 	return ret;
 }

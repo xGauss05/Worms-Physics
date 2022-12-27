@@ -34,11 +34,21 @@ class Body
 public:
 
 	Body();
+	Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass = 1.0f, float dragSurface = 1.0f);
+	Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass = 1.0f, float dragSurface = 1.0f);
 	~Body();
 
 	p2Point<float> GetPosition() const;
 
+	float GetWidth() const;
+	float GetHeight() const;
+	float GetRadius() const;
+
 	float GetMass() const;
+	float GetDragSurface() const;
+
+	BodyShape GetShape() const;
+	BodyType GetType() const;
 
 	void ApplyExternalForce(p2Point<float> f);
 
@@ -51,19 +61,20 @@ public:
 	p2Point<float> position;
 	p2Point<float> velocity;
 	p2Point<float> acceleration;
-	float width, height, radius;
-
-	BodyShape shape;
-	BodyType type;
 
 	p2Point<float> externalForce;
-	float dragSurface;
 
 	SDL_Texture* texture = nullptr;
 
 private:
-	float mass = 1.0f;
-	
+
+	float width, height, radius;
+
+	float mass;
+	float dragSurface;
+
+	BodyShape shape;
+	BodyType type;
 };
 
 

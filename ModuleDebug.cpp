@@ -117,18 +117,18 @@ void ModuleDebug::DebugDraw() {
 	{
 		for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
 
-			switch (b->data->shape)
+			switch (b->data->GetShape())
 			{
 			case CIRCLE:
-				App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->radius), 255, 255, 255, 255);
+				App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->GetRadius()), 255, 255, 255, 255);
 				break;
 			case RECTANGLE:
 
 				SDL_Rect rect;
 				rect.x = METERS_TO_PIXELS(b->data->position.x);
 				rect.y = METERS_TO_PIXELS(b->data->position.y);
-				rect.w = METERS_TO_PIXELS(b->data->width);
-				rect.h = METERS_TO_PIXELS(b->data->height);
+				rect.w = METERS_TO_PIXELS(b->data->GetWidth());
+				rect.h = METERS_TO_PIXELS(b->data->GetHeight());
 
 				App->renderer->DrawQuad(rect, 255, 255, 255, 255, false);
 
@@ -140,7 +140,7 @@ void ModuleDebug::DebugDraw() {
 	}
 
 	SDL_Rect bg;
-	if (timeScreen)					{ bg = { 2,38,251,92 }; }
+	if (timeScreen)				{ bg = { 2,38,251,92 }; }
 	else if (gravity)			{ bg = { 2,38,251,82 }; }
 	else if (colliders)			{ bg = { 2,38,251,22 }; }
 	else						{ bg = { 2,38,252,72 }; }
