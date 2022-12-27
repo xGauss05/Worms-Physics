@@ -101,6 +101,8 @@ private:
 	float density;
 
 	IntegrationMethod integrationMethod = VERLET;
+
+	float dt;
 };
 
 

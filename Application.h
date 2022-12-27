@@ -11,8 +11,8 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
-#include "ModuleFonts.h"
 #include "ModuleDebug.h"
+#include "ModuleFonts.h"
 
 class Application
 {
@@ -25,8 +25,8 @@ public:
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
-	ModuleFonts* fonts;
 	ModuleDebug* debug;
+	ModuleFonts* fonts;
 
 private:
 

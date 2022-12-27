@@ -69,6 +69,8 @@ World::World() {
 	gravity.y = 9.81f;
 
 	density = 1.293f;
+
+	dt = 0.0f;
 }
 
 World::World(p2Point<float> g) {
@@ -76,6 +78,8 @@ World::World(p2Point<float> g) {
 	gravity.y = g.y;
 
 	density = 1.293f;
+
+	dt = 0.0f;
 }
 
 World::~World() {
@@ -95,6 +99,9 @@ void World::Step() {
 	//				integrator
 	// 
 
+	dt = (float)App->debug->elapsedFrame.count() * 10E-7;
+	LOG("Delta Time: %f", dt);
+
 	for (p2List_item<Body*>* b = bodies.getFirst(); b; b = b->next) {
 		p2Point<float> total;
 		total.SetToZero();
@@ -104,6 +111,7 @@ void World::Step() {
 		//total += CalculateDragForce(b->data);
 		//total += CalculateLiftForce(b->data);
 		total += b->data->externalForce;
+		b->data->externalForce.SetToZero();
 
 		// integrator
 		Integrate(b->data, total);
@@ -193,27 +201,27 @@ void World::Integrate(Body* body, p2Point<float> force) {
 	switch (integrationMethod)
 	{
 	case FORWARD_EULER:
-		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
-		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
+		body->velocity.x = body->velocity.x + body->acceleration.x * dt;
+		body->velocity.y = body->velocity.y + body->acceleration.y * dt;
 
-		body->position.x = body->position.x + body->velocity.x * (1.0f / 60.0f);
-		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f);
+		body->position.x = body->position.x + body->velocity.x * dt;
+		body->position.y = body->position.y + body->velocity.y * dt;
 
 		break;
 	case BACKWARD_EULER:
-		body->position.x = body->position.x + body->velocity.x * (1.0f / 60.0f);
-		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f);
+		body->position.x = body->position.x + body->velocity.x * dt;
+		body->position.y = body->position.y + body->velocity.y * dt;
 
-		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
-		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
+		body->velocity.x = body->velocity.x + body->acceleration.x * dt;
+		body->velocity.y = body->velocity.y + body->acceleration.y * dt;
 
 		break;
 	case VERLET:
-		body->position.x = body->position.x + body->velocity.x * (1.0f/60.0f) + 0.5f * body->acceleration.x * (1.0f / 60.0f) * (1.0f / 60.0f);
-		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f) + 0.5f * body->acceleration.y * (1.0f / 60.0f) * (1.0f / 60.0f);
+		body->position.x = body->position.x + body->velocity.x * dt + 0.5f * body->acceleration.x * dt * dt;
+		body->position.y = body->position.y + body->velocity.y * dt + 0.5f * body->acceleration.y * dt * dt;
 
-		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
-		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
+		body->velocity.x = body->velocity.x + body->acceleration.x * dt;
+		body->velocity.y = body->velocity.y + body->acceleration.y * dt;
 
 		break;
 	default:

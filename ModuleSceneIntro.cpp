@@ -40,6 +40,10 @@ bool ModuleSceneIntro::Start()
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	App->physics->world->AddBody(test1);
 
+	p2Point<float> force;
+	force.x = 20.0f;
+	force.y = -20.0f;
+	test1->ApplyExternalForce(force);
 
 	return ret;
 }

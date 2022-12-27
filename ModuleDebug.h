@@ -27,7 +27,7 @@ public:
 
 	// Called at the middle of the application loop
 	// Switches the debug mode on/off
-	update_status Update(float dt);
+	update_status Update();
 
 	// Called at the end of the application loop
 	// Draw all functionality (if debug mode is enabled)

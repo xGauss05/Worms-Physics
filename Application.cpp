@@ -10,8 +10,8 @@ Application::Application()
 	player = new ModulePlayer(this);
 	scene_intro = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
-	fonts = new ModuleFonts(this);
 	debug = new ModuleDebug(this);
+	fonts = new ModuleFonts(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,19 +19,20 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
-	AddModule(physics);
-	AddModule(renderer);
-	AddModule(textures);
 	AddModule(input);
+	AddModule(textures);
 	AddModule(audio);
-	AddModule(fonts);
+	AddModule(physics);
 	AddModule(debug);
+	AddModule(fonts);
 	
 	// Scenes
 	AddModule(scene_intro);
 	
 	// Player
 	AddModule(player);
+
+	AddModule(renderer);
 }
 
 Application::~Application()

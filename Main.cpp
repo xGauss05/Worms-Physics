@@ -2,6 +2,10 @@
 #include "Application.h"
 #include "Globals.h"
 
+#include <thread>
+#include <chrono>
+using namespace std::chrono;
+
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
@@ -26,6 +30,8 @@ int main(int argc, char ** argv)
 
 	while (state != MAIN_EXIT)
 	{
+		high_resolution_clock::time_point start = high_resolution_clock::now();
+
 		switch (state)
 		{
 		case MAIN_CREATION:
@@ -81,6 +87,26 @@ int main(int argc, char ** argv)
 			break;
 
 		}
+
+		//Time per cycle
+		high_resolution_clock::time_point endCycle = high_resolution_clock::now();
+		App->debug->elapsedCycle = duration_cast<microseconds>(endCycle - start);
+
+		//Time per frame in microseconds acording to taget FPS
+		int microSecCheck = (int)((1.0f / (float)App->debug->targetFPS) * 1E6);
+
+		//This is to cap FPS, the diplaying of FPS on screen is calculated underneath
+		if (App->debug->elapsedCycle < std::chrono::microseconds(microSecCheck))
+		{
+			std::this_thread::sleep_for(std::chrono::microseconds(std::chrono::microseconds(microSecCheck) - App->debug->elapsedCycle));
+		}
+
+		//Time per cycle + delay
+		high_resolution_clock::time_point endFrame = high_resolution_clock::now();
+		App->debug->elapsedFrame = duration_cast<microseconds>(endFrame - start);
+
+		//Calculate FPSs
+		App->debug->FPS = 1 / ((double)App->debug->elapsedFrame.count() * 10E-7);
 	}
 
 	delete App;

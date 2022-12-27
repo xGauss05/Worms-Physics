@@ -24,7 +24,7 @@ bool ModuleDebug::Start() {
 	return true;
 }
 
-update_status ModuleDebug::Update(float dt) {
+update_status ModuleDebug::Update() {
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -33,7 +33,7 @@ update_status ModuleDebug::Update(float dt) {
 
 	if (debug) {
 
-#pragma region Menu navigation
+		#pragma region Menu navigation
 
 		if (currentScreen == Screen::HOME)
 		{
@@ -85,7 +85,7 @@ update_status ModuleDebug::Update(float dt) {
 			timeScreen = false; gravity = false; colliders = false;
 		}
 
-#pragma endregion
+		#pragma endregion
 
 		if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 			p2Point<int> position;
@@ -98,7 +98,7 @@ update_status ModuleDebug::Update(float dt) {
 }
 
 update_status ModuleDebug::PostUpdate() {
-	
+
 	if (debug)
 	{
 		DebugDraw();
