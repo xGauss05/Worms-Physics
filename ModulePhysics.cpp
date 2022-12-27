@@ -3,31 +3,38 @@
 #include "ModulePhysics.h"
 #include "math.h"
 
-Body::Body() {
+Body::Body()
+{
 
 }
 
-Body::~Body() {
-	if (texture != nullptr) {
+Body::~Body()
+{
+	if (texture != nullptr)
+	{
 		App->textures->Unload(texture);
 	}
 }
 
-p2Point<float> Body::GetPosition() const { 
-	return position; 
+p2Point<float> Body::GetPosition() const
+{
+	return position;
 }
 
-float Body::GetMass() const {
-	return mass; 
+float Body::GetMass() const
+{
+	return mass;
 }
 
-void Body::ApplyExternalForce(p2Point<float> f) {
+void Body::ApplyExternalForce(p2Point<float> f)
+{
 	externalForce += f;
 }
 
 void Body::Blit() const
 {
-	if (texture != nullptr) {
+	if (texture != nullptr)
+	{
 		switch (shape)
 		{
 		case CIRCLE:
@@ -45,7 +52,8 @@ void Body::Blit() const
 
 void Body::Blit(SDL_Rect section) const
 {
-	if (texture != nullptr) {
+	if (texture != nullptr)
+	{
 		switch (shape)
 		{
 		case CIRCLE:
@@ -64,7 +72,8 @@ void Body::Blit(SDL_Rect section) const
 
 // --------------------------
 
-World::World() {
+World::World()
+{
 	gravity.x = 0.0f;
 	gravity.y = 9.81f;
 
@@ -73,7 +82,8 @@ World::World() {
 	dt = 0.0f;
 }
 
-World::World(p2Point<float> g) {
+World::World(p2Point<float> g)
+{
 	gravity.x = g.x;
 	gravity.y = g.y;
 
@@ -82,7 +92,8 @@ World::World(p2Point<float> g) {
 	dt = 0.0f;
 }
 
-World::~World() {
+World::~World()
+{
 	bodies.clear();
 }
 
@@ -116,9 +127,14 @@ void World::Step() {
 		// integrator
 		Integrate(b->data, total);
 
-		// collisions
-		//Body* b2Test;
-		//SolveCollisions(b->data,b2Test);
+		for (p2List_item<Body*>* b2 = bodies.getFirst(); b2; b2 = b2->next) {
+
+			if (b == b2) continue;
+
+			SolveCollisions(b->data, b2->data);
+
+		}
+
 	}
 
 }
@@ -127,6 +143,7 @@ p2Point<float> World::GetGravity()
 {
 	return gravity;
 }
+
 void World::SetGravity(p2Point<float> g)
 {
 	gravity = g;
@@ -149,7 +166,7 @@ p2Point<float> World::CalculateGravityForce(Body* b) {
 p2Point<float> World::CalculateLiftForce(Body* b) {
 
 	p2Point<float> force;
-	
+
 	float constantLift = 2.0f;
 
 	// perpendicular to surface
@@ -239,8 +256,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 	if (bodyA->shape == RECTANGLE && bodyB->shape == RECTANGLE)
 	{
-		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect	
-		// SDL_HasIntersection( { bodyA.position.x, bodyA.position.y, bodyA.position.x + bodyA.width, bodyA.position.y + bodyA.height }, 
+		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect
+		// SDL_HasIntersection( { bodyA.position.x, bodyA.position.y, bodyA.position.x + bodyA.width, bodyA.position.y + bodyA.height },
 		{ bodyB.position.x, bodyB.position.y, bodyB.position.x + bodyB.width, bodyB.position.y + bodyB.height } ) {}))
 		{
 			LOG("Collision detected");
@@ -274,15 +291,19 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 // ------------------------------------
 
-ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled) {
+ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
+{
 	debug = true;
 }
 
 // Destructor
-ModulePhysics::~ModulePhysics() {
+ModulePhysics::~ModulePhysics()
+{
+
 }
 
-bool ModulePhysics::Start() {
+bool ModulePhysics::Start()
+{
 	LOG("Creating Physics 2D environment");
 
 	world = new World();
@@ -291,26 +312,28 @@ bool ModulePhysics::Start() {
 }
 
 // 
-update_status ModulePhysics::PreUpdate() {
+update_status ModulePhysics::PreUpdate()
+{
 	world->Step();
 
 	return UPDATE_CONTINUE;
 }
 
 // 
-update_status ModulePhysics::PostUpdate() {
-	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+update_status ModulePhysics::PostUpdate()
+{
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	if(!debug)
+	if (!debug)
 		return UPDATE_CONTINUE;
 
 	return UPDATE_CONTINUE;
 }
 
-
 // Called before quitting
-bool ModulePhysics::CleanUp() {
+bool ModulePhysics::CleanUp()
+{
 	LOG("Destroying physics world");
 
 	delete world;
