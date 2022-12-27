@@ -42,8 +42,6 @@ public:
 
 public:
 
-	SDL_Texture* graphics;
-
 	SDL_Texture* tex_light_tiny;
 	SDL_Texture* tex_light_medium;
 	SDL_Texture* tex_light_big;
@@ -57,4 +55,6 @@ public:
 	uint player_lose_fx;
 
 	Body* test1 = nullptr;
+
+	SDL_Texture* background;
 };
