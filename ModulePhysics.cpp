@@ -179,15 +179,17 @@ void World::Step() {
 		p2Point<float> total;
 		total.SetToZero();
 
-		// calculate all forces
-		total += CalculateGravityForce(b->data);
-		total += CalculateDragForce(b->data);
-		total += CalculateLiftForce(b->data);
-		total += b->data->externalForce;
-		b->data->externalForce.SetToZero();
+		if (b->data->GetType() == BodyType::DYNAMIC) {
+			// calculate all forces
+			total += CalculateGravityForce(b->data);
+			total += CalculateDragForce(b->data);
+			total += CalculateLiftForce(b->data);
+			total += b->data->externalForce;
+			b->data->externalForce.SetToZero();
 
-		// integrator
-		Integrate(b->data, total);
+			// integrator
+			Integrate(b->data, total);
+		}
 
 		for (p2List_item<Body*>* b2 = b->next; b2; b2 = b2->next) {
 
@@ -333,6 +335,10 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 	// separate the two bodies
 	// invert speed in one axis depending on where they hit
 	// activate on collisions
+
+	if (bodyA->GetType() != BodyType::DYNAMIC && bodyB->GetType() != BodyType::DYNAMIC) {
+		return;
+	}
 
 	if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == RECTANGLE)
 	{
