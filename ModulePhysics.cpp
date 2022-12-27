@@ -95,22 +95,22 @@ void World::Step() {
 	//				integrator
 	// 
 
-	for (p2List_item<Body>* b = bodies.getFirst(); b; b = b->next) {
+	for (p2List_item<Body*>* b = bodies.getFirst(); b; b = b->next) {
 		p2Point<float> total;
 		total.SetToZero();
 
 		// calculate all forces
 		total += CalculateGravityForce(b->data);
-		total += CalculateDragForce(b->data);
-		total += CalculateLiftForce(b->data);
-		total += b->data.externalForce;
+		//total += CalculateDragForce(b->data);
+		//total += CalculateLiftForce(b->data);
+		total += b->data->externalForce;
 
 		// integrator
 		Integrate(b->data, total);
 
 		// collisions
-		Body b2Test;
-		SolveCollisions(b->data,b2Test);
+		//Body* b2Test;
+		//SolveCollisions(b->data,b2Test);
 	}
 
 }
@@ -124,16 +124,21 @@ void World::SetGravity(p2Point<float> g)
 	gravity = g;
 }
 
-p2Point<float> World::CalculateGravityForce(Body b) {
+void World::AddBody(Body* body)
+{
+	bodies.add(body);
+}
+
+p2Point<float> World::CalculateGravityForce(Body* b) {
 
 	p2Point<float> force;
-	force.x = gravity.x * b.GetMass();
-	force.y = gravity.y * b.GetMass();
+	force.x = gravity.x * b->GetMass();
+	force.y = gravity.y * b->GetMass();
 
 	return force;
 }
 
-p2Point<float> World::CalculateLiftForce(Body b) {
+p2Point<float> World::CalculateLiftForce(Body* b) {
 
 	p2Point<float> force;
 	
@@ -142,32 +147,33 @@ p2Point<float> World::CalculateLiftForce(Body b) {
 	// perpendicular to surface
 	// always vertical
 	force.x = 0;
-	force.y = -0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantLift;
+	force.y = -0.5f * density * b->velocity.y * b->velocity.y * b->dragSurface * constantLift;
 
 	return force;
 }
 
-p2Point<float> World::CalculateDragForce(Body b) {
+p2Point<float> World::CalculateDragForce(Body* b) {
 
 	p2Point<float> force;
 
 	float constantDrag = 5.0f;
 
 	// parallel to v
-	force.x = -0.5f * density * b.velocity.x * b.velocity.x * b.dragSurface * constantDrag;
-	force.y = -0.5f * density * b.velocity.y * b.velocity.y * b.dragSurface * constantDrag;
+	force.x = -0.5f * density * b->velocity.x * b->velocity.x * b->dragSurface * constantDrag;
+	force.y = -0.5f * density * b->velocity.y * b->velocity.y * b->dragSurface * constantDrag;
 
 	return force;
 }
 
-void World::Integrate(Body& body, p2Point<float> force) {
+void World::Integrate(Body* body, p2Point<float> force) {
 
 
 	// 3: newton's 2nd law
 	// F = m * a --> a = F / m
-	p2Point<float> acceleration;
-	acceleration.x = force.x / body.GetMass();
-	acceleration.y = force.y / body.GetMass();
+
+	body->acceleration.x = force.x / body->GetMass();
+	body->acceleration.y = force.y / body->GetMass();
+
 
 	// m != 0
 
@@ -187,27 +193,27 @@ void World::Integrate(Body& body, p2Point<float> force) {
 	switch (integrationMethod)
 	{
 	case FORWARD_EULER:
-		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
-		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
+		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
 
-		body.position.x = body.position.x + body.velocity.x * App->dt;
-		body.position.y = body.position.y + body.velocity.y * App->dt;
+		body->position.x = body->position.x + body->velocity.x * (1.0f / 60.0f);
+		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f);
 
 		break;
 	case BACKWARD_EULER:
-		body.position.x = body.position.x + body.velocity.x * App->dt;
-		body.position.y = body.position.y + body.velocity.y * App->dt;
+		body->position.x = body->position.x + body->velocity.x * (1.0f / 60.0f);
+		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f);
 
-		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
-		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
+		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
 
 		break;
 	case VERLET:
-		body.position.x = body.position.x + body.velocity.x * App->dt + 0.5f * acceleration.x * App->dt * App->dt;
-		body.position.y = body.position.y + body.velocity.y * App->dt + 0.5f * acceleration.y * App->dt * App->dt;
+		body->position.x = body->position.x + body->velocity.x * (1.0f/60.0f) + 0.5f * body->acceleration.x * (1.0f / 60.0f) * (1.0f / 60.0f);
+		body->position.y = body->position.y + body->velocity.y * (1.0f / 60.0f) + 0.5f * body->acceleration.y * (1.0f / 60.0f) * (1.0f / 60.0f);
 
-		body.velocity.x = body.velocity.x + acceleration.x * App->dt;
-		body.velocity.y = body.velocity.y + acceleration.y * App->dt;
+		body->velocity.x = body->velocity.x + body->acceleration.x * (1.0f / 60.0f);
+		body->velocity.y = body->velocity.y + body->acceleration.y * (1.0f / 60.0f);
 
 		break;
 	default:
@@ -217,13 +223,13 @@ void World::Integrate(Body& body, p2Point<float> force) {
 
 }
 
-void World::SolveCollisions(Body bodyA, Body bodyB)
+void World::SolveCollisions(Body* bodyA, Body* bodyB)
 {
 	// separate the two bodies
 	// invert speed in one axis depending on where they hit
 	// activate on collisions
 
-	if (bodyA.shape == RECTANGLE && bodyB.shape == RECTANGLE)
+	if (bodyA->shape == RECTANGLE && bodyB->shape == RECTANGLE)
 	{
 		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect	
 		// SDL_HasIntersection( { bodyA.position.x, bodyA.position.y, bodyA.position.x + bodyA.width, bodyA.position.y + bodyA.height }, 
@@ -232,10 +238,10 @@ void World::SolveCollisions(Body bodyA, Body bodyB)
 			LOG("Collision detected");
 		}*/
 	}
-	else if (bodyA.shape == CIRCLE && bodyB.shape == CIRCLE)
+	else if (bodyA->shape == CIRCLE && bodyB->shape == CIRCLE)
 	{
-		float distance = bodyA.GetPosition().DistanceTo(bodyB.GetPosition());
-		if (bodyA.radius + bodyB.radius < distance)
+		float distance = bodyA->GetPosition().DistanceTo(bodyB->GetPosition());
+		if (bodyA->radius + bodyB->radius < distance)
 		{
 			LOG("Collision detected");
 		}
@@ -244,14 +250,14 @@ void World::SolveCollisions(Body bodyA, Body bodyB)
 		//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
 
 	}
-	else if (bodyA.shape == CIRCLE && bodyB.shape == RECTANGLE)
+	else if (bodyA->shape == CIRCLE && bodyB->shape == RECTANGLE)
 	{
 		p2Point<float> rectClosest;
-		rectClosest.x = max(bodyB.GetPosition().x, min(bodyA.GetPosition().x, bodyB.GetPosition().x + bodyB.width));
-		rectClosest.y = max(bodyB.GetPosition().y, min(bodyA.GetPosition().y, bodyB.GetPosition().y + bodyB.height));
+		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x, bodyB->GetPosition().x + bodyB->width));
+		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y, bodyB->GetPosition().y + bodyB->height));
 
-		float distance = bodyA.GetPosition().DistanceTo(rectClosest);
-		if (distance < bodyA.radius /*this "width" parameter would be the radius*/)
+		float distance = bodyA->GetPosition().DistanceTo(rectClosest);
+		if (distance < bodyA->radius /*this "width" parameter would be the radius*/)
 		{
 			LOG("Collision detected");
 		}

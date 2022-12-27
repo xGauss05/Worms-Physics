@@ -62,7 +62,7 @@ public:
 	SDL_Texture* texture = nullptr;
 
 private:
-	float mass = 1;
+	float mass = 1.0f;
 	
 };
 
@@ -77,23 +77,24 @@ public:
 
 	p2Point<float> GetGravity();
 	void SetGravity(p2Point<float> g);
+	void AddBody(Body* body);
 
 	void Step();
 
 
 private: 
 	
-	p2Point<float> CalculateGravityForce(Body b);
-	p2Point<float> CalculateLiftForce(Body b);
-	p2Point<float> CalculateDragForce(Body b);
+	p2Point<float> CalculateGravityForce(Body* b);
+	p2Point<float> CalculateLiftForce(Body* b);
+	p2Point<float> CalculateDragForce(Body* b);
 	// Impulsive is externalForce / artificialForce
 
-	void Integrate(Body& body, p2Point<float> force);
-	void SolveCollisions(Body bodyA, Body bodyB);
+	void Integrate(Body* body, p2Point<float> force);
+	void SolveCollisions(Body* bodyA, Body* bodyB);
 
 private:
 	
-	p2List<Body> bodies;
+	p2List<Body*> bodies;
 
 	p2Point<float> gravity;
 

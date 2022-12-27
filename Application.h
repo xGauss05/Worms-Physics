@@ -13,8 +13,6 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleFonts.h"
 #include "ModuleDebug.h"
-#include "PerfTimer.h"
-#include "Timer.h"
 
 class Application
 {
@@ -30,29 +28,9 @@ public:
 	ModuleFonts* fonts;
 	ModuleDebug* debug;
 
-	float dt;
-
 private:
 
 	p2List<Module*> list_modules;
-
-	// Frame rate variables
-	uint frames;
-	Timer timer;
-	PerfTimer ptimer;
-
-	Timer startupTime;
-	Timer frameTime;
-	Timer lastSecFrameTime;
-
-	uint64 frameCount = 0;
-	uint32 framesPerSecond = 0;
-	uint32 lastSecFrameCount = 0;
-
-	float averageFps = 0.0f;
-	float secondsSinceStartup = 0.0f;
-
-	uint32 maxFrameDuration = 0;
 
 public:
 
@@ -61,7 +39,6 @@ public:
 
 	bool Init();
 	update_status Update();
-	void FinishUpdate();
 	bool CleanUp();
 
 private:

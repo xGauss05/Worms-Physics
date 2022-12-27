@@ -48,8 +48,6 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
-	timer = Timer();
-	maxFrameDuration = 60;
 
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
@@ -92,7 +90,7 @@ update_status Application::Update()
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		if(item->data->IsEnabled())
-  			ret = item->data->Update(dt);
+  			ret = item->data->Update();
 		item = item->next;
 	}
 
@@ -105,46 +103,7 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	FinishUpdate();
-
 	return ret;
-}
-
-void Application::FinishUpdate() {
-	
-	// L13: TODO 4: Now calculate:
-	// Amount of frames since startup
-	frameCount++;
-	// Amount of time since game start (use a low resolution timer)
-	secondsSinceStartup = startupTime.ReadSec();
-	// Amount of ms took the last update
-	dt = frameTime.ReadMSec();
-	// Amount of frames during the last second
-	lastSecFrameCount++;
-
-	if (lastSecFrameTime.ReadMSec() > 1000) {
-		lastSecFrameTime.Start();
-		framesPerSecond = lastSecFrameCount;
-		lastSecFrameCount = 0;
-		// Average FPS for the whole game life
-		averageFps = (averageFps + framesPerSecond) / 2;
-	}
-
-	// L14: TODO 2: Use SDL_Delay to make sure you get your capped framerate
-	// L14: TODO 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
-
-	float delay = float(maxFrameDuration) - dt;
-
-	PerfTimer delayTimer = PerfTimer();
-	delayTimer.Start();
-	if (maxFrameDuration > 0 && delay > 0) {
-		SDL_Delay(delay);
-		LOG("We waited for %f milliseconds and the real delay is % f", delay, delayTimer.ReadMs());
-		dt = maxFrameDuration;
-	}
-	else {
-		LOG("No wait");
-	}
 }
 
 bool Application::CleanUp()

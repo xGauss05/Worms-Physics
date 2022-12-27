@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "p2DynArray.h"
 #include "Globals.h"
+#include "ModulePhysics.h"
 
 #define BOUNCER_TIME 200
 
@@ -36,7 +37,7 @@ public:
 	~ModuleSceneIntro();
 
 	bool Start();
-	update_status Update(float dt);
+	update_status Update();
 	bool CleanUp();
 
 public:
@@ -54,4 +55,6 @@ public:
 	p2DynArray<Light> lights;
 
 	uint player_lose_fx;
+
+	Body* test1 = nullptr;
 };
