@@ -117,7 +117,7 @@ void ModuleDebug::DebugDraw() {
 	{
 		for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
 
-			switch (b->data->type)
+			switch (b->data->shape)
 			{
 			case CIRCLE:
 				App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->radius), 255, 255, 255, 255);
