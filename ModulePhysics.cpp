@@ -256,12 +256,15 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 	if (bodyA->shape == RECTANGLE && bodyB->shape == RECTANGLE)
 	{
-		/*if (SDL_HasIntersection(bodyA.rect,bodyB.rect
-		// SDL_HasIntersection( { bodyA.position.x, bodyA.position.y, bodyA.position.x + bodyA.width, bodyA.position.y + bodyA.height },
-		{ bodyB.position.x, bodyB.position.y, bodyB.position.x + bodyB.width, bodyB.position.y + bodyB.height } ) {}))
+		//This will not work at the moment, needs to be implemented with METERS_TO_PIXELS
+
+		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)bodyA->position.x + bodyA->width, (int)bodyA->position.y + bodyA->height };
+		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)bodyB->position.x + bodyB->width, (int)bodyB->position.y + bodyB->height };
+
+		if (SDL_HasIntersection(rect1, rect2));
 		{
 			LOG("Collision detected");
-		}*/
+		}
 	}
 	else if (bodyA->shape == CIRCLE && bodyB->shape == CIRCLE)
 	{
