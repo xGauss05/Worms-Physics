@@ -23,14 +23,14 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	test1 = new Body();
-	test1->position.x = 30.0f;
-	test1->position.y = 30.0f;
+	test1->position.x = PIXEL_TO_METERS(30);
+	test1->position.y = PIXEL_TO_METERS(0);
 	test1->velocity.x = 0.0f;
 	test1->velocity.y = 0.0f;
 	test1->acceleration.x = 0.0f;
 	test1->acceleration.y = 0.0f;
-	test1->width = 20;
-	test1->height = 20;
+	test1->width = (2.0f);
+	test1->height = 2.0f;
 	test1->radius = 0;
 	test1->shape = RECTANGLE;
 	test1->type = DYNAMIC;
@@ -41,7 +41,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->world->AddBody(test1);
 
 	p2Point<float> force;
-	force.x = 20.0f;
+	force.x = 2.0f;
 	force.y = -20.0f;
 	test1->ApplyExternalForce(force);
 
@@ -64,9 +64,11 @@ update_status ModuleSceneIntro::Update()
 {
 	test1->Blit();
 
-	App->fonts->BlitText(20, 50, 0, std::to_string(test1->position.y).c_str());
-	App->fonts->BlitText(20, 60, 0, std::to_string(test1->velocity.y).c_str());
-	App->fonts->BlitText(20, 70, 0, std::to_string(test1->acceleration.y).c_str());
+	App->fonts->BlitText(20, 50, 0, std::to_string(METERS_TO_PIXELS(test1->position.x)).c_str());
+	App->fonts->BlitText(20, 60, 0, std::to_string(METERS_TO_PIXELS(test1->position.y)).c_str());
+	App->fonts->BlitText(20, 70, 0, std::to_string(test1->velocity.x).c_str());
+	App->fonts->BlitText(20, 80, 0, std::to_string(test1->velocity.y).c_str());
+	App->fonts->BlitText(20, 90, 0, std::to_string(test1->acceleration.y).c_str());
 
 	return UPDATE_CONTINUE;
 }

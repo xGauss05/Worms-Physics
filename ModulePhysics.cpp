@@ -38,10 +38,10 @@ void Body::Blit() const
 		switch (shape)
 		{
 		case CIRCLE:
-			App->renderer->Blit(texture, position.x - radius, position.y - radius);
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x - radius), METERS_TO_PIXELS(position.y - radius));
 			break;
 		case RECTANGLE:
-			App->renderer->Blit(texture, position.x, position.y);
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y));
 			break;
 		default:
 			break;
@@ -57,10 +57,10 @@ void Body::Blit(SDL_Rect section) const
 		switch (shape)
 		{
 		case CIRCLE:
-			App->renderer->Blit(texture, position.x - radius, position.y - radius, &section);
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x - radius), METERS_TO_PIXELS(position.y - radius), &section);
 			break;
 		case RECTANGLE:
-			App->renderer->Blit(texture, position.x, position.y, &section);
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y), &section);
 			break;
 		default:
 			break;
@@ -276,8 +276,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 	{
 		//This will not work at the moment, needs to be implemented with METERS_TO_PIXELS
 
-		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)bodyA->position.x + bodyA->width, (int)bodyA->position.y + bodyA->height };
-		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)bodyB->position.x + bodyB->width, (int)bodyB->position.y + bodyB->height };
+		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)(bodyA->position.x + bodyA->width), (int)(bodyA->position.y + bodyA->height) };
+		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)(bodyB->position.x + bodyB->width), (int)(bodyB->position.y + bodyB->height) };
 
 		if (SDL_HasIntersection(rect1, rect2));
 		{
@@ -326,7 +326,6 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	debug = true;
 }
 
 // Destructor
@@ -355,12 +354,6 @@ update_status ModulePhysics::PreUpdate()
 // 
 update_status ModulePhysics::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
-
-	if (!debug)
-		return UPDATE_CONTINUE;
-
 	return UPDATE_CONTINUE;
 }
 

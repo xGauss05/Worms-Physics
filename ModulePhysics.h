@@ -51,7 +51,7 @@ public:
 	p2Point<float> position;
 	p2Point<float> velocity;
 	p2Point<float> acceleration;
-	int width, height, radius;
+	float width, height, radius;
 
 	BodyShape shape;
 	BodyType type;
@@ -103,6 +103,8 @@ private:
 	IntegrationMethod integrationMethod = VERLET;
 
 	float dt;
+
+friend class ModuleDebug;
 };
 
 
@@ -120,8 +122,4 @@ public:
 public: 
 
 	World* world = nullptr;
-
-private:
-
-	bool debug;
 };

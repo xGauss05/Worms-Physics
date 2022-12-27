@@ -10,6 +10,8 @@
 #include <string>
 using namespace std;
 
+#include "p2List.h"
+
 ModuleDebug::ModuleDebug(Application* app, bool start_enabled) : Module(app, start_enabled) {
 	debug = false;
 }
@@ -113,11 +115,28 @@ void ModuleDebug::DebugDraw() {
 	// You need to provide your own macro to translate meters to pixels
 	if (colliders)
 	{
-		//for (world->bodies)
-		//{
-		//	draw colliders
-		//}
-		
+		for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
+
+			switch (b->data->type)
+			{
+			case CIRCLE:
+				App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->radius), 255, 255, 255, 255);
+				break;
+			case RECTANGLE:
+
+				SDL_Rect rect;
+				rect.x = METERS_TO_PIXELS(b->data->position.x);
+				rect.y = METERS_TO_PIXELS(b->data->position.y);
+				rect.w = METERS_TO_PIXELS(b->data->width);
+				rect.h = METERS_TO_PIXELS(b->data->height);
+
+				App->renderer->DrawQuad(rect, 255, 255, 255, 255, false);
+
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	SDL_Rect bg;
