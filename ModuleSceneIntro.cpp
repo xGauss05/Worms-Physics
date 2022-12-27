@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 
 
 
-	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0), RECTANGLE, 2.0f, 2.0f, DYNAMIC, 1.0f, 20.0f);
+	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(700), RECTANGLE, 2.0f, 2.0f, DYNAMIC, 1.0f, 20.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	App->physics->world->AddBody(test1);
@@ -57,12 +57,6 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(background, 0, 0);
 
 	test1->Blit();
-
-	App->fonts->BlitText(20, 50, 0, std::to_string(METERS_TO_PIXELS(test1->position.x)).c_str());
-	App->fonts->BlitText(20, 60, 0, std::to_string(METERS_TO_PIXELS(test1->position.y)).c_str());
-	App->fonts->BlitText(20, 70, 0, std::to_string(test1->velocity.x).c_str());
-	App->fonts->BlitText(20, 80, 0, std::to_string(test1->velocity.y).c_str());
-	App->fonts->BlitText(20, 90, 0, std::to_string(test1->acceleration.y).c_str());
 
 	return UPDATE_CONTINUE;
 }

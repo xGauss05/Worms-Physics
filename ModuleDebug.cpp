@@ -21,7 +21,8 @@ ModuleDebug::~ModuleDebug() {
 bool ModuleDebug::Start() {
 	debug = false;
 
-	font = App->fonts->Load("Assets/Textures/font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!- ", 1);
+	//font = App->fonts->Load("Assets/Textures/font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!- ", 1);
+	font = App->fonts->Load("Assets/Textures/font1.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-() ", 1);
 	
 	return true;
 }
@@ -30,8 +31,6 @@ update_status ModuleDebug::Update() {
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
-
-	App->fonts->BlitText(20, 20, 0, "HOLA ");
 
 	if (debug) {
 
@@ -47,6 +46,9 @@ update_status ModuleDebug::Update() {
 
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 				colliders = true;
+
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+				variables = true;
 		}
 
 		if (timeScreen == true)
@@ -68,11 +70,6 @@ update_status ModuleDebug::Update() {
 			}
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && App->physics->world->GetGravity().y > -20.0f)
 			{
-				p2Point<float> ola;
-				ola.x = 1.0f;
-				ola.y = 1.0f;
-
-
 				//App->physics->world->SetGravity(p2Point<float>(1.0f, App->physics->world->GetGravity().x - 1.0f));
 			}
 		}
@@ -80,20 +77,18 @@ update_status ModuleDebug::Update() {
 		{
 			currentScreen = Screen::COLLIDERS;
 		}
+		if (variables == true)
+		{
+			currentScreen = Screen::VARIABLES;
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
 			currentScreen = Screen::HOME;
-			timeScreen = false; gravity = false; colliders = false;
+			timeScreen = false; gravity = false; colliders = false; variables = false;
 		}
 
 		#pragma endregion
-
-		if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
-			p2Point<int> position;
-			position.x = App->input->GetMouseX();
-			position.y = App->input->GetMouseY();
-		}
 	}
 
 	return UPDATE_CONTINUE;
@@ -110,9 +105,7 @@ update_status ModuleDebug::PostUpdate() {
 
 void ModuleDebug::DebugDraw() {
 	
-	//Physics objects
-	// This will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
+	// This will iterate all objects in the world and draw the circles and rectangles needed
 	if (colliders)
 	{
 		for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
@@ -139,11 +132,13 @@ void ModuleDebug::DebugDraw() {
 		}
 	}
 
+	//This draws all the debug menu screens
 	SDL_Rect bg;
-	if (timeScreen)				{ bg = { 2,38,251,92 }; }
-	else if (gravity)			{ bg = { 2,38,251,82 }; }
-	else if (colliders)			{ bg = { 2,38,251,22 }; }
-	else						{ bg = { 2,38,252,72 }; }
+	if (timeScreen)				{ bg = { 2,38,270,92 }; }
+	else if (gravity)			{ bg = { 2,38,270,102 }; }
+	else if (colliders)			{ bg = { 2,38,270,22 }; }
+	else if (variables)			{ bg = { 2,38,270,142 }; }
+	else						{ bg = { 2,38,270,62 }; }
 	App->renderer->DrawQuad(bg, 0, 0, 0, 125, true);
 
 	switch (currentScreen)
@@ -153,9 +148,8 @@ void ModuleDebug::DebugDraw() {
 
 		App->fonts->BlitText(5, 60, 0, "1. TIME OPTIONS");
 		App->fonts->BlitText(5, 70, 0, "2. GRAVITY OPTIONS");
-		App->fonts->BlitText(5, 80, 0, "3. SPRITES OPTIONS");
-		App->fonts->BlitText(5, 90, 0, "4. COEFFICIENT OPTIONS");
-		App->fonts->BlitText(5, 100, 0, "5. SHOW COLLIDERS");
+		App->fonts->BlitText(5, 80, 0, "3. SHOW COLLIDERS");
+		App->fonts->BlitText(5, 90, 0, "4. SHOW VARIABLES");
 		break;
 		
 	case Screen::TIME:
@@ -183,15 +177,42 @@ void ModuleDebug::DebugDraw() {
 		App->fonts->BlitText(5, 60, 0, "PRESS W TO INCREASE AND");
 		App->fonts->BlitText(5, 70, 0, "S TO DECREASE THE VALUE");
 
-		App->fonts->BlitText(5, 90, 0, "GRAVITY ");
-		App->fonts->BlitText(120, 90, 0, std::to_string(App->physics->world->GetGravity().y).c_str());
+		App->fonts->BlitText(5, 90, 0, "NOT IMPLEMENTED YET");
 
-		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 110, 0, "GRAVITY ");
+		App->fonts->BlitText(120, 110, 0, std::to_string(App->physics->world->GetGravity().y).c_str());
+
+		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::COLLIDERS:
-		App->fonts->BlitText(5, 40, 0, "CLICK ON THE BALL TO DRAG IT");
+		App->fonts->BlitText(5, 40, 0, "SHOWING COLLIDERS");
 		App->fonts->BlitText(5, 50, 0, "PRESS BACKSPACE TO GO BACK");
+		break;
+
+	case Screen::VARIABLES:
+		App->fonts->BlitText(5, 40, 0, "VARIABLES");
+
+		App->fonts->BlitText(5, 60, 0, "TEST POS X (IN PIXELS)");
+		App->fonts->BlitText(190, 60, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->test1->position.x)).c_str());
+		App->fonts->BlitText(5, 70, 0, "TEST POS Y (IN PIXELS)");
+		App->fonts->BlitText(190, 70, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->test1->position.y)).c_str());
+		App->fonts->BlitText(5, 80, 0, "TEST POS X (IN METERS)");
+		App->fonts->BlitText(190, 80, 0, std::to_string(App->scene_intro->test1->position.x).c_str());
+		App->fonts->BlitText(5, 90, 0, "TEST POS Y (IN METERS)");
+		App->fonts->BlitText(190, 90, 0, std::to_string(App->scene_intro->test1->position.y).c_str());
+
+		App->fonts->BlitText(5, 110, 0, "TEST VEL X");
+		App->fonts->BlitText(190, 110, 0, std::to_string(App->scene_intro->test1->velocity.x).c_str());
+		App->fonts->BlitText(5, 120, 0, "TEST VEL Y");
+		App->fonts->BlitText(190, 120, 0, std::to_string(App->scene_intro->test1->velocity.y).c_str());
+
+		App->fonts->BlitText(5, 140, 0, "TEST ACC X");
+		App->fonts->BlitText(190, 140, 0, std::to_string(App->scene_intro->test1->acceleration.x).c_str());
+		App->fonts->BlitText(5, 150, 0, "TEST ACC Y");
+		App->fonts->BlitText(190, 150, 0, std::to_string(App->scene_intro->test1->acceleration.y).c_str());
+
+		App->fonts->BlitText(5, 170, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::NONE:

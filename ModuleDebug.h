@@ -12,6 +12,7 @@ enum class Screen
 	TIME,
 	GRAVITY,
 	COLLIDERS,
+	VARIABLES,
 	NONE
 };
 
@@ -54,6 +55,7 @@ private:
 	bool timeScreen = false;
 	bool gravity = false;
 	bool colliders = false;
+	bool variables = false;
 };
 
 #endif // __MODULE_DEBUG_H__
