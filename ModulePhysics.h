@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "p2List.h"
 
+
 #define PIXELS_PER_METER 50.0f
 #define METER_PER_PIXEL 0.02f
 
@@ -44,10 +45,9 @@ public:
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
 
-	//float GetRotation() const;
-	//bool Contains(int x, int y) const;
 	
 public:
+
 	p2Point<float> position;
 	p2Point<float> velocity;
 	p2Point<float> acceleration;
