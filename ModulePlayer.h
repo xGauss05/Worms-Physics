@@ -3,15 +3,8 @@
 #include "Animation.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModulePhysics.h"
 
-struct Object
-{
-	SDL_Texture* graphic;
-	uint fx;
-
-	Object() : graphic(NULL)
-	{}
-};
 
 class ModulePlayer : public Module
 {
@@ -25,5 +18,18 @@ public:
 	bool CleanUp();
 
 public:
+
+	Body* body = nullptr;
+
+	// SFX indices
+	uint dieFx;
+
+private:
+
+	float movementForce = 10.0f;
+	float jumpForce = 300.f;
+	float movementDampen = 20.0f;
+	float speedCap = 12.0;
+	float idleDampenMultiplier = 3.0f;
 
 };

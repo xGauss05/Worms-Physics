@@ -55,6 +55,7 @@ public:
 	uint player_lose_fx;
 
 	Body* test1 = nullptr;
+	Body* player = nullptr;
 
 	Body* groundTest1 = nullptr;
 	Body* groundTest2 = nullptr;
