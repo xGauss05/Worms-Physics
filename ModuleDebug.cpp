@@ -12,13 +12,18 @@ using namespace std;
 
 #include "p2List.h"
 
-ModuleDebug::ModuleDebug(Application* app, bool start_enabled) : Module(app, start_enabled) {
+ModuleDebug::ModuleDebug(bool start_enabled) : Module(start_enabled) 
+{
 	debug = false;
 }
-ModuleDebug::~ModuleDebug() {
+
+ModuleDebug::~ModuleDebug() 
+{
+
 }
 
-bool ModuleDebug::Start() {
+bool ModuleDebug::Start() 
+{
 	debug = false;
 
 	//font = App->fonts->Load("Assets/Textures/font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!- ", 1);
@@ -27,28 +32,25 @@ bool ModuleDebug::Start() {
 	return true;
 }
 
-update_status ModuleDebug::Update() {
+update_status ModuleDebug::Update() 
+{
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debug = !debug;
 
-	if (debug) {
+	if (debug) 
+	{
 
 		#pragma region Menu navigation
 
 		if (currentScreen == Screen::HOME)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				timeScreen = true;
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) timeScreen = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				gravity = true;
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) gravity = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				colliders = true;
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) colliders = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-				variables = true;
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) variables = true;
 		}
 
 		if (timeScreen == true)
@@ -60,6 +62,7 @@ update_status ModuleDebug::Update() {
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && targetFPS > 10)
 				targetFPS -= 10;
 		}
+
 		if (gravity == true)
 		{
 			currentScreen = Screen::GRAVITY;
@@ -73,14 +76,10 @@ update_status ModuleDebug::Update() {
 				//App->physics->world->SetGravity(p2Point<float>(1.0f, App->physics->world->GetGravity().x - 1.0f));
 			}
 		}
-		if (colliders == true)
-		{
-			currentScreen = Screen::COLLIDERS;
-		}
-		if (variables == true)
-		{
-			currentScreen = Screen::VARIABLES;
-		}
+		if (colliders == true) currentScreen = Screen::COLLIDERS;
+		
+		if (variables == true) currentScreen = Screen::VARIABLES;
+		
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
@@ -94,16 +93,19 @@ update_status ModuleDebug::Update() {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleDebug::PostUpdate() {
+update_status ModuleDebug::PostUpdate() 
+{
 
 	if (debug)
 	{
 		DebugDraw();
 	}
+
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebug::DebugDraw() {
+void ModuleDebug::DebugDraw() 
+{
 	
 	// This will iterate all objects in the world and draw the circles and rectangles needed
 	if (colliders)

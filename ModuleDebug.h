@@ -19,7 +19,7 @@ enum class Screen
 class ModuleDebug : public Module {
 public:
 	// Constructor
-	ModuleDebug(Application* app, bool start_enabled = true);
+	ModuleDebug(bool start_enabled = true);
 
 	// Destructor
 	~ModuleDebug();

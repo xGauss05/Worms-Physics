@@ -122,7 +122,7 @@ friend class ModuleDebug;
 class ModulePhysics : public Module
 {
 public:
-	ModulePhysics(Application* app, bool start_enabled = true);
+	ModulePhysics(bool start_enabled = true);
 	~ModulePhysics();
 
 	bool Start();
@@ -133,4 +133,5 @@ public:
 public: 
 
 	World* world = nullptr;
+
 };

@@ -392,7 +392,7 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 // ------------------------------------
 
-ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModulePhysics::ModulePhysics(bool start_enabled) : Module(start_enabled)
 {
 }
 

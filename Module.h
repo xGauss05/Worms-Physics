@@ -8,9 +8,9 @@ private :
 	bool enabled;
 
 public:
-	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled)
+
+	Module(bool start_enabled = true) : enabled(start_enabled)
 	{}
 
 	virtual ~Module()
