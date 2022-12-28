@@ -417,15 +417,19 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 
 		if (abs(dist.x) > 0) {
 			if (bodyC->position.y > bodyR->position.y &&
-				bodyC->position.y < bodyR->position.y + bodyC->GetHeight()) 
+				bodyC->position.y < bodyR->position.y + bodyR->GetHeight()) 
 			{
-				if (dist.x < 0)
+				if (dist.x > 0)
 				{
 					bodyC->position.x = bodyC->position.x - bodyC->GetRadius() + dist.x;
+					bodyC->velocity.x = -bodyC->velocity.x * 0.8f;
+
 				}
-				else if (dist.x > 0) 
+				else if (dist.x < 0) 
 				{
 					bodyC->position.x = bodyC->position.x + bodyC->GetRadius() + dist.x;
+					bodyC->velocity.x = -bodyC->velocity.x * 0.8f;
+
 				}
 			}
 		}
