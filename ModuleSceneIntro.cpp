@@ -26,9 +26,9 @@ bool ModuleSceneIntro::Start()
 
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
-	test1 = new Body(PIXEL_TO_METERS(200), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
+	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
-	player = new Body(PIXEL_TO_METERS(50), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
+	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	App->physics->world->AddBody(test1);
@@ -36,8 +36,9 @@ bool ModuleSceneIntro::Start()
 
 	p2Point<float> force;
 	force.x = 0;
-	force.y = 0;
+	force.y = -10.0;
 	test1->ApplyExternalForce(force);
+	player->ApplyExternalForce(force);
 	
 	//Wall Right
 	groundTest1 = new Body(PIXEL_TO_METERS(800), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f);
