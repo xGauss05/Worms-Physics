@@ -355,6 +355,7 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		{
 			LOG("Collision detected");
 			LOG("RECT COLLIDING RECT");
+			SeparateRectRect(bodyA, bodyB);
 		}
 	}
 	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
@@ -464,7 +465,79 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance)
 
 void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 {
+	if (bodyA->GetType() != DYNAMIC)
+	{
 
+	}
+	else if (bodyB->GetType() != DYNAMIC)
+	{
+		p2Point<float> rectClosest;
+		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x + bodyA->GetWidth()/2, bodyB->GetPosition().x + bodyB->GetWidth()));
+		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y + bodyA->GetHeight()/2, bodyB->GetPosition().y + bodyB->GetHeight()));
+
+		p2Point<float> dist;
+		dist.x = rectClosest.x - (bodyA->position.x + bodyA->GetWidth()/2); //Point to center of the rectangle
+		dist.y = rectClosest.y - (bodyA->position.y + bodyA->GetHeight()/2); //Point to center of the rectangle
+
+		if (abs(dist.x) > 0)
+		{
+			//From the left and is inside
+			if (dist.x < 0 && (bodyA->position.x + bodyA->GetWidth() / 2) < bodyB->position.x + bodyB->GetWidth())
+			{
+				bodyA->position.x = bodyA->position.x - (bodyA->GetWidth() / 2 + dist.x);
+				bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+			}
+			//From the left and is outside
+			else if (dist.x > 0 && (bodyA->position.x + bodyA->GetWidth() / 2) < bodyB->position.x)
+			{
+				bodyA->position.x = bodyA->position.x - (bodyA->GetWidth() / 2 - dist.x);
+				bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+			}
+			//From the right and outside
+			else if (dist.x < 0 && (bodyA->position.x + bodyA->GetWidth() / 2) > bodyB->position.x + bodyB->GetWidth())
+			{
+				bodyA->position.x = bodyA->position.x + (bodyA->GetWidth() / 2 + dist.x);
+				bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+			}
+			//From the right and inside
+			else if (dist.x > 0 && (bodyA->position.x + bodyA->GetWidth() / 2) > bodyB->position.x)
+			{
+				bodyA->position.x = bodyA->position.x + (bodyA->GetWidth() / 2 + dist.x);
+				bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+			}
+		}
+		if (abs(dist.y) > 0)
+		{
+			//From the bottom and is inside
+			if (dist.y > 0 && (bodyA->position.y + bodyA->GetHeight() / 2) > bodyB->position.y)
+			{
+				bodyA->position.y = bodyA->position.y + (bodyA->GetHeight() / 2 - dist.y);
+				bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+			}
+			//From the top and is inside
+			else if (dist.y < 0 && (bodyA->position.y + bodyA->GetHeight() / 2) < bodyB->position.y + bodyB->GetHeight())
+			{
+				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight() / 2 + dist.y);
+				bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+			}
+			//From the top and outside
+			else if (dist.y > 0 && (bodyA->position.y + bodyA->GetHeight() / 2) < bodyB->position.y)
+			{
+				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight()/2 - dist.y);
+				bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+			}
+			//From the bottom and is outside
+			else if (dist.y < 0 && (bodyA->position.y + bodyA->GetHeight() / 2) > bodyB->position.y + bodyB->GetHeight())
+			{
+				bodyA->position.y = bodyA->position.y + (bodyA->GetHeight() / 2 + dist.y);
+				bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+			}
+		}
+	}
+	else
+	{
+
+	}
 }
 
 // ------------------------------------
