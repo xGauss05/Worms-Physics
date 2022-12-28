@@ -103,7 +103,7 @@ private:
 	void SolveCollisions(Body* bodyA, Body* bodyB);
 
 	void SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> distance);
-	void SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance);
+	void SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distance);
 	void SeparateRectRect(Body* bodyA, Body* bodyB);
 
 private:
