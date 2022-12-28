@@ -19,7 +19,6 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	body = App->scene_intro->player;
-	jumps = 1;
 	return true;
 }
 
@@ -97,10 +96,11 @@ update_status ModulePlayer::Update()
 	}
 
 	// Jump
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN &&
-		jumps >= 1) {
-		jumps--;
-		// add force to body upwards
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) {
+		p2Point<float> linVel;
+		linVel.x = 0.0f;
+		linVel.y = -jumpForce;
+		body->ApplyExternalForce(linVel);
 	}
 
 

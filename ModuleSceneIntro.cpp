@@ -68,6 +68,7 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(background, 0, 0);
 
 	test1->Blit({ 0, 0, 32, 32 });
+	player->Blit({ 32, 0, 32, 32 });
 
 	return UPDATE_CONTINUE;
 }

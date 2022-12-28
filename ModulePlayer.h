@@ -23,7 +23,6 @@ public:
 
 	// SFX indices
 	uint dieFx;
-	int jumps;
 
 private:
 
