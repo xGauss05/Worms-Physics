@@ -416,35 +416,34 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 		dist.y = rectClosest.y - bodyC->position.y;
 
 		if (abs(dist.x) > 0) {
-			if (bodyC->position.x > bodyR->position.x &&
-				bodyC->position.x < bodyR->position.x + bodyR->GetWidth() &&
-				bodyC->position.y > bodyR->position.y &&
+			if (bodyC->position.y > bodyR->position.y &&
 				bodyC->position.y < bodyR->position.y + bodyC->GetHeight()) 
 			{
-				if (dist.x > 0)
-				{
-					bodyC->position.x += bodyC->GetRadius() + dist.x;
-				}
-				else if (dist.x < 0) 
+				if (dist.x < 0)
 				{
 					bodyC->position.x = bodyC->position.x - bodyC->GetRadius() + dist.x;
+				}
+				else if (dist.x > 0) 
+				{
+					bodyC->position.x = bodyC->position.x + bodyC->GetRadius() + dist.x;
 				}
 			}
 		}
 
 		if (abs(dist.y) > 0) {
 			if (bodyC->position.x > bodyR->position.x &&
-				bodyC->position.x < bodyR->position.x + bodyR->GetWidth() &&
-				bodyC->position.y > bodyR->position.y &&
-				bodyC->position.y < bodyR->position.y + bodyC->GetHeight())
+				bodyC->position.x < bodyR->position.x + bodyR->GetWidth())
 			{
 				if (dist.y > 0)
 				{
-					bodyC->position.y += bodyC->GetRadius() + dist.y;
+					bodyC->position.y = bodyC->position.y - bodyC->GetRadius() + dist.y;
+					bodyC->velocity.y = -bodyC->velocity.y * 0.8f;
 				}
 				else if (dist.y < 0)
 				{
-					bodyC->position.y = bodyC->position.y - bodyC->GetRadius() + dist.y;
+					bodyC->position.y = bodyC->position.y + bodyC->GetRadius() + dist.y;
+					bodyC->velocity.y = -bodyC->velocity.y * 0.8f;
+
 				}
 			}
 		}

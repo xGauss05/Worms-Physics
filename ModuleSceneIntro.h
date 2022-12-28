@@ -56,5 +56,9 @@ public:
 
 	Body* test1 = nullptr;
 
+	Body* groundTest1 = nullptr;
+	Body* groundTest2 = nullptr;
+
+
 	SDL_Texture* background;
 };
