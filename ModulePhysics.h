@@ -4,7 +4,6 @@
 #include "p2Point.h"
 #include "p2List.h"
 
-
 #define PIXELS_PER_METER 50.0f
 #define METER_PER_PIXEL 0.02f
 
@@ -102,6 +101,10 @@ private:
 
 	void Integrate(Body* body, p2Point<float> force);
 	void SolveCollisions(Body* bodyA, Body* bodyB);
+
+	void SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> distance);
+	void SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance);
+	void SeparateRectRect(Body* bodyA, Body* bodyB);
 
 private:
 	

@@ -8,7 +8,7 @@ Body::Body()
 
 }
 
-Body::Body(float positionX, float positionY,BodyShape shape, float width, float height, BodyType type, float mass, float dragSurface)
+Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass, float dragSurface)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -39,7 +39,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float radius, Body
 
 	width = 0.0f;
 	height = 0.0f;
-	
+
 
 	velocity.SetToZero();
 	acceleration.SetToZero();
@@ -64,10 +64,12 @@ float Body::GetWidth() const
 {
 	return width;
 }
+
 float Body::GetHeight() const
 {
 	return height;
 }
+
 float Body::GetRadius() const
 {
 	return radius;
@@ -77,6 +79,7 @@ float Body::GetMass() const
 {
 	return mass;
 }
+
 float Body::GetDragSurface() const
 {
 	return dragSurface;
@@ -86,6 +89,7 @@ BodyShape Body::GetShape() const
 {
 	return shape;
 }
+
 BodyType Body::GetType() const
 {
 	return type;
@@ -179,7 +183,8 @@ void World::Step() {
 		p2Point<float> total;
 		total.SetToZero();
 
-		if (b->data->GetType() == BodyType::DYNAMIC) {
+		if (b->data->GetType() == BodyType::DYNAMIC)
+		{
 			// calculate all forces
 			total += CalculateGravityForce(b->data);
 			total += CalculateDragForce(b->data);
@@ -191,10 +196,9 @@ void World::Step() {
 			Integrate(b->data, total);
 		}
 
-		for (p2List_item<Body*>* b2 = b->next; b2; b2 = b2->next) {
-
+		for (p2List_item<Body*>* b2 = b->next; b2; b2 = b2->next)
+		{
 			SolveCollisions(b->data, b2->data);
-
 		}
 
 	}
@@ -336,7 +340,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 	// invert speed in one axis depending on where they hit
 	// activate on collisions
 
-	if (bodyA->GetType() != BodyType::DYNAMIC && bodyB->GetType() != BodyType::DYNAMIC) {
+	if (bodyA->GetType() != BodyType::DYNAMIC && bodyB->GetType() != BodyType::DYNAMIC)
+	{
 		return;
 	}
 
@@ -344,8 +349,10 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 	{
 		//This will not work at the moment, needs to be implemented with METERS_TO_PIXELS
 
-		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y, (int)(bodyA->position.x + bodyA->GetWidth()), (int)(bodyA->position.y + bodyA->GetHeight()) };
-		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y, (int)(bodyB->position.x + bodyB->GetWidth()), (int)(bodyB->position.y + bodyB->GetHeight()) };
+		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y,
+										(int)(bodyA->position.x + bodyA->GetWidth()), (int)(bodyA->position.y + bodyA->GetHeight()) };
+		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y,
+										(int)(bodyB->position.x + bodyB->GetWidth()), (int)(bodyB->position.y + bodyB->GetHeight()) };
 
 		if (SDL_HasIntersection(rect1, rect2));
 		{
@@ -373,7 +380,9 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		float distance = bodyA->GetPosition().DistanceTo(rectClosest);
 		if (distance < bodyA->GetRadius())
 		{
+
 			LOG("Collision detected");
+			SeparateCircleRect(bodyA, bodyB, rectClosest);
 		}
 	}
 	else if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == CIRCLE)
@@ -385,15 +394,83 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		float distance = bodyB->GetPosition().DistanceTo(rectClosest);
 		if (distance < bodyB->GetRadius())
 		{
+			
+
 			LOG("Collision detected");
+			SeparateCircleRect(bodyB, bodyA, rectClosest);
 		}
 	}
+}
+
+void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClosest)
+{
+
+	if (bodyC->GetType() != BodyType::DYNAMIC)
+	{
+
+	}
+	else if (bodyR->GetType() != BodyType::DYNAMIC)
+	{
+		p2Point<float> dist;
+		dist.x = rectClosest.x - bodyC->position.x;
+		dist.y = rectClosest.y - bodyC->position.y;
+
+		if (abs(dist.x) > 0) {
+			if (bodyC->position.x > bodyR->position.x &&
+				bodyC->position.x < bodyR->position.x + bodyR->GetWidth() &&
+				bodyC->position.y > bodyR->position.y &&
+				bodyC->position.y < bodyR->position.y + bodyC->GetHeight()) 
+			{
+				if (dist.x > 0)
+				{
+					bodyC->position.x += bodyC->GetRadius() + dist.x;
+				}
+				else if (dist.x < 0) 
+				{
+					bodyC->position.x = bodyC->position.x - bodyC->GetRadius() + dist.x;
+				}
+			}
+		}
+
+		if (abs(dist.y) > 0) {
+			if (bodyC->position.x > bodyR->position.x &&
+				bodyC->position.x < bodyR->position.x + bodyR->GetWidth() &&
+				bodyC->position.y > bodyR->position.y &&
+				bodyC->position.y < bodyR->position.y + bodyC->GetHeight())
+			{
+				if (dist.y > 0)
+				{
+					bodyC->position.y += bodyC->GetRadius() + dist.y;
+				}
+				else if (dist.y < 0)
+				{
+					bodyC->position.y = bodyC->position.y - bodyC->GetRadius() + dist.y;
+				}
+			}
+		}
+	}
+	else
+	{
+
+	}
+
+}
+
+void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance)
+{
+
+}
+
+void World::SeparateRectRect(Body* bodyA, Body* bodyB)
+{
+
 }
 
 // ------------------------------------
 
 ModulePhysics::ModulePhysics(bool start_enabled) : Module(start_enabled)
 {
+
 }
 
 // Destructor
@@ -434,4 +511,3 @@ bool ModulePhysics::CleanUp()
 
 	return true;
 }
-
