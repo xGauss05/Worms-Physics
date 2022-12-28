@@ -353,8 +353,10 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			bodyA->position.y + bodyA->GetHeight() > bodyB->position.y
 			)
 		{
+			
 			LOG("Collision detected");
 			LOG("RECT COLLIDING RECT");
+			SeparateRectRect(bodyA, bodyB);
 		}
 	}
 	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
@@ -457,7 +459,7 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 
 }
 
-void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance)
+void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distance)
 {
 
 }
@@ -465,6 +467,114 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, float distance)
 void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 {
 
+	if (bodyA->GetType() != BodyType::DYNAMIC)
+	{
+
+	}
+	else if (bodyB->GetType() != BodyType::DYNAMIC) {
+
+		p2Point<float> distance;
+
+		if (bodyA->position.y < bodyB->position.y &&
+			bodyA->position.y + bodyA->GetHeight() > bodyB->position.y) {
+
+			distance.y = (bodyA->position.y + bodyA->GetHeight()) - (bodyB->position.y);
+
+			bodyA->position.y = bodyA->position.y - distance.y;
+			bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+		}
+
+		if (bodyA->position.y < bodyB->position.y + bodyB->GetHeight() &&
+			bodyA->position.y + bodyA->GetHeight() > bodyB->position.y + bodyB->GetHeight()) {
+
+			distance.y = (bodyA->position.y) - (bodyB->position.y + bodyB->GetHeight());
+
+			bodyA->position.y = bodyA->position.y + distance.y;
+			bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+		}
+
+
+		if (bodyA->position.x < bodyB->position.x &&
+			bodyA->position.x + bodyA->GetWidth() > bodyB->position.x) {
+
+			distance.x = (bodyA->position.x + bodyA->GetWidth()) - (bodyB->position.x);
+
+			bodyA->position.x = bodyA->position.x - distance.x;
+			bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+		}
+
+		if (bodyA->position.x < bodyB->position.x + bodyB->GetWidth() &&
+			bodyA->position.x + bodyA->GetWidth() > bodyB->position.x + bodyB->GetWidth()) {
+
+			distance.x = (bodyA->position.x) - (bodyB->position.x + bodyB->GetWidth());
+
+			bodyA->position.x = bodyA->position.x + distance.x;
+			bodyA->velocity.x = -bodyA->velocity.x * 0.8f;
+		}
+
+		/*if (bodyA->position.y > bodyB->position.y &&
+			bodyA->position.y + bodyA->GetHeight() < bodyB->position.y) {
+
+			bodyA->position.y = bodyA->position.y + distance.y;
+			bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+		}*/
+
+
+
+
+
+
+
+
+
+
+		/*if (abs(distance.x) > 0) {
+			if ((bodyA->position.y > bodyB->position.y &&
+				bodyA->position.y < bodyB->position.y + bodyB->GetHeight()) ||
+				(bodyA->position.y + bodyA->GetHeight() > bodyB->position.y &&
+					bodyA->position.y + bodyA->GetHeight() < bodyB->position.y + bodyB->GetHeight()))
+			{
+				if (distance.x < 0)
+				{
+					bodyA->position.y = bodyA->position.y + distance.y;
+					bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+
+				}
+				else if (distance.x > 0)
+				{
+					bodyA->position.y = bodyA->position.y - distance.y;
+					bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+
+				}
+			}
+
+		}
+		
+		if (abs(distance.x) > 0) {
+			if ((bodyA->position.x > bodyB->position.x &&
+				bodyA->position.x < bodyB->position.x + bodyB->GetWidth()) ||
+				(bodyA->position.x + bodyA->GetWidth() > bodyB->position.x &&
+					bodyA->position.x + bodyA->GetWidth() < bodyB->position.x + bodyB->GetWidth()))
+			{
+				if (distance.y > 0)
+				{
+					bodyA->position.y = bodyA->position.y - bodyA->GetHeight() + distance.y;
+					bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+				}
+				else if (distance.y < 0)
+				{
+					bodyA->position.y = bodyA->position.y + bodyA->GetHeight() + distance.y;
+					bodyA->velocity.y = -bodyA->velocity.y * 0.8f;
+
+				}
+			}
+
+		}*/
+		
+	}
+	else {
+
+	}
 }
 
 // ------------------------------------
