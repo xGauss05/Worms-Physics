@@ -12,7 +12,9 @@ ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
-{}
+{
+
+}
 
 // Load assets
 bool ModuleSceneIntro::Start()
@@ -24,12 +26,13 @@ bool ModuleSceneIntro::Start()
 
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
-
-
 	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
+	player = new Body(PIXEL_TO_METERS(50), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
+	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	App->physics->world->AddBody(test1);
+	App->physics->world->AddBody(player);
 
 	p2Point<float> force;
 	force.x = 10.0f;
