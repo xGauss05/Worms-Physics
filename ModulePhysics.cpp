@@ -347,16 +347,14 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 	if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == RECTANGLE)
 	{
-		//This will not work at the moment, needs to be implemented with METERS_TO_PIXELS
-
-		SDL_Rect* rect1 = new SDL_Rect{ (int)bodyA->position.x, (int)bodyA->position.y,
-										(int)(bodyA->position.x + bodyA->GetWidth()), (int)(bodyA->position.y + bodyA->GetHeight()) };
-		SDL_Rect* rect2 = new SDL_Rect{ (int)bodyB->position.x, (int)bodyB->position.y,
-										(int)(bodyB->position.x + bodyB->GetWidth()), (int)(bodyB->position.y + bodyB->GetHeight()) };
-
-		if (SDL_HasIntersection(rect1, rect2));
+		if (bodyA->position.x                        < bodyB->position.x + bodyB->GetWidth() &&
+			bodyA->position.x + bodyA->GetWidth()    > bodyB->position.x &&
+			bodyA->position.y                        < bodyB->position.y + bodyB->GetHeight() &&
+			bodyA->position.y + bodyA->GetHeight() > bodyB->position.y
+			)
 		{
 			LOG("Collision detected");
+			LOG("RECT COLLIDING RECT");
 		}
 	}
 	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
