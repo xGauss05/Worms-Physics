@@ -107,7 +107,7 @@ void Body::Blit() const
 		switch (shape)
 		{
 		case CIRCLE:
-			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x - radius), METERS_TO_PIXELS(position.y - radius));
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x) - METERS_TO_PIXELS(radius), METERS_TO_PIXELS(position.y) - METERS_TO_PIXELS(radius));
 			break;
 		case RECTANGLE:
 			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y));
@@ -125,7 +125,7 @@ void Body::Blit(SDL_Rect section) const
 		switch (shape)
 		{
 		case CIRCLE:
-			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x - radius), METERS_TO_PIXELS(position.y - radius), &section);
+			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x) - METERS_TO_PIXELS(radius), METERS_TO_PIXELS(position.y) - METERS_TO_PIXELS(radius), &section);
 			break;
 		case RECTANGLE:
 			App->renderer->Blit(texture, METERS_TO_PIXELS(position.x), METERS_TO_PIXELS(position.y), &section);

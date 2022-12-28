@@ -26,21 +26,21 @@ bool ModuleSceneIntro::Start()
 
 
 
-	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 20.0f);
+	test1 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(400), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	App->physics->world->AddBody(test1);
 
 	p2Point<float> force;
-	force.x = 5.0f;
-	force.y = 0.0f;
+	force.x = 10.0f;
+	force.y = -10.0f;
 	test1->ApplyExternalForce(force);
 	
-	groundTest1 = new Body(PIXEL_TO_METERS(220), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f);
+	groundTest1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f);
 	
 	App->physics->world->AddBody(groundTest1);
 
-	groundTest2 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(250), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f);
+	groundTest2 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(500), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f);
 
 	App->physics->world->AddBody(groundTest2);
 
