@@ -51,6 +51,8 @@ public:
 
 	void ApplyExternalForce(p2Point<float> f);
 
+	void SetDragSurface(float dragSurface);
+
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
 

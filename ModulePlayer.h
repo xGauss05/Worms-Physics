@@ -32,4 +32,6 @@ private:
 	float speedCap = 12.0;
 	float idleDampenMultiplier = 3.0f;
 
+	bool withGlider = false;
+
 };

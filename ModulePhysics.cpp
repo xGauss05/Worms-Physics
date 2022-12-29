@@ -100,6 +100,11 @@ void Body::ApplyExternalForce(p2Point<float> f)
 	externalForce += f;
 }
 
+void Body::SetDragSurface(float dragSurface)
+{
+	this->dragSurface = dragSurface;
+}
+
 void Body::Blit() const
 {
 	if (texture != nullptr)
