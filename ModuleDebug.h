@@ -11,7 +11,14 @@ enum class Screen
 	HOME,
 	TIME,
 	GRAVITY,
+	COEFFICIENTS,
 	VARIABLES,
+
+	COEFF1,
+	COEFF2,
+	COEFF3,
+	COEFF4,
+
 	NONE
 };
 
@@ -53,7 +60,13 @@ private:
 
 	bool timeScreen = false;
 	bool gravity = false;
+	bool coefficients = false;
 	bool variables = false;
+
+	bool coeff1 = false;
+	bool coeff2 = false;
+	bool coeff3 = false;
+	bool coeff4 = false;
 };
 
 #endif // __MODULE_DEBUG_H__
