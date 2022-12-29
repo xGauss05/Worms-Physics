@@ -568,13 +568,50 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 	//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
 	if (bodyA->GetType() != BodyType::DYNAMIC)
 	{
-		bodyB->position.x += distance.x;
-		bodyB->position.y += distance.y;
+		if (bodyA->position.x < bodyB->position.x) {
+			bodyB->position.x = bodyB->position.x + distance.x;
+
+			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+		}
+		else if (bodyA->position.x > bodyB->position.x) {
+			bodyB->position.x = bodyB->position.x - distance.x;
+
+			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+		}
+
+		if (bodyA->position.y < bodyB->position.y) {
+			bodyB->position.y = bodyB->position.y + distance.y;
+
+			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+		}
+		else if (bodyA->position.y > bodyB->position.y) {
+			bodyB->position.y = bodyB->position.y - distance.y;
+
+			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+		}
 	}
 	else if (bodyB->GetType() != BodyType::DYNAMIC) {
-		bodyA->position.x += distance.x;
-		bodyA->position.y += distance.y;
+		if (bodyA->position.x < bodyB->position.x) {
+			bodyA->position.x = bodyA->position.x - distance.x;
 
+			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+		}
+		else if (bodyA->position.x > bodyB->position.x) {
+			bodyA->position.x = bodyA->position.x + distance.x;
+
+			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+		}
+
+		if (bodyA->position.y < bodyB->position.y) {
+			bodyA->position.y = bodyA->position.y - distance.y;
+
+			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+		}
+		else if (bodyA->position.y > bodyB->position.y) {
+			bodyA->position.y = bodyA->position.y + distance.y;
+
+			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+		}
 	}
 	else {
 
