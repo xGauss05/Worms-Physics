@@ -207,6 +207,23 @@ void World::Step() {
 			total += b->data->externalForce;
 			b->data->externalForce.SetToZero();
 
+			if (total.x > 400.0f)
+			{
+				total.x = 400.0f;
+			}
+			if (total.x < -400.0f)
+			{
+				total.x = -400.0f;
+			}
+			if (total.y > 400.0f)
+			{
+				total.y = 400.0f;
+			}
+			if (total.y < -400.0f)
+			{
+				total.y = -400.0f;
+			}
+
 			// integrator
 			Integrate(b->data, total);
 		}

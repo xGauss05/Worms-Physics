@@ -196,23 +196,23 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 40, 0, "VARIABLES");
 
 		App->fonts->BlitText(5, 60, 0, "TEST POS X (IN PIXELS)");
-		App->fonts->BlitText(190, 60, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->test1->position.x)).c_str());
+		App->fonts->BlitText(190, 60, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->player->position.x)).c_str());
 		App->fonts->BlitText(5, 70, 0, "TEST POS Y (IN PIXELS)");
-		App->fonts->BlitText(190, 70, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->test1->position.y)).c_str());
+		App->fonts->BlitText(190, 70, 0, std::to_string(METERS_TO_PIXELS(App->scene_intro->player->position.y)).c_str());
 		App->fonts->BlitText(5, 80, 0, "TEST POS X (IN METERS)");
-		App->fonts->BlitText(190, 80, 0, std::to_string(App->scene_intro->test1->position.x).c_str());
+		App->fonts->BlitText(190, 80, 0, std::to_string(App->scene_intro->player->position.x).c_str());
 		App->fonts->BlitText(5, 90, 0, "TEST POS Y (IN METERS)");
-		App->fonts->BlitText(190, 90, 0, std::to_string(App->scene_intro->test1->position.y).c_str());
+		App->fonts->BlitText(190, 90, 0, std::to_string(App->scene_intro->player->position.y).c_str());
 
 		App->fonts->BlitText(5, 110, 0, "TEST VEL X");
-		App->fonts->BlitText(190, 110, 0, std::to_string(App->scene_intro->test1->velocity.x).c_str());
+		App->fonts->BlitText(190, 110, 0, std::to_string(App->scene_intro->player->velocity.x).c_str());
 		App->fonts->BlitText(5, 120, 0, "TEST VEL Y");
-		App->fonts->BlitText(190, 120, 0, std::to_string(App->scene_intro->test1->velocity.y).c_str());
+		App->fonts->BlitText(190, 120, 0, std::to_string(App->scene_intro->player->velocity.y).c_str());
 
 		App->fonts->BlitText(5, 140, 0, "TEST ACC X");
-		App->fonts->BlitText(190, 140, 0, std::to_string(App->scene_intro->test1->acceleration.x).c_str());
+		App->fonts->BlitText(190, 140, 0, std::to_string(App->scene_intro->player->acceleration.x).c_str());
 		App->fonts->BlitText(5, 150, 0, "TEST ACC Y");
-		App->fonts->BlitText(190, 150, 0, std::to_string(App->scene_intro->test1->acceleration.y).c_str());
+		App->fonts->BlitText(190, 150, 0, std::to_string(App->scene_intro->player->acceleration.y).c_str());
 
 		App->fonts->BlitText(5, 170, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
