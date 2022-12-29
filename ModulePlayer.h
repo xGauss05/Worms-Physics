@@ -24,6 +24,8 @@ public:
 	// SFX indices
 	uint dieFx;
 
+	bool withGlider = false;
+
 private:
 
 	float movementForce = 10.0f;
@@ -31,7 +33,4 @@ private:
 	float movementDampen = 20.0f;
 	float speedCap = 12.0;
 	float idleDampenMultiplier = 3.0f;
-
-	bool withGlider = false;
-
 };
