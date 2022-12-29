@@ -13,6 +13,7 @@ enum class Screen
 	GRAVITY,
 	COEFFICIENTS,
 	INTEGRATION,
+	FORCES,
 	VARIABLES,
 
 	WORLD_RESTITUTION,
@@ -63,6 +64,7 @@ private:
 	bool gravity = false;
 	bool coefficients = false;
 	bool integration = false;
+	bool forces = false;
 	bool variables = false;
 
 	bool worldRest = false;

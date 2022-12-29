@@ -42,6 +42,7 @@ update_status ModuleDebug::Update()
 	{
 		#pragma region Menu navigation
 
+		//Screen input management
 		if (timeScreen == true)
 		{
 			currentScreen = Screen::TIME;
@@ -152,9 +153,26 @@ update_status ModuleDebug::Update()
 				}
 			}
 		}
+
+		if (forces == true)
+		{
+			currentScreen = Screen::FORCES;
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+				App->physics->world->gravityOn = !App->physics->world->gravityOn;
+
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+				App->physics->world->liftOn = !App->physics->world->liftOn;
+
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+				App->physics->world->dragOn = !App->physics->world->dragOn;
+		}
 		
 		if (variables == true) currentScreen = Screen::VARIABLES;
 		
+
+
+		//Coefficients submenus
 		if (worldRest == true)
 		{
 			currentScreen = Screen::WORLD_RESTITUTION;
@@ -195,6 +213,7 @@ update_status ModuleDebug::Update()
 		}
 
 
+		//Going back
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
 			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::TRAMP_RESTITUTION || 
@@ -211,10 +230,11 @@ update_status ModuleDebug::Update()
 			else
 			{
 				currentScreen = Screen::HOME;
-				timeScreen = false; gravity = false; coefficients = false; integration = false; variables = false;
+				timeScreen = false; gravity = false; coefficients = false; integration = false; forces = false; variables = false;
 			}
 		}
 
+		//Home screen
 		if (currentScreen == Screen::HOME)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) timeScreen = true;
@@ -225,7 +245,9 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) integration = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) variables = true;
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) forces = true;
+
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) variables = true;
 		}
 
 		#pragma endregion
@@ -247,7 +269,8 @@ update_status ModuleDebug::PostUpdate()
 
 void ModuleDebug::DebugDraw() 
 {
-	
+	#pragma region Colliders
+
 	// This will iterate all objects in the world and draw the circles and rectangles needed
 	for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
 
@@ -274,20 +297,23 @@ void ModuleDebug::DebugDraw()
 		}
 	}
 
+	#pragma endregion
+
 	//This draws all the debug menu screens
 	SDL_Rect bg;
 	if (timeScreen)				{ bg = { 2,38,270,92 }; }
 	else if (gravity)			{ bg = { 2,38,270,82 }; }
 	else if (coefficients)		{ bg = { 2,38,270,102 }; }
 	else if (integration)		{ bg = { 2,38,270,82 }; }
+	else if (forces)			{ bg = { 2,38,270,102 }; }
 	else if (variables)			{ bg = { 2,38,270,162 }; }
 
 	else if (worldRest)			{ bg = { 2,38,270,82 }; }
-	else if (trampolineRest)			{ bg = { 2,38,270,52 }; }
+	else if (trampolineRest)	{ bg = { 2,38,270,52 }; }
 	else if (coeff3)			{ bg = { 2,38,270,52 }; }
 	else if (coeff4)			{ bg = { 2,38,270,52 }; }
 
-	else						{ bg = { 2,38,270,92 }; }
+	else						{ bg = { 2,38,270,102 }; }
 	App->renderer->DrawQuad(bg, 0, 0, 0, 125, true);
 
 	switch (currentScreen)
@@ -299,9 +325,10 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 70, 0, "2. GRAVITY OPTIONS");
 		App->fonts->BlitText(5, 80, 0, "3. COEFFICIENT OPTIONS");
 		App->fonts->BlitText(5, 90, 0, "4. INTEGRATOR OPTIONS");
-		App->fonts->BlitText(5, 100, 0, "5. SHOW VARIABLES");
+		App->fonts->BlitText(5, 100, 0, "5. FORCES OPTIONS");
+		App->fonts->BlitText(5, 110, 0, "6. SHOW VARIABLES");
 
-		App->fonts->BlitText(5, 120, 0, "PRESS F1 OR BACKSPACE TO CLOSE");
+		App->fonts->BlitText(5, 130, 0, "PRESS F1 OR BACKSPACE TO CLOSE");
 		break;
 		
 	case Screen::TIME:
@@ -372,6 +399,27 @@ void ModuleDebug::DebugDraw()
 		}
 
 		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
+		break;
+
+	case Screen::FORCES:
+		App->fonts->BlitText(5, 40, 0, "INTEGRATOR OPTIONS");
+
+		App->fonts->BlitText(5, 60, 0, "PRESS THE DIRECTIONAL ARROWS");
+		App->fonts->BlitText(5, 70, 0, "TO TOGGLE THE DIFFERENT FORCES");
+
+		App->fonts->BlitText(5, 90, 0, "GRAVITY (UP):");
+		if (App->physics->world->gravityOn)	{ App->fonts->BlitText(130, 90, 0, "ON"); }
+		else								{ App->fonts->BlitText(130, 90, 0, "OFF"); }
+
+		App->fonts->BlitText(5, 100, 0, "LIFT (LEFT):");
+		if (App->physics->world->liftOn)	{ App->fonts->BlitText(130, 100, 0, "ON"); }
+		else								{ App->fonts->BlitText(130, 100, 0, "OFF"); }
+
+		App->fonts->BlitText(5, 110, 0, "DRAG (RIGHT):");
+		if (App->physics->world->dragOn)	{ App->fonts->BlitText(130, 110, 0, "ON"); }
+		else								{ App->fonts->BlitText(130, 110, 0, "OFF"); }
+
+		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::VARIABLES:

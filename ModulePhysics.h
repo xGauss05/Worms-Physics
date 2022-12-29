@@ -238,6 +238,10 @@ private:
 
 	float dt;
 
+	bool gravityOn = true;
+	bool liftOn = true;
+	bool dragOn = true;
+
 	friend class ModuleDebug;
 };
 

@@ -222,9 +222,9 @@ void World::Step() {
 		if (b->data->GetType() == BodyType::DYNAMIC)
 		{
 			// calculate all forces
-			total += CalculateGravityForce(b->data);
-			total += CalculateDragForce(b->data);
-			total += CalculateLiftForce(b->data);
+			if (gravityOn)	{ total += CalculateGravityForce(b->data); }
+			if (dragOn)		{ total += CalculateDragForce(b->data); }
+			if (liftOn)		{ total += CalculateLiftForce(b->data); }
 			total += b->data->externalForce;
 			b->data->externalForce.SetToZero();
 
