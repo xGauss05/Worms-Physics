@@ -162,6 +162,11 @@ void Body::Blit(SDL_Rect section) const
 	}
 }
 
+void Body::OnCollision(Body* otherBody)
+{
+
+}
+
 // --------------------------
 
 World::World()
@@ -441,6 +446,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			LOG("Collision detected");
 			LOG("RECT COLLIDING RECT");
 			SeparateRectRect(bodyA, bodyB);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
@@ -455,6 +462,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			distanceBalls.y = (bodyA->GetRadius() + bodyB->GetRadius() - abs(bodyA->position.y - bodyB->position.y)) * 0.5f;
 
 			SeparateCircleCircle(bodyA, bodyB, distanceBalls);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 
 		//Lets separate
@@ -473,6 +482,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 			LOG("Collision detected");
 			SeparateCircleRect(bodyA, bodyB, rectClosest);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 	else if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == CIRCLE)
@@ -485,9 +496,10 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		if (distance < bodyB->GetRadius())
 		{
 
-
 			LOG("Collision detected");
 			SeparateCircleRect(bodyB, bodyA, rectClosest);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 }

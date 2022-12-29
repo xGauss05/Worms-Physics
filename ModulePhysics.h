@@ -60,6 +60,7 @@ public:
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
 
+	void OnCollision(Body* otherBody);
 
 public:
 
