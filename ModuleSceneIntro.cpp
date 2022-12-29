@@ -26,9 +26,9 @@ bool ModuleSceneIntro::Start()
 
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
-	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
+	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
-	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
+	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, PLAYER, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	glider = App->textures->Load("Assets/Textures/plane.png");
@@ -44,15 +44,15 @@ bool ModuleSceneIntro::Start()
 	player->ApplyExternalForce(force);
 	
 	//Wall Right
-	groundTest1 = new Body(PIXEL_TO_METERS(800), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f, 20.0f);
+	groundTest1 = new Body(PIXEL_TO_METERS(800), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, WALL);
 	App->physics->world->AddBody(groundTest1);
 
 	//Ground
-	groundTest2 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(800), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	groundTest2 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(800), PIXEL_TO_METERS(50), STATIC, WALL);
 	App->physics->world->AddBody(groundTest2);
 
 	//Wall Left
-	groundTest3 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f, 20.0f);
+	groundTest3 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, WALL);
 	App->physics->world->AddBody(groundTest3);
 
 

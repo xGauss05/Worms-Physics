@@ -28,13 +28,22 @@ enum BodyShape {
 	//POINT
 };
 
+enum EntityType {
+	PLAYER,
+	PROJECTILE,
+	TRAMPOLINE,
+	ENEMY,
+	WALL,
+	NO
+};
+
 class Body
 {
 public:
 
 	Body();
-	Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
-	Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
+	Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
+	Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
 	~Body();
 
 	p2Point<float> GetPosition() const;
@@ -69,6 +78,8 @@ public:
 	p2Point<float> acceleration;
 
 	p2Point<float> externalForce;
+
+	EntityType entityType;
 
 	SDL_Texture* texture = nullptr;
 

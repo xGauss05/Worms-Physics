@@ -8,7 +8,7 @@ Body::Body()
 
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
+Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -19,6 +19,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	this->mass = mass;
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
+	this->entityType = entityType;
 
 	localRestitution = 1.0f;
 
@@ -30,7 +31,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	externalForce.SetToZero();
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
+Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -40,6 +41,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float radius, Body
 	this->mass = mass;
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
+	this->entityType = entityType;
 
 	localRestitution = 1.0f;
 
