@@ -129,11 +129,19 @@ update_status ModuleSceneIntro::Update()
 		test1->acceleration.SetToZero();
 		test1->externalForce.SetToZero();
 
-		player->position.x = PIXEL_TO_METERS(300);
-		player->position.y = PIXEL_TO_METERS(300);
+		player->position.x = PIXEL_TO_METERS(140);
+		player->position.y = PIXEL_TO_METERS(500);
 		player->velocity.SetToZero();
 		player->acceleration.SetToZero();
 		player->externalForce.SetToZero();
+		App->player->withGlider = false;
+		player->SetDragSurface(2.0f, 2.0f);
+		player->SetLocalRestitution(1.0f);
+		
+		App->physics->world->UnaliveAllProjectiles();
+		App->physics->world->UnaliveAllBalloons();
+
+		// create all the balloons again
 
 		p2Point<float> force;
 		force.x = 0;

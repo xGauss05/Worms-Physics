@@ -310,6 +310,13 @@ void World::UpdateProjectiles()
 	}
 }
 
+void World::UnaliveAllProjectiles() {
+	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
+	{
+		b->data->isAlive = false;
+	}
+}
+
 void World::AddTrampoline(Trampoline* trampoline, p2Point<float> position)
 {
 	trampoline->body->position = position;
@@ -356,6 +363,13 @@ void World::UpdateBalloon()
 				break;
 			}
 		}
+	}
+}
+
+void World::UnaliveAllBalloons() {
+	for (p2List_item<Balloon*>* b = balloons.getFirst(); b; b = b->next)
+	{
+		b->data->isAlive = false;
 	}
 }
 
