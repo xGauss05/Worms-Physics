@@ -56,6 +56,8 @@ public:
 
 	Body* test1 = nullptr;
 	Body* player = nullptr;
+	Projectile* projectile = nullptr;
+	Body* ball = nullptr;
 
 	Body* groundTest1 = nullptr;
 	Body* groundTest2 = nullptr;
@@ -63,4 +65,5 @@ public:
 
 
 	SDL_Texture* background;
+
 };

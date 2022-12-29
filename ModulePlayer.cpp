@@ -32,13 +32,14 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-
 update_status ModulePlayer::Update()
 {
 	// Dampening
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_IDLE &&
-		App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE) {
-		if (body->velocity.x > 0.5f || body->velocity.x < -0.5f) {
+		App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE) 
+	{
+		if (body->velocity.x > 0.5f || body->velocity.x < -0.5f) 
+		{
 			p2Point<float> linVel;
 			linVel.x = -body->velocity.x * idleDampenMultiplier;
 			linVel.y = 0.0f;
@@ -59,7 +60,8 @@ update_status ModulePlayer::Update()
 		}
 		else
 		{
-			if (body->velocity.x < speedCap) {
+			if (body->velocity.x < speedCap) 
+			{
 				p2Point<float> linVel;
 				linVel.x = movementForce;
 				linVel.y = 0.0f;
@@ -81,7 +83,8 @@ update_status ModulePlayer::Update()
 		}
 		else
 		{
-			if (body->velocity.x > -speedCap) {
+			if (body->velocity.x > -speedCap) 
+			{
 				p2Point<float> linVel;
 				linVel.x = -movementForce;
 				linVel.y = 0.0f;
@@ -91,12 +94,14 @@ update_status ModulePlayer::Update()
 	}
 
 	// Shoot
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN) {
-
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN) 
+	{	
+		App->physics->world->AddProjectile(App->scene_intro->projectile);
 	}
 
 	// Jump
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) 
+	{
 		p2Point<float> linVel;
 		linVel.x = 0.0f;
 		linVel.y = -jumpForce;
@@ -104,12 +109,15 @@ update_status ModulePlayer::Update()
 	}
 
 	// drag surface change
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_STATE::KEY_DOWN) {
-		if (withGlider) {
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_STATE::KEY_DOWN) 
+	{
+		if (withGlider) 
+		{
 			body->SetDragSurface(2.0f, 2.0f);
 			withGlider = false;
 		}
-		else {
+		else 
+		{
 			body->SetDragSurface(2.0f, 200.0f);
 			withGlider = true;
 		}
@@ -117,6 +125,4 @@ update_status ModulePlayer::Update()
 
 	return UPDATE_CONTINUE;
 }
-
-
 

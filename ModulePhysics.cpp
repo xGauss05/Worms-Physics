@@ -175,6 +175,7 @@ World::World(p2Point<float> g)
 World::~World()
 {
 	bodies.clear();
+	projectiles.clear();
 }
 
 void World::Step() {
@@ -234,7 +235,13 @@ void World::AddBody(Body* body)
 	bodies.add(body);
 }
 
-p2Point<float> World::CalculateGravityForce(Body* b) {
+void World::AddProjectile(Projectile* projectile)
+{
+	projectiles.add(projectile);
+}
+
+p2Point<float> World::CalculateGravityForce(Body* b) 
+{
 
 	p2Point<float> force;
 	force.x = gravity.x * b->GetMass();

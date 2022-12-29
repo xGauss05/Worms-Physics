@@ -31,6 +31,13 @@ bool ModuleSceneIntro::Start()
 	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
+	// Projectile
+	ball = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
+	ball->texture = App->textures->Load("Assets/Textures/objects.png");
+	projectile = new Projectile();
+	projectile->body = ball;
+
+	// Physical objects
 	App->physics->world->AddBody(test1);
 	App->physics->world->AddBody(player);
 

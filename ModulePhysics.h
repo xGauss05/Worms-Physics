@@ -58,7 +58,7 @@ public:
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
 
-	
+
 public:
 
 	p2Point<float> position;
@@ -80,10 +80,26 @@ private:
 	BodyType type;
 };
 
+struct Projectile {
+	Body* body;
+	int lifetime;
+	bool isAlive;
+
+	Projectile() : body(nullptr), lifetime(30), isAlive(true)
+	{
+		// fuck you
+	}
+
+	~Projectile()
+	{
+		delete body;
+		body = nullptr;
+	}
+};
 
 class World {
 
-public: 
+public:
 	World();
 	World(p2Point<float> g);
 
@@ -92,12 +108,13 @@ public:
 	p2Point<float> GetGravity();
 	void SetGravity(p2Point<float> g);
 	void AddBody(Body* body);
+	void AddProjectile(Projectile* projectile);
 
 	void Step();
 
 
-private: 
-	
+private:
+
 	p2Point<float> CalculateGravityForce(Body* b);
 	p2Point<float> CalculateLiftForce(Body* b);
 	p2Point<float> CalculateDragForce(Body* b);
@@ -111,9 +128,9 @@ private:
 	void SeparateRectRect(Body* bodyA, Body* bodyB);
 
 private:
-	
-	p2List<Body*> bodies;
 
+	p2List<Body*> bodies;
+	p2List<Projectile*> projectiles;
 	p2Point<float> gravity;
 
 	float density;
@@ -124,7 +141,7 @@ private:
 
 	float dt;
 
-friend class ModuleDebug;
+	friend class ModuleDebug;
 };
 
 
@@ -139,7 +156,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-public: 
+public:
 
 	World* world = nullptr;
 
