@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	loseScreen = App->textures->Load("Assets/Textures/lose_screen.png");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
-
+	App->audio->PlayMusic("Assets/Audio/Music/bgm.ogg");
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
 	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);

@@ -22,8 +22,8 @@ public:
 	Body* body = nullptr;
 
 	// SFX indices
-	uint dieFx;
-
+	uint jumpFx;
+	uint ballFx;
 	bool withGlider = false;
 
 	// Projectile

@@ -19,7 +19,8 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	body = App->scene_intro->player;
-
+	jumpFx = App->audio->LoadFx("Assets/Audio/Fx/jump.wav");
+	ballFx = App->audio->LoadFx("Assets/Audio/Fx/ball.wav");
 	ballTexture = App->textures->Load("Assets/Textures/objects.png");
 
 	return true;
@@ -121,7 +122,7 @@ update_status ModulePlayer::Update()
 			p2Point<float> force, position;
 			force.SetToZero();
 			position.SetToZero();
-
+			App->audio->PlayFx(ballFx);
 			// Shoot left
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT)
 			{
@@ -169,6 +170,7 @@ update_status ModulePlayer::Update()
 			linVel.x = 0.0f;
 			linVel.y = -jumpForce;
 			body->ApplyExternalForce(linVel);
+			App->audio->PlayFx(jumpFx);
 		}
 
 		// drag surface change
