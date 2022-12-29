@@ -156,21 +156,21 @@ public:
 	bool isAlive;
 	SDL_Rect section;
 
-	Balloon(int type1, int type2) : Body(), isAlive(true)
+	Balloon(int type1) : Body(), isAlive(true)
 	{
-		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+		section = { 96 + 32 * (type1), 0, 32, 64 };
 	}
 
-	Balloon(int type1, int type2, float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f)
+	Balloon(int type1, float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f)
 		: Body(positionX, positionY, shape, width, height, type, entityType, mass, dragSurfaceX, dragSurfaceY), isAlive(true)
 	{
-		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+		section = { 96 + 32 * (type1), 0, 32, 64 };
 	}
 
-	Balloon(int type1, int type2, float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f)
+	Balloon(int type1, float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f)
 		: Body(positionX, positionY, shape, radius, type, entityType, mass, dragSurfaceX, dragSurfaceY), isAlive(true)
 	{
-		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+		section = { 96 + 32 * (type1), 0, 32, 64 };
 	}
 
 	~Balloon()

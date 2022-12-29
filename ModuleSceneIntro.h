@@ -45,6 +45,8 @@ public:
 	bool win = false;
 	bool lose = false;
 
+	uint balloonNum;
+
 	SDL_Texture* winScreen;
 	SDL_Texture* loseScreen;
 
@@ -64,6 +66,7 @@ public:
 	Body* player = nullptr;
 	Trampoline* trampoline1 = nullptr;
 	Trampoline* trampoline2 = nullptr;
+	Balloon* balloons[10];
 	SDL_Texture* glider = nullptr;
 
 	Body* ground1 = nullptr;
