@@ -56,6 +56,7 @@ public:
 
 	Body* test1 = nullptr;
 	Body* player = nullptr;
+	SDL_Texture* glider = nullptr;
 	Projectile* projectile = nullptr;
 	Body* ball = nullptr;
 
