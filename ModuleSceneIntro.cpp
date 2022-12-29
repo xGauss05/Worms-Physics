@@ -22,6 +22,9 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	winScreen = App->textures->Load("Assets/Textures/win_screen.png");
+	loseScreen = App->textures->Load("Assets/Textures/lose_screen.png");
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	background = App->textures->Load("Assets/Textures/circus_background.png");
@@ -141,6 +144,8 @@ update_status ModuleSceneIntro::Update()
 		App->physics->world->UnaliveAllProjectiles();
 		App->physics->world->UnaliveAllBalloons();
 
+		win = false;
+		lose = false;
 		// create all the balloons again
 
 		p2Point<float> force;
@@ -149,6 +154,10 @@ update_status ModuleSceneIntro::Update()
 		test1->ApplyExternalForce(force);
 		player->ApplyExternalForce(force);
 
+	}
+
+	if (METERS_TO_PIXELS(player->position.y) > 900) {
+		lose = true;
 	}
 
 	App->renderer->Blit(background, 0, 0);
@@ -259,6 +268,13 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->world->BlitBalloon();
 	App->physics->world->UpdateBalloon();
+
+	if (win) {
+		App->renderer->Blit(winScreen, 0, 0);
+	}
+	else if (lose) {
+		App->renderer->Blit(loseScreen, 0, 0);
+	}
 
 	return UPDATE_CONTINUE;
 }

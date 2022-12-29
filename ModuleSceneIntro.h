@@ -42,6 +42,12 @@ public:
 
 public:
 
+	bool win = false;
+	bool lose = false;
+
+	SDL_Texture* winScreen;
+	SDL_Texture* loseScreen;
+
 	SDL_Texture* tex_light_tiny;
 	SDL_Texture* tex_light_medium;
 	SDL_Texture* tex_light_big;
