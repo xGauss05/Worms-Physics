@@ -70,6 +70,29 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		App->renderer->camera.x = App->renderer->camera.y = 0;
+
+		test1->position.x = PIXEL_TO_METERS(500);
+		test1->position.y = PIXEL_TO_METERS(300);
+		test1->velocity.SetToZero();
+		test1->acceleration.SetToZero();
+		test1->externalForce.SetToZero();
+
+		player->position.x = PIXEL_TO_METERS(300);
+		player->position.y = PIXEL_TO_METERS(300);
+		player->velocity.SetToZero();
+		player->acceleration.SetToZero();
+		player->externalForce.SetToZero();
+
+		p2Point<float> force;
+		force.x = 0;
+		force.y = -10.0;
+		test1->ApplyExternalForce(force);
+		player->ApplyExternalForce(force);
+
+	}
+
 	App->renderer->Blit(background, 0, 0);
 
 	test1->Blit({ 0, 0, 32, 32 });
