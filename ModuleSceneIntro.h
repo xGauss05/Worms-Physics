@@ -58,10 +58,21 @@ public:
 	Body* player = nullptr;
 	SDL_Texture* glider = nullptr;
 
-	Body* groundTest1 = nullptr;
-	Body* groundTest2 = nullptr;
-	Body* groundTest3 = nullptr;
-
+	Body* ground1 = nullptr;
+	Body* ground2 = nullptr;
+	Body* ground3 = nullptr;
+	Body* ground4 = nullptr;
+	Body* ground5 = nullptr;
+	Body* ground6 = nullptr;
+	Body* ground7 = nullptr;
+	Body* ground8 = nullptr;
+	Body* ground9 = nullptr;
+	Body* ground10 = nullptr;
+	Body* ground11 = nullptr;
+	Body* ground12 = nullptr;
+	Body* ground13 = nullptr;
+	Body* ground14 = nullptr;
+	Body* ground15 = nullptr;
 
 	SDL_Texture* background;
 

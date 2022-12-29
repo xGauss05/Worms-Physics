@@ -92,7 +92,6 @@ struct Projectile {
 
 	Projectile(int type1, int type2) : body(nullptr), lifetime(100), isAlive(true)
 	{
-		
 		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
 	}
 

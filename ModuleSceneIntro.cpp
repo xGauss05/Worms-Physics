@@ -28,7 +28,7 @@ bool ModuleSceneIntro::Start()
 
 	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
 	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
-	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
+	player = new Body(PIXEL_TO_METERS(140), PIXEL_TO_METERS(500), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
 	glider = App->textures->Load("Assets/Textures/plane.png");
@@ -42,19 +42,54 @@ bool ModuleSceneIntro::Start()
 	force.y = -10.0;
 	test1->ApplyExternalForce(force);
 	player->ApplyExternalForce(force);
-	
-	//Wall Right
-	groundTest1 = new Body(PIXEL_TO_METERS(800), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f, 20.0f);
-	App->physics->world->AddBody(groundTest1);
 
-	//Ground
-	groundTest2 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(800), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
-	App->physics->world->AddBody(groundTest2);
+	//Wall left
+	ground1 = new Body(PIXEL_TO_METERS(10), PIXEL_TO_METERS(20), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground1);
+
+	//Wall left 2
+	ground2 = new Body(PIXEL_TO_METERS(10), PIXEL_TO_METERS(650), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(100), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground2);
 
 	//Wall Left
-	groundTest3 = new Body(PIXEL_TO_METERS(30), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, 1.0f, 20.0f, 20.0f);
-	App->physics->world->AddBody(groundTest3);
+	ground3 = new Body(PIXEL_TO_METERS(85), PIXEL_TO_METERS(700), RECTANGLE, PIXEL_TO_METERS(150), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground3);
 
+	ground4 = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(700), RECTANGLE, PIXEL_TO_METERS(300), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground4);
+
+	ground5 = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(100), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground5);
+
+	ground6 = new Body(PIXEL_TO_METERS(550), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(100), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground6);
+
+	ground7 = new Body(PIXEL_TO_METERS(600), PIXEL_TO_METERS(600), RECTANGLE, PIXEL_TO_METERS(100), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground7);
+
+	ground8 = new Body(PIXEL_TO_METERS(700), PIXEL_TO_METERS(550), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(100), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground8);
+
+	ground9 = new Body(PIXEL_TO_METERS(750), PIXEL_TO_METERS(550), RECTANGLE, PIXEL_TO_METERS(100), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground9);
+
+	ground10 = new Body(PIXEL_TO_METERS(850), PIXEL_TO_METERS(550), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(200), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground10);
+
+	ground11 = new Body(PIXEL_TO_METERS(85), PIXEL_TO_METERS(100), RECTANGLE, PIXEL_TO_METERS(150), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground11);
+
+	ground12 = new Body(PIXEL_TO_METERS(85), PIXEL_TO_METERS(150), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground12);
+
+	ground13 = new Body(PIXEL_TO_METERS(185), PIXEL_TO_METERS(150), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground13);
+
+	ground14 = new Body(PIXEL_TO_METERS(900), PIXEL_TO_METERS(400), RECTANGLE, PIXEL_TO_METERS(150), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground14);
+
+	ground15 = new Body(PIXEL_TO_METERS(700), PIXEL_TO_METERS(250), RECTANGLE, PIXEL_TO_METERS(150), PIXEL_TO_METERS(50), STATIC, 1.0f, 20.0f, 20.0f);
+	App->physics->world->AddBody(ground15);
 
 	return ret;
 }
@@ -98,23 +133,95 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(background, 0, 0);
 
-	App->renderer->DrawQuad({ 
-		METERS_TO_PIXELS(groundTest1->position.x), 
-		METERS_TO_PIXELS(groundTest1->position.y), 
-		METERS_TO_PIXELS(groundTest1->GetWidth()), 
-		METERS_TO_PIXELS(groundTest1->GetHeight()) }, 0, 0, 255);
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground1->position.x),
+		METERS_TO_PIXELS(ground1->position.y),
+		METERS_TO_PIXELS(ground1->GetWidth()),
+		METERS_TO_PIXELS(ground1->GetHeight()) }, 0, 0, 255);
 
-	App->renderer->DrawQuad({ 
-		METERS_TO_PIXELS(groundTest2->position.x),
-		METERS_TO_PIXELS(groundTest2->position.y),
-		METERS_TO_PIXELS(groundTest2->GetWidth()),
-		METERS_TO_PIXELS(groundTest2->GetHeight()) }, 0, 0, 255);
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground2->position.x),
+		METERS_TO_PIXELS(ground2->position.y),
+		METERS_TO_PIXELS(ground2->GetWidth()),
+		METERS_TO_PIXELS(ground2->GetHeight()) }, 0, 0, 255);
 
-	App->renderer->DrawQuad({ 
-		METERS_TO_PIXELS(groundTest3->position.x),
-		METERS_TO_PIXELS(groundTest3->position.y),
-		METERS_TO_PIXELS(groundTest3->GetWidth()),
-		METERS_TO_PIXELS(groundTest3->GetHeight()) }, 0, 0, 255);
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground3->position.x),
+		METERS_TO_PIXELS(ground3->position.y),
+		METERS_TO_PIXELS(ground3->GetWidth()),
+		METERS_TO_PIXELS(ground3->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground4->position.x),
+		METERS_TO_PIXELS(ground4->position.y),
+		METERS_TO_PIXELS(ground4->GetWidth()),
+		METERS_TO_PIXELS(ground4->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground5->position.x),
+		METERS_TO_PIXELS(ground5->position.y),
+		METERS_TO_PIXELS(ground5->GetWidth()),
+		METERS_TO_PIXELS(ground5->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground6->position.x),
+		METERS_TO_PIXELS(ground6->position.y),
+		METERS_TO_PIXELS(ground6->GetWidth()),
+		METERS_TO_PIXELS(ground6->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground7->position.x),
+		METERS_TO_PIXELS(ground7->position.y),
+		METERS_TO_PIXELS(ground7->GetWidth()),
+		METERS_TO_PIXELS(ground7->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground8->position.x),
+		METERS_TO_PIXELS(ground8->position.y),
+		METERS_TO_PIXELS(ground8->GetWidth()),
+		METERS_TO_PIXELS(ground8->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground9->position.x),
+		METERS_TO_PIXELS(ground9->position.y),
+		METERS_TO_PIXELS(ground9->GetWidth()),
+		METERS_TO_PIXELS(ground9->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground10->position.x),
+		METERS_TO_PIXELS(ground10->position.y),
+		METERS_TO_PIXELS(ground10->GetWidth()),
+		METERS_TO_PIXELS(ground10->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground11->position.x),
+		METERS_TO_PIXELS(ground11->position.y),
+		METERS_TO_PIXELS(ground11->GetWidth()),
+		METERS_TO_PIXELS(ground11->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground12->position.x),
+		METERS_TO_PIXELS(ground12->position.y),
+		METERS_TO_PIXELS(ground12->GetWidth()),
+		METERS_TO_PIXELS(ground12->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground13->position.x),
+		METERS_TO_PIXELS(ground13->position.y),
+		METERS_TO_PIXELS(ground13->GetWidth()),
+		METERS_TO_PIXELS(ground13->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground14->position.x),
+		METERS_TO_PIXELS(ground14->position.y),
+		METERS_TO_PIXELS(ground14->GetWidth()),
+		METERS_TO_PIXELS(ground14->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({
+		METERS_TO_PIXELS(ground15->position.x),
+		METERS_TO_PIXELS(ground15->position.y),
+		METERS_TO_PIXELS(ground15->GetWidth()),
+		METERS_TO_PIXELS(ground15->GetHeight()) }, 0, 0, 255);
 
 	if (App->player->withGlider)
 	{
