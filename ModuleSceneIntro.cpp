@@ -125,6 +125,7 @@ update_status ModuleSceneIntro::Update()
 	player->Blit({ 32, 0, 32, 32 });
 
 	App->physics->world->BlitProjectiles();
+	App->physics->world->UpdateProjectiles();
 
 	return UPDATE_CONTINUE;
 }

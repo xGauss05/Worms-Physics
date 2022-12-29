@@ -85,7 +85,7 @@ struct Projectile {
 	int lifetime;
 	bool isAlive;
 
-	Projectile() : body(nullptr), lifetime(30), isAlive(true)
+	Projectile() : body(nullptr), lifetime(100), isAlive(true)
 	{
 		// fuck you
 	}
@@ -110,6 +110,7 @@ public:
 	void AddBody(Body* body);
 	void AddProjectile(Projectile* projectile, p2Point<float> position);
 	void BlitProjectiles();
+	void UpdateProjectiles();
 	void Step();
 
 

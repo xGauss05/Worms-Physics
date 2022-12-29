@@ -264,8 +264,31 @@ void World::BlitProjectiles()
 	{
 		b->data->body->Blit({ 0,32,16,16 });
 	}
-
 }
+
+void World::UpdateProjectiles()
+{
+	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
+	{
+		if (projectiles.count() > 0) {
+			if (b->data->isAlive == false) {
+				bodies.del(bodies.findNode(b->data->body));
+				projectiles.del(b);
+				break;
+			}
+		}
+	}
+
+	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
+	{
+		b->data->lifetime--;
+
+		if (b->data->lifetime <= 0) {
+			b->data->isAlive = false;
+		}
+	}
+}
+
 p2Point<float> World::CalculateGravityForce(Body* b)
 {
 
