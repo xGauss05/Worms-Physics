@@ -9,7 +9,6 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModulePlayer.h"
-#include "ModuleTrampoline.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleDebug.h"
@@ -24,7 +23,6 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModulePlayer* player;
-	ModuleTrampoline* trampoline;
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
 	ModuleDebug* debug;

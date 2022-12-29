@@ -33,6 +33,7 @@ enum EntityType {
 	PROJECTILE,
 	TRAMPOLINE,
 	ENEMY,
+	BALLOON,
 	WALL,
 	NO
 };
@@ -104,10 +105,44 @@ struct Projectile {
 
 	Projectile(int type1, int type2) : body(nullptr), lifetime(200), isAlive(true)
 	{
+		
 		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
 	}
 
 	~Projectile()
+	{
+		delete body;
+		body = nullptr;
+	}
+};
+
+struct Trampoline {
+	Body* body;
+
+	Trampoline() : body(nullptr)
+	{
+
+	}
+
+	~Trampoline()
+	{
+		delete body;
+		body = nullptr;
+	}
+};
+
+struct Balloon {
+	Body* body;
+	bool isAlive;
+	SDL_Rect section;
+
+	Balloon(int type1, int type2) : body(nullptr), isAlive(true)
+	{
+
+		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+	}
+
+	~Balloon()
 	{
 		delete body;
 		body = nullptr;
@@ -128,6 +163,12 @@ public:
 	void AddProjectile(Projectile* projectile, p2Point<float> position);
 	void BlitProjectiles();
 	void UpdateProjectiles();
+	void AddTrampoline(Trampoline* trampoline, p2Point<float> position);
+	void BlitTrampoline();
+	void UpdateTrampoline();
+	void AddBalloon(Balloon* balloon, p2Point<float> position);
+	void BlitBalloon();
+	void UpdateBalloon();
 	void Step();
 
 
@@ -149,6 +190,8 @@ private:
 
 	p2List<Body*> bodies;
 	p2List<Projectile*> projectiles;
+	p2List<Trampoline*> trampolines;
+	p2List<Balloon*> balloons;
 	p2Point<float> gravity;
 
 	float density;

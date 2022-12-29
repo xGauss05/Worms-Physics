@@ -92,9 +92,6 @@
     <ClInclude Include="ModuleFonts.h">
       <Filter>Header Files\Modules\Core</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTrampoline.h">
-      <Filter>Header Files\Modules\Gameplay</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp">
@@ -135,9 +132,6 @@
     </ClCompile>
     <ClCompile Include="ModuleFonts.cpp">
       <Filter>Source Files\Modules\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTrampoline.cpp">
-      <Filter>Source Files\Modules\Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

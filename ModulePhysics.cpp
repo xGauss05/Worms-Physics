@@ -310,6 +310,45 @@ void World::UpdateProjectiles()
 	}
 }
 
+void World::AddTrampoline(Trampoline* trampoline, p2Point<float> position)
+{
+	trampoline->body->position = position;
+	trampoline->body->SetLocalRestitution(3.0f);
+	trampolines.add(trampoline);
+	bodies.add(trampoline->body);
+}
+
+void World::BlitTrampoline()
+{
+	for (p2List_item<Trampoline*>* b = trampolines.getFirst(); b; b = b->next)
+	{
+		b->data->body->Blit();
+	}
+}
+
+void World::UpdateTrampoline()
+{
+}
+
+void World::AddBalloon(Balloon* balloon, p2Point<float> position)
+{
+	balloon->body->position = position;
+	balloons.add(balloon);
+	bodies.add(balloon->body);
+}
+
+void World::BlitBalloon()
+{
+	for (p2List_item<Balloon*>* b = balloons.getFirst(); b; b = b->next)
+	{
+		b->data->body->Blit(b->data->section);
+	}
+}
+
+void World::UpdateBalloon()
+{
+}
+
 p2Point<float> World::CalculateGravityForce(Body* b)
 {
 
