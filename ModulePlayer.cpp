@@ -108,17 +108,14 @@ update_status ModulePlayer::Update()
 	// Shoot
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN)
 	{
-		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, PROJECTILE, 1.0f, 2.0f, 2.0f);
-		newBall->texture = ballTexture;
-
 		int type1 = (rand() % (3 - 0 + 1)) + 0;
 		int type2;
 
 		if (type1 > 1) type2 = 0;
 		else type2 = (rand() % (1 - 0 + 1)) + 0;
 		
-		Projectile* newProjectile = new Projectile(type1, type2);
-		newProjectile->body = newBall;
+		Projectile* newProjectile = new Projectile(type1, type2, PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, PROJECTILE, 1.0f, 2.0f, 2.0f);
+		newProjectile->texture = ballTexture;
 
 		p2Point<float> force, position;
 		force.SetToZero();
@@ -134,7 +131,7 @@ update_status ModulePlayer::Update()
 			position.y = body->position.y - PIXEL_TO_METERS(30);
 
 			App->physics->world->AddProjectile(newProjectile, position);
-			newBall->ApplyExternalForce(force);
+			newProjectile->ApplyExternalForce(force);
 		}
 
 		// Shoot right
@@ -147,7 +144,7 @@ update_status ModulePlayer::Update()
 			position.y = body->position.y - PIXEL_TO_METERS(30);
 
 			App->physics->world->AddProjectile(newProjectile, position);
-			newBall->ApplyExternalForce(force);
+			newProjectile->ApplyExternalForce(force);
 		}
 
 		// Shoot idle
@@ -160,7 +157,7 @@ update_status ModulePlayer::Update()
 			position.y = body->position.y - PIXEL_TO_METERS(30);
 
 			App->physics->world->AddProjectile(newProjectile, position);
-			newBall->ApplyExternalForce(force);
+			newProjectile->ApplyExternalForce(force);
 		}
 	}
 

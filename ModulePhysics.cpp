@@ -274,16 +274,16 @@ void World::AddBody(Body* body)
 
 void World::AddProjectile(Projectile* projectile, p2Point<float> position)
 {
-	projectile->body->position = position;
+	projectile->position = position;
 	projectiles.add(projectile);
-	bodies.add(projectile->body);
+	bodies.add(projectile);
 }
 
 void World::BlitProjectiles()
 {
 	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
 	{
-		b->data->body->Blit(b->data->section);
+		b->data->Blit(b->data->section);
 	}
 }
 
@@ -293,7 +293,7 @@ void World::UpdateProjectiles()
 	{
 		if (projectiles.count() > 0) {
 			if (b->data->isAlive == false) {
-				bodies.del(bodies.findNode(b->data->body));
+				bodies.del(bodies.findNode(b->data));
 				projectiles.del(b);
 				break;
 			}
