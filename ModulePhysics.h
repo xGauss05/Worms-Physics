@@ -178,7 +178,11 @@ public:
 
 	}
 
-	void OnCollision(Body* otherBody);
+	void OnCollision(Body* otherBody) {
+		if (otherBody->entityType == EntityType::PROJECTILE) {
+			isAlive = false;
+		}
+	};
 };
 
 class World {
