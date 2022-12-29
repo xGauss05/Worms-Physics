@@ -19,9 +19,9 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	body = App->scene_intro->player;
-	
+
 	ballTexture = App->textures->Load("Assets/Textures/objects.png");
-	
+
 	return true;
 }
 
@@ -39,9 +39,9 @@ update_status ModulePlayer::Update()
 {
 	// Dampening
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_IDLE &&
-		App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE) 
+		App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE)
 	{
-		if (body->velocity.x > 0.5f || body->velocity.x < -0.5f) 
+		if (body->velocity.x > 0.5f || body->velocity.x < -0.5f)
 		{
 			p2Point<float> linVel;
 			linVel.x = -body->velocity.x * idleDampenMultiplier;
@@ -51,7 +51,7 @@ update_status ModulePlayer::Update()
 	}
 
 	// Move right
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_REPEAT)
 	{
 		if (body->velocity.x < -0.5f)
 		{
@@ -63,7 +63,7 @@ update_status ModulePlayer::Update()
 		}
 		else
 		{
-			if (body->velocity.x < speedCap) 
+			if (body->velocity.x < speedCap)
 			{
 				p2Point<float> linVel;
 				linVel.x = movementForce;
@@ -75,7 +75,7 @@ update_status ModulePlayer::Update()
 	}
 
 	// Move left
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT)
 	{
 		if (body->velocity.x > 0.5f)
 		{
@@ -86,7 +86,7 @@ update_status ModulePlayer::Update()
 		}
 		else
 		{
-			if (body->velocity.x > -speedCap) 
+			if (body->velocity.x > -speedCap)
 			{
 				p2Point<float> linVel;
 				linVel.x = -movementForce;
@@ -97,12 +97,17 @@ update_status ModulePlayer::Update()
 	}
 
 	// Shoot
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN) 
-	{	
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN)
+	{
 		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, 1.0f, 2.0f, 2.0f);
 		newBall->texture = ballTexture;
+
 		int type1 = (rand() % (3 - 0 + 1)) + 0;
-		int type2 = (rand() % (1 - 0 + 1)) + 0;
+		int type2;
+
+		if (type1 > 1) type2 = 0;
+		else type2 = (rand() % (1 - 0 + 1)) + 0;
+		
 		Projectile* newProjectile = new Projectile(type1, type2);
 		newProjectile->body = newBall;
 
@@ -111,7 +116,7 @@ update_status ModulePlayer::Update()
 		position.SetToZero();
 
 		// Shoot left
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT) 
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT)
 		{
 			force.x = -450.0f;
 			force.y = -200.0f;
@@ -124,7 +129,7 @@ update_status ModulePlayer::Update()
 		}
 
 		// Shoot right
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_REPEAT) 
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_REPEAT)
 		{
 			force.x = 450.0f;
 			force.y = -200.0f;
@@ -151,7 +156,7 @@ update_status ModulePlayer::Update()
 	}
 
 	// Jump
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN)
 	{
 		p2Point<float> linVel;
 		linVel.x = 0.0f;
@@ -160,14 +165,14 @@ update_status ModulePlayer::Update()
 	}
 
 	// drag surface change
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_STATE::KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_STATE::KEY_DOWN)
 	{
-		if (withGlider) 
+		if (withGlider)
 		{
 			body->SetDragSurface(2.0f, 2.0f);
 			withGlider = false;
 		}
-		else 
+		else
 		{
 			body->SetDragSurface(2.0f, 200.0f);
 			withGlider = true;
