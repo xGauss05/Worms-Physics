@@ -57,11 +57,33 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && App->physics->world->GetGravity().y < 20.0f)
 			{
-				//App->physics->world->SetGravity(p2Point<float>(1.0f, App->physics->world->GetGravity().x + 1.0f));
+				if (abs(App->physics->world->gravity.y - (9.805f)) < 0.1f)
+				{
+					App->physics->world->gravity.y = 10.0f;
+				}
+				else if (abs(App->physics->world->gravity.y - (8.905f)) < 0.1f)
+				{
+					App->physics->world->gravity.y = 9.81f;
+				}
+				else
+				{
+					App->physics->world->gravity.y += 1.0f;
+				}
 			}
 			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->GetGravity().y > -20.0f)
 			{
-				//App->physics->world->SetGravity(p2Point<float>(1.0f, App->physics->world->GetGravity().x - 1.0f));
+				if (abs(App->physics->world->gravity.y - (9.805f)) < 0.1f)
+				{
+					App->physics->world->gravity.y = 9.0f;
+				}
+				else if (abs(App->physics->world->gravity.y - (9.905f)) < 0.1f)
+				{
+					App->physics->world->gravity.y = 9.81f;
+				}
+				else
+				{
+					App->physics->world->gravity.y -= 1.0f;
+				}
 			}
 		}
 
