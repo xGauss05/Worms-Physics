@@ -241,7 +241,6 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	App->physics->world->BlitTrampoline();
-	App->physics->world->UpdateTrampoline();
 
 	test1->Blit({ 0, 0, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
@@ -249,6 +248,9 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->world->BlitProjectiles();
 	App->physics->world->UpdateProjectiles();
+
+	App->physics->world->BlitBalloon();
+	App->physics->world->UpdateBalloon();
 
 	return UPDATE_CONTINUE;
 }
