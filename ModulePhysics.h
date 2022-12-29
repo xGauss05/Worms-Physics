@@ -114,6 +114,8 @@ private:
 
 	float density;
 
+	float dampening;
+
 	IntegrationMethod integrationMethod = VERLET;
 
 	float dt;
