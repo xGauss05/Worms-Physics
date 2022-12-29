@@ -97,22 +97,32 @@ private:
 	BodyType type;
 };
 
-struct Projectile {
-	Body* body;
+class Projectile : public Body {
+
+public:
 	int lifetime;
 	bool isAlive;
 	SDL_Rect section;
 
-	Projectile(int type1, int type2) : body(nullptr), lifetime(200), isAlive(true)
+	Projectile(int type1, int type2) : Body(), lifetime(200), isAlive(true)
 	{
-		
+		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+	}
+
+	Projectile(int type1, int type2, float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f) 
+		: Body(positionX, positionY, shape, width, height, type, entityType, mass, dragSurfaceX, dragSurfaceY), lifetime(200), isAlive(true)
+	{
+		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
+	}
+
+	Projectile(int type1, int type2, float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f) 
+		: Body(positionX, positionY, shape, radius, type, entityType, mass, dragSurfaceX, dragSurfaceY), lifetime(200), isAlive(true)
+	{
 		section = { 0 + 16 * type1,32 + 16 * type2,16,16 };
 	}
 
 	~Projectile()
 	{
-		delete body;
-		body = nullptr;
 	}
 };
 

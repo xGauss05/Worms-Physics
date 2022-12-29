@@ -33,6 +33,7 @@ bool ModuleSceneIntro::Start()
 	Body* newTrampoline = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, EntityType::TRAMPOLINE, 1.0f, 2.0f, 2.0f);
 	trampoline1 = new Trampoline();
 	trampoline1->body = newTrampoline;
+	newTrampoline->texture = App->textures->Load("Assets/Textures/trampoline.png");
 
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
@@ -232,6 +233,9 @@ update_status ModuleSceneIntro::Update()
 	{
 		App->renderer->Blit(glider, METERS_TO_PIXELS(App->player->body->position.x) - 25, METERS_TO_PIXELS(App->player->body->position.y));
 	}
+
+	App->physics->world->BlitTrampoline();
+	App->physics->world->UpdateTrampoline();
 
 	test1->Blit({ 0, 0, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
