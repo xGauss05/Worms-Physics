@@ -347,6 +347,16 @@ void World::BlitBalloon()
 
 void World::UpdateBalloon()
 {
+	for (p2List_item<Balloon*>* b = balloons.getFirst(); b; b = b->next)
+	{
+		if (balloons.count() > 0) {
+			if (b->data->isAlive == false) {
+				bodies.del(bodies.findNode(b->data));
+				balloons.del(b);
+				break;
+			}
+		}
+	}
 }
 
 p2Point<float> World::CalculateGravityForce(Body* b)
