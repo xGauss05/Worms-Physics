@@ -114,6 +114,11 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	App->textures->Unload(winScreen);
+	App->textures->Unload(loseScreen);
+	App->textures->Unload(glider);
+	App->textures->Unload(background);
+
 	delete test1;
 	test1 = nullptr;
 
