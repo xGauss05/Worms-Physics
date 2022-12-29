@@ -48,9 +48,7 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) gravity = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) colliders = true;
-
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) variables = true;
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) variables = true;
 		}
 
 		if (timeScreen == true)
@@ -76,7 +74,6 @@ update_status ModuleDebug::Update()
 				//App->physics->world->SetGravity(p2Point<float>(1.0f, App->physics->world->GetGravity().x - 1.0f));
 			}
 		}
-		if (colliders == true) currentScreen = Screen::COLLIDERS;
 		
 		if (variables == true) currentScreen = Screen::VARIABLES;
 		
@@ -84,7 +81,7 @@ update_status ModuleDebug::Update()
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
 			currentScreen = Screen::HOME;
-			timeScreen = false; gravity = false; colliders = false; variables = false;
+			timeScreen = false; gravity = false; variables = false;
 		}
 
 		#pragma endregion
@@ -108,29 +105,26 @@ void ModuleDebug::DebugDraw()
 {
 	
 	// This will iterate all objects in the world and draw the circles and rectangles needed
-	if (colliders)
-	{
-		for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
+	for (p2List_item<Body*>* b = App->physics->world->bodies.getFirst(); b; b = b->next) {
 
-			switch (b->data->GetShape())
-			{
-			case CIRCLE:
-				App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->GetRadius()), 255, 255, 255, 255);
-				break;
-			case RECTANGLE:
+		switch (b->data->GetShape())
+		{
+		case CIRCLE:
+			App->renderer->DrawCircle(METERS_TO_PIXELS(b->data->position.x), METERS_TO_PIXELS(b->data->position.y), METERS_TO_PIXELS(b->data->GetRadius()), 255, 255, 255, 255);
+			break;
+		case RECTANGLE:
 
-				SDL_Rect rect;
-				rect.x = METERS_TO_PIXELS(b->data->position.x);
-				rect.y = METERS_TO_PIXELS(b->data->position.y);
-				rect.w = METERS_TO_PIXELS(b->data->GetWidth());
-				rect.h = METERS_TO_PIXELS(b->data->GetHeight());
+			SDL_Rect rect;
+			rect.x = METERS_TO_PIXELS(b->data->position.x);
+			rect.y = METERS_TO_PIXELS(b->data->position.y);
+			rect.w = METERS_TO_PIXELS(b->data->GetWidth());
+			rect.h = METERS_TO_PIXELS(b->data->GetHeight());
 
-				App->renderer->DrawQuad(rect, 255, 255, 255, 255, false);
+			App->renderer->DrawQuad(rect, 255, 255, 255, 255, false);
 
-				break;
-			default:
-				break;
-			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -138,9 +132,8 @@ void ModuleDebug::DebugDraw()
 	SDL_Rect bg;
 	if (timeScreen)				{ bg = { 2,38,270,92 }; }
 	else if (gravity)			{ bg = { 2,38,270,102 }; }
-	else if (colliders)			{ bg = { 2,38,270,22 }; }
 	else if (variables)			{ bg = { 2,38,270,142 }; }
-	else						{ bg = { 2,38,270,62 }; }
+	else						{ bg = { 2,38,270,52 }; }
 	App->renderer->DrawQuad(bg, 0, 0, 0, 125, true);
 
 	switch (currentScreen)
@@ -150,8 +143,7 @@ void ModuleDebug::DebugDraw()
 
 		App->fonts->BlitText(5, 60, 0, "1. TIME OPTIONS");
 		App->fonts->BlitText(5, 70, 0, "2. GRAVITY OPTIONS");
-		App->fonts->BlitText(5, 80, 0, "3. SHOW COLLIDERS");
-		App->fonts->BlitText(5, 90, 0, "4. SHOW VARIABLES");
+		App->fonts->BlitText(5, 80, 0, "3. SHOW VARIABLES");
 		break;
 		
 	case Screen::TIME:
@@ -185,11 +177,6 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(120, 110, 0, std::to_string(App->physics->world->GetGravity().y).c_str());
 
 		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
-		break;
-
-	case Screen::COLLIDERS:
-		App->fonts->BlitText(5, 40, 0, "SHOWING COLLIDERS");
-		App->fonts->BlitText(5, 50, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::VARIABLES:

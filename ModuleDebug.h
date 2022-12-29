@@ -11,7 +11,6 @@ enum class Screen
 	HOME,
 	TIME,
 	GRAVITY,
-	COLLIDERS,
 	VARIABLES,
 	NONE
 };
@@ -54,7 +53,6 @@ private:
 
 	bool timeScreen = false;
 	bool gravity = false;
-	bool colliders = false;
 	bool variables = false;
 };
 
