@@ -24,6 +24,14 @@ enum class Screen
 	NONE
 };
 
+enum class DeltaTimeScheme
+{
+	FIXED,
+	SEMIFIXED,
+	VARIABLE,
+	NONE
+};
+
 class ModuleDebug : public Module {
 public:
 	// Constructor
@@ -50,6 +58,7 @@ public:
 	microseconds elapsedFrame;
 	int targetFPS = 60;
 	double FPS;
+	DeltaTimeScheme timeScheme = DeltaTimeScheme::SEMIFIXED;
 
 	// Simple debugging flag
 	bool debug;

@@ -52,6 +52,37 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && targetFPS > 10)
 				targetFPS -= 10;
+
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+			{
+				if (timeScheme == DeltaTimeScheme::FIXED)
+				{
+					timeScheme = DeltaTimeScheme::SEMIFIXED;
+				}
+				else if (timeScheme == DeltaTimeScheme::SEMIFIXED)
+				{
+					timeScheme = DeltaTimeScheme::VARIABLE;
+				}
+				else if (timeScheme == DeltaTimeScheme::VARIABLE)
+				{
+					timeScheme = DeltaTimeScheme::FIXED;
+				}
+			}
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+			{
+				if (timeScheme == DeltaTimeScheme::FIXED)
+				{
+					timeScheme = DeltaTimeScheme::VARIABLE;
+				}
+				else if (timeScheme == DeltaTimeScheme::SEMIFIXED)
+				{
+					timeScheme = DeltaTimeScheme::FIXED;
+				}
+				else if (timeScheme == DeltaTimeScheme::VARIABLE)
+				{
+					timeScheme = DeltaTimeScheme::SEMIFIXED;
+				}
+			}
 		}
 
 		if (gravity == true)
@@ -122,7 +153,7 @@ update_status ModuleDebug::Update()
 		{
 			currentScreen = Screen::INTEGRATION;
 
-			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 			{
 				if (App->physics->world->integrationMethod == FORWARD_EULER)
 				{
@@ -137,7 +168,7 @@ update_status ModuleDebug::Update()
 					App->physics->world->integrationMethod = BACKWARD_EULER;
 				}
 			}
-			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 			{
 				if (App->physics->world->integrationMethod == FORWARD_EULER)
 				{
@@ -301,7 +332,7 @@ void ModuleDebug::DebugDraw()
 
 	//This draws all the debug menu screens
 	SDL_Rect bg;
-	if (timeScreen)				{ bg = { 2,38,270,92 }; }
+	if (timeScreen)				{ bg = { 2,38,270,142 }; }
 	else if (gravity)			{ bg = { 2,38,270,82 }; }
 	else if (coefficients)		{ bg = { 2,38,270,102 }; }
 	else if (integration)		{ bg = { 2,38,270,82 }; }
@@ -333,22 +364,43 @@ void ModuleDebug::DebugDraw()
 		
 	case Screen::TIME:
 		App->fonts->BlitText(5, 40, 0, "TIME OPTIONS");
+
 		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
-		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
+		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE FPS VALUE");
+
+		App->fonts->BlitText(5, 90, 0, "PRESS LEFT OR RIGHT ARROW TO");
+		App->fonts->BlitText(5, 100, 0, "CHANGE DELTATIME TIME SCHEME");
 
 		LOG("Elapsed Cycle:");
 		LOG(std::to_string(elapsedCycle.count()).c_str());
 		LOG("Elapsed Frame:");
 		LOG(std::to_string(elapsedFrame.count()).c_str());
 
-		App->fonts->BlitText(5, 90, 0, "TARGET FPS ");
-		App->fonts->BlitText(100, 90, 0, std::to_string(targetFPS).c_str());
-		App->fonts->BlitText(5, 100, 0, "CURRENT FPS ");
-		App->fonts->BlitText(100, 100, 0, std::to_string(FPS).c_str());
+		App->fonts->BlitText(5, 120, 0, "TARGET FPS ");
+		App->fonts->BlitText(100, 120, 0, std::to_string(targetFPS).c_str());
+		App->fonts->BlitText(5, 130, 0, "CURRENT FPS ");
+		App->fonts->BlitText(100, 130, 0, std::to_string(FPS).c_str());
 		LOG("FPS:");
 		LOG(std::to_string(FPS).c_str());
 
-		App->fonts->BlitText(5, 120, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 150, 0, "DELTATIME SCHEME:");
+		switch (timeScheme)
+		{
+		case DeltaTimeScheme::FIXED:
+			App->fonts->BlitText(150, 150, 0, "FIXED");
+			break;
+		case DeltaTimeScheme::SEMIFIXED:
+			App->fonts->BlitText(150, 150, 0, "SEMIFIXED");
+			break;
+		case DeltaTimeScheme::VARIABLE:
+			App->fonts->BlitText(150, 150, 0, "VARIABLE");
+			break;
+		default:
+			App->fonts->BlitText(150, 150, 0, "ERROR");
+			break;
+		}
+
+		App->fonts->BlitText(5, 170, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::GRAVITY:
@@ -378,7 +430,7 @@ void ModuleDebug::DebugDraw()
 	case Screen::INTEGRATION:
 		App->fonts->BlitText(5, 40, 0, "INTEGRATOR OPTIONS");
 
-		App->fonts->BlitText(5, 60, 0, "PRESS UP OR DOWN ARROW TO");
+		App->fonts->BlitText(5, 60, 0, "PRESS LEFT OR RIGHT ARROW TO");
 		App->fonts->BlitText(5, 70, 0, "CHANGE INTEGRATION METHOD");
 
 		App->fonts->BlitText(5, 90, 0, "CURRENT METHOD:");

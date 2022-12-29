@@ -211,8 +211,15 @@ void World::Step() {
 	//				}
 	//				integrator
 	// 
+	if (App->debug->timeScheme == DeltaTimeScheme::FIXED)
+		dt = 1.0f / 60.0f;
 
-	dt = (float)App->debug->elapsedFrame.count() * 10E-7;
+	else if (App->debug->timeScheme == DeltaTimeScheme::SEMIFIXED)
+		dt = (float)App->debug->elapsedFrame.count() * 10E-7;
+
+	else if (App->debug->timeScheme == DeltaTimeScheme::VARIABLE)
+		dt = (float)App->debug->elapsedCycle.count() * 10E-7;
+	
 	LOG("Delta Time: %f", dt);
 
 	for (p2List_item<Body*>* b = bodies.getFirst(); b; b = b->next) {
