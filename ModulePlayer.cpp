@@ -30,7 +30,16 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 
-	//App->textures->Unload(texture);
+	if (body != nullptr)
+	{
+		delete body;
+		body = nullptr;
+	}
+
+	if (ballTexture != nullptr)
+	{
+		App->textures->Unload(ballTexture);
+	}
 
 	return true;
 }
