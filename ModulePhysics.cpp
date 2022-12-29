@@ -178,7 +178,7 @@ World::World()
 
 	density = 1.293f;
 
-	globalRestitution = 0.8f;
+	globalRestitution = 0.4f;
 
 	dt = 0.0f;
 }
@@ -313,7 +313,7 @@ void World::UpdateProjectiles()
 void World::AddTrampoline(Trampoline* trampoline, p2Point<float> position)
 {
 	trampoline->body->position = position;
-	trampoline->body->SetLocalRestitution(3.0f);
+	trampoline->body->SetLocalRestitution(5.2f);
 	trampolines.add(trampoline);
 	bodies.add(trampoline->body);
 }

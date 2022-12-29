@@ -16,7 +16,7 @@ enum class Screen
 	VARIABLES,
 
 	WORLD_RESTITUTION,
-	COEFF2,
+	TRAMP_RESTITUTION,
 	COEFF3,
 	COEFF4,
 
@@ -66,7 +66,7 @@ private:
 	bool variables = false;
 
 	bool worldRest = false;
-	bool coeff2 = false;
+	bool trampolineRest = false;
 	bool coeff3 = false;
 	bool coeff4 = false;
 };

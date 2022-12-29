@@ -100,7 +100,7 @@ update_status ModuleDebug::Update()
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
-				coeff2 = true;
+				trampolineRest = true;
 				coefficients = false;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
@@ -165,9 +165,25 @@ update_status ModuleDebug::Update()
 			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->globalRestitution > 0.0f)
 				App->physics->world->globalRestitution -= 0.1f;
 		}
-		if (coeff2 == true)
+		if (trampolineRest == true)
 		{
-			currentScreen = Screen::COEFF2;
+			currentScreen = Screen::TRAMP_RESTITUTION;
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() < 7.0f)
+			{
+				for (p2List_item<Trampoline*>* b = App->physics->world->trampolines.getFirst(); b; b = b->next)
+				{
+					b->data->body->SetLocalRestitution(App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() + 0.5f);
+				}
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() > 0.05f)
+			{
+				for (p2List_item<Trampoline*>* b = App->physics->world->trampolines.getFirst(); b; b = b->next)
+				{
+					b->data->body->SetLocalRestitution(App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() - 0.5f);
+				}
+			}
 		}
 		if (coeff3 == true)
 		{
@@ -181,11 +197,11 @@ update_status ModuleDebug::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
-			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::COEFF2 || 
+			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::TRAMP_RESTITUTION || 
 				currentScreen == Screen::COEFF3 || currentScreen == Screen::COEFF4)
 			{
 				currentScreen = Screen::COEFFICIENTS;
-				worldRest = false; coeff2 = false; coeff3 = false; coeff4 = false;
+				worldRest = false; trampolineRest = false; coeff3 = false; coeff4 = false;
 				coefficients = true;
 			}
 			else if (currentScreen == Screen::HOME)
@@ -267,7 +283,7 @@ void ModuleDebug::DebugDraw()
 	else if (variables)			{ bg = { 2,38,270,162 }; }
 
 	else if (worldRest)			{ bg = { 2,38,270,82 }; }
-	else if (coeff2)			{ bg = { 2,38,270,52 }; }
+	else if (trampolineRest)			{ bg = { 2,38,270,52 }; }
 	else if (coeff3)			{ bg = { 2,38,270,52 }; }
 	else if (coeff4)			{ bg = { 2,38,270,52 }; }
 
@@ -325,7 +341,7 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 60, 0, "PRESS A NUMBER TO OPEN ITS MENU");
 
 		App->fonts->BlitText(5, 80, 0, "1. WORLD RESTITUTION OPTIONS");
-		App->fonts->BlitText(5, 90, 0, "2. COEFF2");
+		App->fonts->BlitText(5, 90, 0, "2. TRAMPOLINES RESTITUTION OPTIONS");
 		App->fonts->BlitText(5, 100, 0, "3. COEFF3");
 		App->fonts->BlitText(5, 110, 0, "4. COEFF4");
 
@@ -396,12 +412,16 @@ void ModuleDebug::DebugDraw()
 
 		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
-	case Screen::COEFF2:
-		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 2 TEST");
+	case Screen::TRAMP_RESTITUTION:
+		App->fonts->BlitText(5, 40, 0, "TRAMPOLINR RESTITUTION OPTIONS");
 
-		App->fonts->BlitText(5, 60, 0, "NOTHING TO SEE HERE, GO BACK");
+		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
+		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
 
-		App->fonts->BlitText(5, 80, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 90, 0, "CURRENT COEFFICIENT");
+		App->fonts->BlitText(180, 90, 0, std::to_string(App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution()).c_str());
+
+		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 	case Screen::COEFF3:
 		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 3 TEST");

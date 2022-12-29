@@ -35,6 +35,11 @@ bool ModuleSceneIntro::Start()
 	trampoline1->body = newTrampoline;
 	newTrampoline->texture = App->textures->Load("Assets/Textures/trampoline.png");
 
+	Body* newTrampoline2 = new Body(PIXEL_TO_METERS(640), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, EntityType::TRAMPOLINE, 1.0f, 2.0f, 2.0f);
+	trampoline2 = new Trampoline();
+	trampoline2->body = newTrampoline2;
+	newTrampoline2->texture = App->textures->Load("Assets/Textures/trampoline.png");
+
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
 	// Physical objects
@@ -42,6 +47,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->world->AddBody(player);
 
 	App->physics->world->AddTrampoline(trampoline1, newTrampoline->GetPosition());
+	App->physics->world->AddTrampoline(trampoline2, newTrampoline2->GetPosition());
 
 	p2Point<float> force;
 	force.x = 0;
