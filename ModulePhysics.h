@@ -70,7 +70,7 @@ public:
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
 
-	void OnCollision(Body* otherBody);
+	virtual void OnCollision(Body* otherBody);
 
 public:
 
@@ -124,6 +124,15 @@ public:
 	~Projectile()
 	{
 	}
+
+	void OnCollision(Body* otherBody) {
+		if (otherBody->entityType == EntityType::WALL) {
+			LOG("PROJECTILE ON WALL");
+		}
+		else {
+			LOG("PROJECTILE ON COLLISION");
+		}
+	};
 };
 
 struct Trampoline {
@@ -168,6 +177,8 @@ public:
 	{
 
 	}
+
+	void OnCollision(Body* otherBody);
 };
 
 class World {
