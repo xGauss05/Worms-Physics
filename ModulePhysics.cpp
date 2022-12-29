@@ -8,7 +8,7 @@ Body::Body()
 
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
+Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -19,6 +19,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	this->mass = mass;
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
+	this->entityType = entityType;
 
 	localRestitution = 1.0f;
 
@@ -30,7 +31,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	externalForce.SetToZero();
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
+Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, EntityType entityType, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -40,6 +41,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float radius, Body
 	this->mass = mass;
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
+	this->entityType = entityType;
 
 	localRestitution = 1.0f;
 
@@ -160,6 +162,11 @@ void Body::Blit(SDL_Rect section) const
 			break;
 		}
 	}
+}
+
+void Body::OnCollision(Body* otherBody)
+{
+
 }
 
 // --------------------------
@@ -441,6 +448,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			LOG("Collision detected");
 			LOG("RECT COLLIDING RECT");
 			SeparateRectRect(bodyA, bodyB);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 	else if (bodyA->GetShape() == CIRCLE && bodyB->GetShape() == CIRCLE)
@@ -455,6 +464,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			distanceBalls.y = (bodyA->GetRadius() + bodyB->GetRadius() - abs(bodyA->position.y - bodyB->position.y)) * 0.5f;
 
 			SeparateCircleCircle(bodyA, bodyB, distanceBalls);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 
 		//Lets separate
@@ -473,6 +484,8 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 
 			LOG("Collision detected");
 			SeparateCircleRect(bodyA, bodyB, rectClosest);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 	else if (bodyA->GetShape() == RECTANGLE && bodyB->GetShape() == CIRCLE)
@@ -485,9 +498,10 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		if (distance < bodyB->GetRadius())
 		{
 
-
 			LOG("Collision detected");
 			SeparateCircleRect(bodyB, bodyA, rectClosest);
+			bodyA->OnCollision(bodyB);
+			bodyB->OnCollision(bodyA);
 		}
 	}
 }
@@ -554,19 +568,56 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 	//distanceToSeparateEveryCircle = (bodyA.radius + bodyB.radius - distance) / 2;
 	if (bodyA->GetType() != BodyType::DYNAMIC)
 	{
-		bodyB->position.x += distance.x;
-		bodyB->position.y += distance.y;
+		if (bodyA->position.x < bodyB->position.x) {
+			bodyB->position.x = bodyB->position.x + distance.y;
+
+			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+		}
+		else if (bodyA->position.x > bodyB->position.x) {
+			bodyB->position.x = bodyB->position.x - distance.y;
+
+			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+		}
+
+		if (bodyA->position.y < bodyB->position.y) {
+			bodyB->position.y = bodyB->position.y + distance.x;
+
+			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+		}
+		else if (bodyA->position.y > bodyB->position.y) {
+			bodyB->position.y = bodyB->position.y - distance.x;
+
+			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+		}
 	}
 	else if (bodyB->GetType() != BodyType::DYNAMIC) {
-		bodyA->position.x += distance.x;
-		bodyA->position.y += distance.y;
+		if (bodyA->position.x < bodyB->position.x) {
+			bodyA->position.x = bodyA->position.x - distance.y;
 
+			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+		}
+		else if (bodyA->position.x > bodyB->position.x) {
+			bodyA->position.x = bodyA->position.x + distance.y;
+
+			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+		}
+
+		if (bodyA->position.y < bodyB->position.y) {
+			bodyA->position.y = bodyA->position.y - distance.x;
+
+			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+		}
+		else if (bodyA->position.y > bodyB->position.y) {
+			bodyA->position.y = bodyA->position.y + distance.x;
+
+			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+		}
 	}
 	else {
 
 		if (bodyA->position.x < bodyB->position.x) {
-			bodyA->position.x = bodyA->position.x - (distance.x * 0.5f);
-			bodyB->position.x = bodyB->position.x + (distance.x * 0.5f);
+			bodyA->position.x = bodyA->position.x - (distance.y * 0.5f);
+			bodyB->position.x = bodyB->position.x + (distance.y * 0.5f);
 
 			float totalVelocityX = abs(bodyA->velocity.x + bodyB->velocity.x);
 
@@ -575,8 +626,8 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 
 		}
 		else if (bodyA->position.x > bodyB->position.x) {
-			bodyA->position.x = bodyA->position.x + (distance.x * 0.5f);
-			bodyB->position.x = bodyB->position.x - (distance.x * 0.5f);
+			bodyA->position.x = bodyA->position.x + (distance.y * 0.5f);
+			bodyB->position.x = bodyB->position.x - (distance.y * 0.5f);
 
 			float totalVelocityX = abs(bodyA->velocity.x + bodyB->velocity.x);
 
@@ -585,8 +636,8 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 		}
 
 		if (bodyA->position.y < bodyB->position.y) {
-			bodyA->position.y = bodyA->position.y - (distance.y * 0.5f);
-			bodyB->position.y = bodyB->position.y + (distance.y * 0.5f);
+			bodyA->position.y = bodyA->position.y - (distance.x * 0.5f);
+			bodyB->position.y = bodyB->position.y + (distance.x * 0.5f);
 
 			float totalVelocityY = abs(bodyA->velocity.y + bodyB->velocity.y);
 
@@ -594,8 +645,8 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 			bodyB->velocity.y = totalVelocityY * 0.5f;
 		}
 		else if (bodyA->position.y > bodyB->position.y) {
-			bodyA->position.y = bodyA->position.y + (distance.y * 0.5f);
-			bodyB->position.y = bodyB->position.y - (distance.y * 0.5f);
+			bodyA->position.y = bodyA->position.y + (distance.x * 0.5f);
+			bodyB->position.y = bodyB->position.y - (distance.x * 0.5f);
 
 			float totalVelocityY = abs(bodyA->velocity.y + bodyB->velocity.y);
 

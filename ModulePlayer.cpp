@@ -30,7 +30,16 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 
-	//App->textures->Unload(texture);
+	if (body != nullptr)
+	{
+		delete body;
+		body = nullptr;
+	}
+
+	if (ballTexture != nullptr)
+	{
+		App->textures->Unload(ballTexture);
+	}
 
 	return true;
 }
@@ -99,7 +108,7 @@ update_status ModulePlayer::Update()
 	// Shoot
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN)
 	{
-		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, 1.0f, 2.0f, 2.0f);
+		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, PROJECTILE, 1.0f, 2.0f, 2.0f);
 		newBall->texture = ballTexture;
 
 		int type1 = (rand() % (3 - 0 + 1)) + 0;
