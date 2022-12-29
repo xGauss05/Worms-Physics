@@ -31,11 +31,15 @@ bool ModuleSceneIntro::Start()
 	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, PLAYER, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
+	trampoline1 = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, TRAMPOLINE);
+	trampoline1->texture = App->textures->Load("Assets/Textures/trampoline.png");
+
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
 	// Physical objects
 	App->physics->world->AddBody(test1);
 	App->physics->world->AddBody(player);
+	App->physics->world->AddBody(trampoline1);
 
 	p2Point<float> force;
 	force.x = 0;
@@ -121,8 +125,10 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(glider, METERS_TO_PIXELS(App->player->body->position.x) - 25, METERS_TO_PIXELS(App->player->body->position.y));
 	}
 
+	trampoline1->Blit();
 	test1->Blit({ 0, 0, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
+	
 
 	App->physics->world->BlitProjectiles();
 	App->physics->world->UpdateProjectiles();

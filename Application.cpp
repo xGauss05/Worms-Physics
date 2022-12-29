@@ -8,6 +8,7 @@ Application::Application()
 	input = new ModuleInput();
 	audio = new ModuleAudio(true);
 	player = new ModulePlayer();
+	trampoline = new ModuleTrampoline();
 	scene_intro = new ModuleSceneIntro();
 	physics = new ModulePhysics();
 	debug = new ModuleDebug();
@@ -31,6 +32,7 @@ Application::Application()
 	
 	// Player
 	AddModule(player);
+	AddModule(trampoline);
 
 	AddModule(renderer);
 }
