@@ -332,16 +332,16 @@ void World::UpdateTrampoline()
 
 void World::AddBalloon(Balloon* balloon, p2Point<float> position)
 {
-	balloon->body->position = position;
+	balloon->position = position;
 	balloons.add(balloon);
-	bodies.add(balloon->body);
+	bodies.add(balloon);
 }
 
 void World::BlitBalloon()
 {
 	for (p2List_item<Balloon*>* b = balloons.getFirst(); b; b = b->next)
 	{
-		b->data->body->Blit(b->data->section);
+		b->data->Blit(b->data->section);
 	}
 }
 
