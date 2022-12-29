@@ -64,4 +64,5 @@ public:
 
 
 	SDL_Texture* background;
+
 };

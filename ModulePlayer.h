@@ -26,6 +26,9 @@ public:
 
 	bool withGlider = false;
 
+	// Projectile
+	SDL_Texture* ballTexture = nullptr;
+
 private:
 
 	float movementForce = 10.0f;

@@ -175,6 +175,7 @@ World::World(p2Point<float> g)
 World::~World()
 {
 	bodies.clear();
+	projectiles.clear();
 }
 
 void World::Step() {
@@ -233,7 +234,6 @@ void World::Step() {
 		}
 
 	}
-
 }
 
 p2Point<float> World::GetGravity()
@@ -251,7 +251,23 @@ void World::AddBody(Body* body)
 	bodies.add(body);
 }
 
-p2Point<float> World::CalculateGravityForce(Body* b) {
+void World::AddProjectile(Projectile* projectile, p2Point<float> position)
+{
+	projectile->body->position = position;
+	projectiles.add(projectile);
+	bodies.add(projectile->body);
+}
+
+void World::BlitProjectiles()
+{
+	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
+	{
+		b->data->body->Blit({ 0,32,16,16 });
+	}
+
+}
+p2Point<float> World::CalculateGravityForce(Body* b)
+{
 
 	p2Point<float> force;
 	force.x = gravity.x * b->GetMass();
@@ -384,7 +400,7 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 			bodyA->position.y + bodyA->GetHeight() > bodyB->position.y
 			)
 		{
-			
+
 			LOG("Collision detected");
 			LOG("RECT COLLIDING RECT");
 			SeparateRectRect(bodyA, bodyB);
@@ -431,7 +447,7 @@ void World::SolveCollisions(Body* bodyA, Body* bodyB)
 		float distance = bodyB->GetPosition().DistanceTo(rectClosest);
 		if (distance < bodyB->GetRadius())
 		{
-			
+
 
 			LOG("Collision detected");
 			SeparateCircleRect(bodyB, bodyA, rectClosest);
@@ -454,7 +470,7 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 
 		if (abs(dist.x) > 0) {
 			if (bodyC->position.y > bodyR->position.y &&
-				bodyC->position.y < bodyR->position.y + bodyR->GetHeight()) 
+				bodyC->position.y < bodyR->position.y + bodyR->GetHeight())
 			{
 				if (dist.x > 0)
 				{
@@ -462,7 +478,7 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 					bodyC->velocity.x = -bodyC->velocity.x * dampening;
 
 				}
-				else if (dist.x < 0) 
+				else if (dist.x < 0)
 				{
 					bodyC->position.x = bodyC->position.x + bodyC->GetRadius() + dist.x;
 					bodyC->velocity.x = -bodyC->velocity.x * dampening;
@@ -629,12 +645,12 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 	else if (bodyB->GetType() != DYNAMIC)
 	{
 		p2Point<float> rectClosest;
-		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x + bodyA->GetWidth()/2, bodyB->GetPosition().x + bodyB->GetWidth()));
-		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y + bodyA->GetHeight()/2, bodyB->GetPosition().y + bodyB->GetHeight()));
+		rectClosest.x = max(bodyB->GetPosition().x, min(bodyA->GetPosition().x + bodyA->GetWidth() / 2, bodyB->GetPosition().x + bodyB->GetWidth()));
+		rectClosest.y = max(bodyB->GetPosition().y, min(bodyA->GetPosition().y + bodyA->GetHeight() / 2, bodyB->GetPosition().y + bodyB->GetHeight()));
 
 		p2Point<float> dist;
-		dist.x = rectClosest.x - (bodyA->position.x + bodyA->GetWidth()/2); //Point to center of the rectangle
-		dist.y = rectClosest.y - (bodyA->position.y + bodyA->GetHeight()/2); //Point to center of the rectangle
+		dist.x = rectClosest.x - (bodyA->position.x + bodyA->GetWidth() / 2); //Point to center of the rectangle
+		dist.y = rectClosest.y - (bodyA->position.y + bodyA->GetHeight() / 2); //Point to center of the rectangle
 
 		if (abs(dist.x) > 0)
 		{
@@ -680,7 +696,7 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 			//From the top and outside
 			else if (dist.y > 0 && (bodyA->position.y + bodyA->GetHeight() / 2) < bodyB->position.y)
 			{
-				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight()/2 - dist.y);
+				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight() / 2 - dist.y);
 				bodyA->velocity.y = -bodyA->velocity.y * dampening;
 			}
 			//From the bottom and is outside
