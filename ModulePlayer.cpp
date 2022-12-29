@@ -3,7 +3,7 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "p2Point.h"
-
+#include <time.h>
 ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 {
 
@@ -21,7 +21,6 @@ bool ModulePlayer::Start()
 	body = App->scene_intro->player;
 	
 	ballTexture = App->textures->Load("Assets/Textures/objects.png");
-	
 	
 	return true;
 }
@@ -102,7 +101,9 @@ update_status ModulePlayer::Update()
 	{	
 		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, 1.0f, 2.0f, 2.0f);
 		newBall->texture = ballTexture;
-		Projectile* newProjectile = new Projectile();
+		int type1 = (rand() % (3 - 0 + 1)) + 0;
+		int type2 = (rand() % (1 - 0 + 1)) + 0;
+		Projectile* newProjectile = new Projectile(type1, type2);
 		newProjectile->body = newBall;
 
 		p2Point<float> force, position;

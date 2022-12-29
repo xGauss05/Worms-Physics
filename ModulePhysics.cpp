@@ -262,7 +262,7 @@ void World::BlitProjectiles()
 {
 	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
 	{
-		b->data->body->Blit({ 0,32,16,16 });
+		b->data->body->Blit(b->data->section);
 	}
 }
 

@@ -84,10 +84,12 @@ struct Projectile {
 	Body* body;
 	int lifetime;
 	bool isAlive;
+	SDL_Rect section;
 
-	Projectile() : body(nullptr), lifetime(100), isAlive(true)
+	Projectile(int type1, int type2) : body(nullptr), lifetime(100), isAlive(true)
 	{
-		// fuck you
+
+		section = { 0 + 16 * type1,32 + 0 * type2,16,16 };
 	}
 
 	~Projectile()

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
-
+#include <time.h>
 #include <thread>
 #include <chrono>
 using namespace std::chrono;
@@ -24,7 +24,7 @@ Application* App = NULL;
 int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
-
+	srand(time(NULL));
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
 
