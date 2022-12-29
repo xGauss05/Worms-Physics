@@ -15,7 +15,7 @@ enum class Screen
 	INTEGRATION,
 	VARIABLES,
 
-	COEFF1,
+	WORLD_RESTITUTION,
 	COEFF2,
 	COEFF3,
 	COEFF4,
@@ -65,7 +65,7 @@ private:
 	bool integration = false;
 	bool variables = false;
 
-	bool coeff1 = false;
+	bool worldRest = false;
 	bool coeff2 = false;
 	bool coeff3 = false;
 	bool coeff4 = false;

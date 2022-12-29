@@ -48,6 +48,7 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && targetFPS < 120)
 				targetFPS += 10;
+
 			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && targetFPS > 10)
 				targetFPS -= 10;
 		}
@@ -94,7 +95,7 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
-				coeff1 = true;
+				worldRest = true;
 				coefficients = false;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
@@ -154,9 +155,15 @@ update_status ModuleDebug::Update()
 		
 		if (variables == true) currentScreen = Screen::VARIABLES;
 		
-		if (coeff1 == true)
+		if (worldRest == true)
 		{
-			currentScreen = Screen::COEFF1;
+			currentScreen = Screen::WORLD_RESTITUTION;
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && App->physics->world->globalRestitution < 2.0f)
+				App->physics->world->globalRestitution += 0.1f;
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->globalRestitution > 0.0f)
+				App->physics->world->globalRestitution -= 0.1f;
 		}
 		if (coeff2 == true)
 		{
@@ -174,11 +181,11 @@ update_status ModuleDebug::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
-			if (currentScreen == Screen::COEFF1 || currentScreen == Screen::COEFF2 || 
+			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::COEFF2 || 
 				currentScreen == Screen::COEFF3 || currentScreen == Screen::COEFF4)
 			{
 				currentScreen = Screen::COEFFICIENTS;
-				coeff1 = false; coeff2 = false; coeff3 = false; coeff4 = false;
+				worldRest = false; coeff2 = false; coeff3 = false; coeff4 = false;
 				coefficients = true;
 			}
 			else if (currentScreen == Screen::HOME)
@@ -259,7 +266,7 @@ void ModuleDebug::DebugDraw()
 	else if (integration)		{ bg = { 2,38,270,82 }; }
 	else if (variables)			{ bg = { 2,38,270,162 }; }
 
-	else if (coeff1)			{ bg = { 2,38,270,52 }; }
+	else if (worldRest)			{ bg = { 2,38,270,82 }; }
 	else if (coeff2)			{ bg = { 2,38,270,52 }; }
 	else if (coeff3)			{ bg = { 2,38,270,52 }; }
 	else if (coeff4)			{ bg = { 2,38,270,52 }; }
@@ -317,7 +324,7 @@ void ModuleDebug::DebugDraw()
 
 		App->fonts->BlitText(5, 60, 0, "PRESS A NUMBER TO OPEN ITS MENU");
 
-		App->fonts->BlitText(5, 80, 0, "1. COEFF1");
+		App->fonts->BlitText(5, 80, 0, "1. WORLD RESTITUTION OPTIONS");
 		App->fonts->BlitText(5, 90, 0, "2. COEFF2");
 		App->fonts->BlitText(5, 100, 0, "3. COEFF3");
 		App->fonts->BlitText(5, 110, 0, "4. COEFF4");
@@ -378,12 +385,16 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 190, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
-	case Screen::COEFF1:
-		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 1 TEST");
+	case Screen::WORLD_RESTITUTION:
+		App->fonts->BlitText(5, 40, 0, "WORLD RESTITUTION OPTIONS");
 
-		App->fonts->BlitText(5, 60, 0, "NOTHING TO SEE HERE, GO BACK");
+		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
+		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
 
-		App->fonts->BlitText(5, 80, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 90, 0, "CURRENT COEFFICIENT");
+		App->fonts->BlitText(180, 90, 0, std::to_string(App->physics->world->globalRestitution).c_str());
+
+		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 	case Screen::COEFF2:
 		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 2 TEST");
