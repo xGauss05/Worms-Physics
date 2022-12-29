@@ -8,7 +8,7 @@ Body::Body()
 
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass, float dragSurface)
+Body::Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -17,7 +17,8 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	this->height = height;
 	this->type = type;
 	this->mass = mass;
-	this->dragSurface = dragSurface;
+	this->dragSurface.x = dragSurfaceX;
+	this->dragSurface.y = dragSurfaceY;
 
 	radius = 0.0f;
 
@@ -27,7 +28,7 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	externalForce.SetToZero();
 }
 
-Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass, float dragSurface)
+Body::Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass, float dragSurfaceX, float dragSurfaceY)
 {
 	this->position.x = positionX;
 	this->position.y = positionY;
@@ -35,11 +36,11 @@ Body::Body(float positionX, float positionY, BodyShape shape, float radius, Body
 	this->radius = radius;
 	this->type = type;
 	this->mass = mass;
-	this->dragSurface = dragSurface;
+	this->dragSurface.x = dragSurfaceX;
+	this->dragSurface.y = dragSurfaceY;
 
 	width = 0.0f;
 	height = 0.0f;
-
 
 	velocity.SetToZero();
 	acceleration.SetToZero();
@@ -80,7 +81,7 @@ float Body::GetMass() const
 	return mass;
 }
 
-float Body::GetDragSurface() const
+p2Point<float> Body::GetDragSurface() const
 {
 	return dragSurface;
 }
@@ -100,7 +101,13 @@ void Body::ApplyExternalForce(p2Point<float> f)
 	externalForce += f;
 }
 
-void Body::SetDragSurface(float dragSurface)
+void Body::SetDragSurface(float dragSurfaceX, float dragSurfaceY)
+{
+	this->dragSurface.x = dragSurfaceX;
+	this->dragSurface.y = dragSurfaceY;
+}
+
+void Body::SetDragSurface(p2Point<float> dragSurface)
 {
 	this->dragSurface = dragSurface;
 }
@@ -253,7 +260,7 @@ p2Point<float> World::CalculateLiftForce(Body* b) {
 	}
 
 	force.x = 0;
-	force.y = 0.5f * density * velSquaredY * b->GetDragSurface() * constantLift;
+	force.y = 0.5f * density * velSquaredY * b->GetDragSurface().y * constantLift;
 
 	return force;
 }
@@ -277,8 +284,8 @@ p2Point<float> World::CalculateDragForce(Body* b) {
 		velSquared.y = -velSquared.y;
 	}
 
-	force.x = 0.5f * density * velSquared.x * b->GetDragSurface() * constantDrag;
-	force.y = 0.5f * density * velSquared.y * b->GetDragSurface() * constantDrag;
+	force.x = 0.5f * density * velSquared.x * b->GetDragSurface().x * constantDrag;
+	force.y = 0.5f * density * velSquared.y * b->GetDragSurface().y * constantDrag;
 
 	return force;
 }

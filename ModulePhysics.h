@@ -33,8 +33,8 @@ class Body
 public:
 
 	Body();
-	Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass = 1.0f, float dragSurface = 1.0f);
-	Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass = 1.0f, float dragSurface = 1.0f);
+	Body(float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
+	Body(float positionX, float positionY, BodyShape shape, float radius, BodyType type, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f);
 	~Body();
 
 	p2Point<float> GetPosition() const;
@@ -44,14 +44,16 @@ public:
 	float GetRadius() const;
 
 	float GetMass() const;
-	float GetDragSurface() const;
+	p2Point<float> GetDragSurface() const;
 
 	BodyShape GetShape() const;
 	BodyType GetType() const;
 
 	void ApplyExternalForce(p2Point<float> f);
 
-	void SetDragSurface(float dragSurface);
+	void SetDragSurface(float dragSurfaceX, float dragSurfaceY);
+	void SetDragSurface(p2Point<float> dragSurface);
+
 
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
@@ -72,7 +74,7 @@ private:
 	float width, height, radius;
 
 	float mass;
-	float dragSurface;
+	p2Point<float> dragSurface;
 
 	BodyShape shape;
 	BodyType type;

@@ -106,14 +106,13 @@ update_status ModulePlayer::Update()
 	// drag surface change
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_STATE::KEY_DOWN) {
 		if (withGlider) {
-			body->SetDragSurface(2.0f);
+			body->SetDragSurface(2.0f, 2.0f);
 			withGlider = false;
 		}
 		else {
-			body->SetDragSurface(200.0f);
+			body->SetDragSurface(2.0f, 200.0f);
 			withGlider = true;
 		}
-
 	}
 
 	return UPDATE_CONTINUE;
