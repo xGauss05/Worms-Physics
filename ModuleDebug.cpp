@@ -27,7 +27,8 @@ bool ModuleDebug::Start()
 	debug = false;
 
 	//font = App->fonts->Load("Assets/Textures/font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!- ", 1);
-	font = App->fonts->Load("Assets/Textures/font1.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-() ", 1);
+	//font = App->fonts->Load("Assets/Textures/font1.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-() ", 1);
+	font = App->fonts->Load("Assets/Textures/font2.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-(): ", 1);
 	
 	return true;
 }
@@ -114,6 +115,42 @@ update_status ModuleDebug::Update()
 
 			currentScreen = Screen::COEFFICIENTS;
 		}
+
+		if (integration == true)
+		{
+			currentScreen = Screen::INTEGRATION;
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+			{
+				if (App->physics->world->integrationMethod == FORWARD_EULER)
+				{
+					App->physics->world->integrationMethod = VERLET;
+				}
+				else if (App->physics->world->integrationMethod == BACKWARD_EULER)
+				{
+					App->physics->world->integrationMethod = FORWARD_EULER;
+				}
+				else if (App->physics->world->integrationMethod == VERLET)
+				{
+					App->physics->world->integrationMethod = BACKWARD_EULER;
+				}
+			}
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+			{
+				if (App->physics->world->integrationMethod == FORWARD_EULER)
+				{
+					App->physics->world->integrationMethod = BACKWARD_EULER;
+				}
+				else if (App->physics->world->integrationMethod == BACKWARD_EULER)
+				{
+					App->physics->world->integrationMethod = VERLET;
+				}
+				else if (App->physics->world->integrationMethod == VERLET)
+				{
+					App->physics->world->integrationMethod = FORWARD_EULER;
+				}
+			}
+		}
 		
 		if (variables == true) currentScreen = Screen::VARIABLES;
 		
@@ -151,7 +188,7 @@ update_status ModuleDebug::Update()
 			else
 			{
 				currentScreen = Screen::HOME;
-				timeScreen = false; gravity = false; coefficients = false; variables = false;
+				timeScreen = false; gravity = false; coefficients = false; integration = false; variables = false;
 			}
 		}
 
@@ -163,7 +200,9 @@ update_status ModuleDebug::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) coefficients = true;
 
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) variables = true;
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) integration = true;
+
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) variables = true;
 		}
 
 		#pragma endregion
@@ -215,8 +254,9 @@ void ModuleDebug::DebugDraw()
 	//This draws all the debug menu screens
 	SDL_Rect bg;
 	if (timeScreen)				{ bg = { 2,38,270,92 }; }
-	else if (gravity)			{ bg = { 2,38,270,102 }; }
+	else if (gravity)			{ bg = { 2,38,270,82 }; }
 	else if (coefficients)		{ bg = { 2,38,270,102 }; }
+	else if (integration)		{ bg = { 2,38,270,82 }; }
 	else if (variables)			{ bg = { 2,38,270,162 }; }
 
 	else if (coeff1)			{ bg = { 2,38,270,52 }; }
@@ -224,7 +264,7 @@ void ModuleDebug::DebugDraw()
 	else if (coeff3)			{ bg = { 2,38,270,52 }; }
 	else if (coeff4)			{ bg = { 2,38,270,52 }; }
 
-	else						{ bg = { 2,38,270,82 }; }
+	else						{ bg = { 2,38,270,92 }; }
 	App->renderer->DrawQuad(bg, 0, 0, 0, 125, true);
 
 	switch (currentScreen)
@@ -235,9 +275,10 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 60, 0, "1. TIME OPTIONS");
 		App->fonts->BlitText(5, 70, 0, "2. GRAVITY OPTIONS");
 		App->fonts->BlitText(5, 80, 0, "3. COEFFICIENT OPTIONS");
-		App->fonts->BlitText(5, 90, 0, "4. SHOW VARIABLES");
+		App->fonts->BlitText(5, 90, 0, "4. INTEGRATOR OPTIONS");
+		App->fonts->BlitText(5, 100, 0, "5. SHOW VARIABLES");
 
-		App->fonts->BlitText(5, 110, 0, "PRESS F1 OR BACKSPACE TO CLOSE");
+		App->fonts->BlitText(5, 120, 0, "PRESS F1 OR BACKSPACE TO CLOSE");
 		break;
 		
 	case Screen::TIME:
@@ -265,12 +306,10 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
 		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
 
-		App->fonts->BlitText(5, 90, 0, "NOT IMPLEMENTED YET");
+		App->fonts->BlitText(5, 90, 0, "GRAVITY ");
+		App->fonts->BlitText(120, 90, 0, std::to_string(App->physics->world->GetGravity().y).c_str());
 
-		App->fonts->BlitText(5, 110, 0, "GRAVITY ");
-		App->fonts->BlitText(120, 110, 0, std::to_string(App->physics->world->GetGravity().y).c_str());
-
-		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::COEFFICIENTS:
@@ -284,6 +323,32 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 110, 0, "4. COEFF4");
 
 		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
+		break;
+
+	case Screen::INTEGRATION:
+		App->fonts->BlitText(5, 40, 0, "INTEGRATOR OPTIONS");
+
+		App->fonts->BlitText(5, 60, 0, "PRESS UP OR DOWN ARROW TO");
+		App->fonts->BlitText(5, 70, 0, "CHANGE INTEGRATION METHOD");
+
+		App->fonts->BlitText(5, 90, 0, "CURRENT METHOD:");
+		switch (App->physics->world->integrationMethod)
+		{
+		case VERLET:
+			App->fonts->BlitText(130, 90, 0, "VERLET");
+			break;
+		case FORWARD_EULER:
+			App->fonts->BlitText(130, 90, 0, "FORWARDS EULER");
+			break;
+		case BACKWARD_EULER:
+			App->fonts->BlitText(130, 90, 0, "BACKWARDS EULER");
+			break;
+		default:
+			App->fonts->BlitText(130, 90, 0, "ERROR");
+			break;
+		}
+
+		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::VARIABLES:

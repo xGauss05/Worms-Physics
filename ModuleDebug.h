@@ -12,6 +12,7 @@ enum class Screen
 	TIME,
 	GRAVITY,
 	COEFFICIENTS,
+	INTEGRATION,
 	VARIABLES,
 
 	COEFF1,
@@ -61,6 +62,7 @@ private:
 	bool timeScreen = false;
 	bool gravity = false;
 	bool coefficients = false;
+	bool integration = false;
 	bool variables = false;
 
 	bool coeff1 = false;
