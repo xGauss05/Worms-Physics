@@ -45,6 +45,7 @@ public:
 
 	float GetMass() const;
 	p2Point<float> GetDragSurface() const;
+	float GetLocalRestitution() const;
 
 	BodyShape GetShape() const;
 	BodyType GetType() const;
@@ -54,6 +55,7 @@ public:
 	void SetDragSurface(float dragSurfaceX, float dragSurfaceY);
 	void SetDragSurface(p2Point<float> dragSurface);
 
+	void SetLocalRestitution(float restitutionCoeff);
 
 	void Blit() const;
 	void Blit(SDL_Rect section) const;
@@ -75,6 +77,8 @@ private:
 
 	float mass;
 	p2Point<float> dragSurface;
+
+	float localRestitution;
 
 	BodyShape shape;
 	BodyType type;
@@ -138,7 +142,7 @@ private:
 
 	float density;
 
-	float dampening;
+	float globalRestitution;
 
 	IntegrationMethod integrationMethod = VERLET;
 

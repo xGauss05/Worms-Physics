@@ -20,6 +20,8 @@ Body::Body(float positionX, float positionY, BodyShape shape, float width, float
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
 
+	localRestitution = 1.0f;
+
 	radius = 0.0f;
 
 	velocity.SetToZero();
@@ -38,6 +40,8 @@ Body::Body(float positionX, float positionY, BodyShape shape, float radius, Body
 	this->mass = mass;
 	this->dragSurface.x = dragSurfaceX;
 	this->dragSurface.y = dragSurfaceY;
+
+	localRestitution = 1.0f;
 
 	width = 0.0f;
 	height = 0.0f;
@@ -86,6 +90,11 @@ p2Point<float> Body::GetDragSurface() const
 	return dragSurface;
 }
 
+float Body::GetLocalRestitution() const
+{
+	return localRestitution;
+}
+
 BodyShape Body::GetShape() const
 {
 	return shape;
@@ -110,6 +119,11 @@ void Body::SetDragSurface(float dragSurfaceX, float dragSurfaceY)
 void Body::SetDragSurface(p2Point<float> dragSurface)
 {
 	this->dragSurface = dragSurface;
+}
+
+void Body::SetLocalRestitution(float restitutionCoeff)
+{
+	localRestitution = restitutionCoeff;
 }
 
 void Body::Blit() const
@@ -157,7 +171,7 @@ World::World()
 
 	density = 1.293f;
 
-	dampening = 0.8f;
+	globalRestitution = 0.8f;
 
 	dt = 0.0f;
 }
@@ -498,13 +512,13 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 				if (dist.x > 0)
 				{
 					bodyC->position.x = bodyC->position.x - bodyC->GetRadius() + dist.x;
-					bodyC->velocity.x = -bodyC->velocity.x * dampening;
+					bodyC->velocity.x = -bodyC->velocity.x * globalRestitution * bodyR->GetLocalRestitution();
 
 				}
 				else if (dist.x < 0)
 				{
 					bodyC->position.x = bodyC->position.x + bodyC->GetRadius() + dist.x;
-					bodyC->velocity.x = -bodyC->velocity.x * dampening;
+					bodyC->velocity.x = -bodyC->velocity.x * globalRestitution * bodyR->GetLocalRestitution();
 
 				}
 			}
@@ -517,12 +531,12 @@ void World::SeparateCircleRect(Body* bodyC, Body* bodyR, p2Point<float> rectClos
 				if (dist.y > 0)
 				{
 					bodyC->position.y = bodyC->position.y - bodyC->GetRadius() + dist.y;
-					bodyC->velocity.y = -bodyC->velocity.y * dampening;
+					bodyC->velocity.y = -bodyC->velocity.y * globalRestitution * bodyR->GetLocalRestitution();
 				}
 				else if (dist.y < 0)
 				{
 					bodyC->position.y = bodyC->position.y + bodyC->GetRadius() + dist.y;
-					bodyC->velocity.y = -bodyC->velocity.y * dampening;
+					bodyC->velocity.y = -bodyC->velocity.y * globalRestitution * bodyR->GetLocalRestitution();
 
 				}
 			}
@@ -616,25 +630,25 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 			if (dist.x < 0 && (bodyB->position.x + bodyB->GetWidth() / 2) < bodyA->position.x + bodyA->GetWidth())
 			{
 				bodyB->position.x = bodyB->position.x - (bodyB->GetWidth() / 2 + dist.x);
-				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+				bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the left and is outside
 			else if (dist.x > 0 && (bodyB->position.x + bodyB->GetWidth() / 2) < bodyA->position.x)
 			{
 				bodyB->position.x = bodyB->position.x - (bodyB->GetWidth() / 2 - dist.x);
-				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+				bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the right and outside
 			else if (dist.x < 0 && (bodyB->position.x + bodyB->GetWidth() / 2) > bodyA->position.x + bodyA->GetWidth())
 			{
 				bodyB->position.x = bodyB->position.x + (bodyB->GetWidth() / 2 + dist.x);
-				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+				bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the right and inside
 			else if (dist.x > 0 && (bodyB->position.x + bodyB->GetWidth() / 2) > bodyA->position.x)
 			{
 				bodyB->position.x = bodyB->position.x + (bodyB->GetWidth() / 2 + dist.x);
-				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+				bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
 			}
 		}
 		if (abs(dist.y) > 0)
@@ -643,25 +657,25 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 			if (dist.y > 0 && (bodyB->position.y + bodyB->GetHeight() / 2) > bodyA->position.y)
 			{
 				bodyB->position.y = bodyB->position.y + (bodyB->GetHeight() / 2 - dist.y);
-				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+				bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the top and is inside
 			else if (dist.y < 0 && (bodyB->position.y + bodyB->GetHeight() / 2) < bodyA->position.y + bodyA->GetHeight())
 			{
 				bodyB->position.y = bodyB->position.y - (bodyB->GetHeight() / 2 + dist.y);
-				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+				bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the top and outside
 			else if (dist.y > 0 && (bodyB->position.y + bodyB->GetHeight() / 2) < bodyA->position.y)
 			{
 				bodyB->position.y = bodyB->position.y - (bodyB->GetHeight() / 2 - dist.y);
-				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+				bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
 			}
 			//From the bottom and is outside
 			else if (dist.y < 0 && (bodyB->position.y + bodyB->GetHeight() / 2) > bodyA->position.y + bodyA->GetHeight())
 			{
 				bodyB->position.y = bodyB->position.y + (bodyB->GetHeight() / 2 + dist.y);
-				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+				bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
 			}
 		}
 	}
@@ -681,25 +695,25 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 			if (dist.x < 0 && (bodyA->position.x + bodyA->GetWidth() / 2) < bodyB->position.x + bodyB->GetWidth())
 			{
 				bodyA->position.x = bodyA->position.x - (bodyA->GetWidth() / 2 + dist.x);
-				bodyA->velocity.x = -bodyA->velocity.x * dampening;
+				bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the left and is outside
 			else if (dist.x > 0 && (bodyA->position.x + bodyA->GetWidth() / 2) < bodyB->position.x)
 			{
 				bodyA->position.x = bodyA->position.x - (bodyA->GetWidth() / 2 - dist.x);
-				bodyA->velocity.x = -bodyA->velocity.x * dampening;
+				bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the right and outside
 			else if (dist.x < 0 && (bodyA->position.x + bodyA->GetWidth() / 2) > bodyB->position.x + bodyB->GetWidth())
 			{
 				bodyA->position.x = bodyA->position.x + (bodyA->GetWidth() / 2 + dist.x);
-				bodyA->velocity.x = -bodyA->velocity.x * dampening;
+				bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the right and inside
 			else if (dist.x > 0 && (bodyA->position.x + bodyA->GetWidth() / 2) > bodyB->position.x)
 			{
 				bodyA->position.x = bodyA->position.x + (bodyA->GetWidth() / 2 + dist.x);
-				bodyA->velocity.x = -bodyA->velocity.x * dampening;
+				bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
 			}
 		}
 		if (abs(dist.y) > 0)
@@ -708,25 +722,25 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 			if (dist.y > 0 && (bodyA->position.y + bodyA->GetHeight() / 2) > bodyB->position.y)
 			{
 				bodyA->position.y = bodyA->position.y + (bodyA->GetHeight() / 2 - dist.y);
-				bodyA->velocity.y = -bodyA->velocity.y * dampening;
+				bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the top and is inside
 			else if (dist.y < 0 && (bodyA->position.y + bodyA->GetHeight() / 2) < bodyB->position.y + bodyB->GetHeight())
 			{
 				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight() / 2 + dist.y);
-				bodyA->velocity.y = -bodyA->velocity.y * dampening;
+				bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the top and outside
 			else if (dist.y > 0 && (bodyA->position.y + bodyA->GetHeight() / 2) < bodyB->position.y)
 			{
 				bodyA->position.y = bodyA->position.y - (bodyA->GetHeight() / 2 - dist.y);
-				bodyA->velocity.y = -bodyA->velocity.y * dampening;
+				bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
 			}
 			//From the bottom and is outside
 			else if (dist.y < 0 && (bodyA->position.y + bodyA->GetHeight() / 2) > bodyB->position.y + bodyB->GetHeight())
 			{
 				bodyA->position.y = bodyA->position.y + (bodyA->GetHeight() / 2 + dist.y);
-				bodyA->velocity.y = -bodyA->velocity.y * dampening;
+				bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
 			}
 		}
 	}
