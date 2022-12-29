@@ -563,7 +563,68 @@ void World::SeparateRectRect(Body* bodyA, Body* bodyB)
 {
 	if (bodyA->GetType() != DYNAMIC)
 	{
+		p2Point<float> rectClosest;
+		rectClosest.x = max(bodyA->GetPosition().x, min(bodyB->GetPosition().x + bodyB->GetWidth() / 2, bodyA->GetPosition().x + bodyA->GetWidth()));
+		rectClosest.y = max(bodyA->GetPosition().y, min(bodyB->GetPosition().y + bodyB->GetHeight() / 2, bodyA->GetPosition().y + bodyA->GetHeight()));
 
+		p2Point<float> dist;
+		dist.x = rectClosest.x - (bodyB->position.x + bodyB->GetWidth() / 2); //Point to center of the rectangle
+		dist.y = rectClosest.y - (bodyB->position.y + bodyB->GetHeight() / 2); //Point to center of the rectangle
+
+		if (abs(dist.x) > 0)
+		{
+			//From the left and is inside
+			if (dist.x < 0 && (bodyB->position.x + bodyB->GetWidth() / 2) < bodyA->position.x + bodyA->GetWidth())
+			{
+				bodyB->position.x = bodyB->position.x - (bodyB->GetWidth() / 2 + dist.x);
+				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+			}
+			//From the left and is outside
+			else if (dist.x > 0 && (bodyB->position.x + bodyB->GetWidth() / 2) < bodyA->position.x)
+			{
+				bodyB->position.x = bodyB->position.x - (bodyB->GetWidth() / 2 - dist.x);
+				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+			}
+			//From the right and outside
+			else if (dist.x < 0 && (bodyB->position.x + bodyB->GetWidth() / 2) > bodyA->position.x + bodyA->GetWidth())
+			{
+				bodyB->position.x = bodyB->position.x + (bodyB->GetWidth() / 2 + dist.x);
+				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+			}
+			//From the right and inside
+			else if (dist.x > 0 && (bodyB->position.x + bodyB->GetWidth() / 2) > bodyA->position.x)
+			{
+				bodyB->position.x = bodyB->position.x + (bodyB->GetWidth() / 2 + dist.x);
+				bodyB->velocity.x = -bodyB->velocity.x * dampening;
+			}
+		}
+		if (abs(dist.y) > 0)
+		{
+			//From the bottom and is inside
+			if (dist.y > 0 && (bodyB->position.y + bodyB->GetHeight() / 2) > bodyA->position.y)
+			{
+				bodyB->position.y = bodyB->position.y + (bodyB->GetHeight() / 2 - dist.y);
+				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+			}
+			//From the top and is inside
+			else if (dist.y < 0 && (bodyB->position.y + bodyB->GetHeight() / 2) < bodyA->position.y + bodyA->GetHeight())
+			{
+				bodyB->position.y = bodyB->position.y - (bodyB->GetHeight() / 2 + dist.y);
+				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+			}
+			//From the top and outside
+			else if (dist.y > 0 && (bodyB->position.y + bodyB->GetHeight() / 2) < bodyA->position.y)
+			{
+				bodyB->position.y = bodyB->position.y - (bodyB->GetHeight() / 2 - dist.y);
+				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+			}
+			//From the bottom and is outside
+			else if (dist.y < 0 && (bodyB->position.y + bodyB->GetHeight() / 2) > bodyA->position.y + bodyA->GetHeight())
+			{
+				bodyB->position.y = bodyB->position.y + (bodyB->GetHeight() / 2 + dist.y);
+				bodyB->velocity.y = -bodyB->velocity.y * dampening;
+			}
+		}
 	}
 	else if (bodyB->GetType() != DYNAMIC)
 	{
