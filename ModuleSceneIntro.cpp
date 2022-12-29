@@ -31,7 +31,7 @@ bool ModuleSceneIntro::Start()
 	player = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 
-	glider = App->textures->Load("Assets/Textures/glider.png");
+	glider = App->textures->Load("Assets/Textures/plane.png");
 
 	App->physics->world->AddBody(test1);
 	App->physics->world->AddBody(player);
@@ -117,7 +117,7 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->player->withGlider)
 	{
-		App->renderer->Blit(glider, METERS_TO_PIXELS(App->player->body->position.x) - 32, METERS_TO_PIXELS(App->player->body->position.y) - 48);
+		App->renderer->Blit(glider, METERS_TO_PIXELS(App->player->body->position.x) - 25, METERS_TO_PIXELS(App->player->body->position.y));
 	}
 
 	test1->Blit({ 0, 0, 32, 32 });
