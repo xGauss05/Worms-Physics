@@ -108,8 +108,8 @@ public:
 	p2Point<float> GetGravity();
 	void SetGravity(p2Point<float> g);
 	void AddBody(Body* body);
-	void AddProjectile(Projectile* projectile);
-
+	void AddProjectile(Projectile* projectile, p2Point<float> position);
+	void BlitProjectiles();
 	void Step();
 
 

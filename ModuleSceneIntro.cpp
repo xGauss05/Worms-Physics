@@ -33,12 +33,6 @@ bool ModuleSceneIntro::Start()
 
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
-	// Projectile
-	ball = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, 1.0f, 2.0f, 2.0f);
-	ball->texture = App->textures->Load("Assets/Textures/objects.png");
-	projectile = new Projectile();
-	projectile->body = ball;
-
 	// Physical objects
 	App->physics->world->AddBody(test1);
 	App->physics->world->AddBody(player);
@@ -129,6 +123,8 @@ update_status ModuleSceneIntro::Update()
 
 	test1->Blit({ 0, 0, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
+
+	App->physics->world->BlitProjectiles();
 
 	return UPDATE_CONTINUE;
 }

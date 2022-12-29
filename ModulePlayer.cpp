@@ -19,6 +19,10 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	body = App->scene_intro->player;
+	
+	ballTexture = App->textures->Load("Assets/Textures/objects.png");
+	
+	
 	return true;
 }
 
@@ -96,7 +100,53 @@ update_status ModulePlayer::Update()
 	// Shoot
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_STATE::KEY_DOWN) 
 	{	
-		App->physics->world->AddProjectile(App->scene_intro->projectile);
+		Body* newBall = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(8), DYNAMIC, 1.0f, 2.0f, 2.0f);
+		newBall->texture = ballTexture;
+		Projectile* newProjectile = new Projectile();
+		newProjectile->body = newBall;
+
+		p2Point<float> force, position;
+		force.SetToZero();
+		position.SetToZero();
+
+		// Shoot left
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_REPEAT) 
+		{
+			force.x = -450.0f;
+			force.y = -200.0f;
+
+			position.x = body->position.x - PIXEL_TO_METERS(30);
+			position.y = body->position.y - PIXEL_TO_METERS(30);
+
+			App->physics->world->AddProjectile(newProjectile, position);
+			newBall->ApplyExternalForce(force);
+		}
+
+		// Shoot right
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_REPEAT) 
+		{
+			force.x = 450.0f;
+			force.y = -200.0f;
+
+			position.x = body->position.x + PIXEL_TO_METERS(30);
+			position.y = body->position.y - PIXEL_TO_METERS(30);
+
+			App->physics->world->AddProjectile(newProjectile, position);
+			newBall->ApplyExternalForce(force);
+		}
+
+		// Shoot idle
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_IDLE &&
+			App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE) {
+			force.x = 0.0f;
+			force.y = -450.0f;
+
+			position.x = body->position.x;
+			position.y = body->position.y - PIXEL_TO_METERS(30);
+
+			App->physics->world->AddProjectile(newProjectile, position);
+			newBall->ApplyExternalForce(force);
+		}
 	}
 
 	// Jump
