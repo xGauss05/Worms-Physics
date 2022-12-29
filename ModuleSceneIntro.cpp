@@ -95,6 +95,24 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(background, 0, 0);
 
+	App->renderer->DrawQuad({ 
+		METERS_TO_PIXELS(groundTest1->position.x), 
+		METERS_TO_PIXELS(groundTest1->position.y), 
+		METERS_TO_PIXELS(groundTest1->GetWidth()), 
+		METERS_TO_PIXELS(groundTest1->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({ 
+		METERS_TO_PIXELS(groundTest2->position.x),
+		METERS_TO_PIXELS(groundTest2->position.y),
+		METERS_TO_PIXELS(groundTest2->GetWidth()),
+		METERS_TO_PIXELS(groundTest2->GetHeight()) }, 0, 0, 255);
+
+	App->renderer->DrawQuad({ 
+		METERS_TO_PIXELS(groundTest3->position.x),
+		METERS_TO_PIXELS(groundTest3->position.y),
+		METERS_TO_PIXELS(groundTest3->GetWidth()),
+		METERS_TO_PIXELS(groundTest3->GetHeight()) }, 0, 0, 255);
+
 	test1->Blit({ 0, 0, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
 
