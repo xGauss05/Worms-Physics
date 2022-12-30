@@ -158,6 +158,9 @@ bool ModuleSceneIntro::CleanUp()
 	for (int i = 0; i < 10; i++) {
 		delete clown[i];
 		clown[i] = nullptr;
+		balloons[i]->isAlive = false;
+		delete balloons[i];
+		balloons[i] = nullptr;
 	}
 
 	return true;
@@ -195,6 +198,12 @@ update_status ModuleSceneIntro::Update()
 		
 		App->physics->world->UnaliveAllProjectiles();
 		App->physics->world->UnaliveAllBalloons();
+
+		for (int i = 0; i < 10; i++) {
+			balloons[i]->isAlive = false;
+			delete balloons[i];
+			balloons[i] = nullptr;
+		}
 
 		win = false;
 		lose = false;
