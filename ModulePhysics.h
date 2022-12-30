@@ -10,25 +10,28 @@
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
-enum IntegrationMethod {
+enum IntegrationMethod 
+{
 	FORWARD_EULER,
 	BACKWARD_EULER,
 	VERLET
 };
 
-enum BodyType {
+enum BodyType
+{
 	DYNAMIC,
 	KINEMATIC,
 	STATIC
 };
 
-enum BodyShape {
+enum BodyShape 
+{
 	CIRCLE,
 	RECTANGLE,
-	//POINT
 };
 
-enum EntityType {
+enum EntityType 
+{
 	PLAYER,
 	PROJECTILE,
 	TRAMPOLINE,
@@ -95,11 +98,14 @@ private:
 
 	BodyShape shape;
 	BodyType type;
+
 };
 
-class Projectile : public Body {
+class Projectile : public Body 
+{
 
 public:
+
 	int lifetime;
 	bool isAlive;
 	SDL_Rect section;
@@ -123,19 +129,24 @@ public:
 
 	~Projectile()
 	{
+
 	}
 
-	void OnCollision(Body* otherBody) {
-		if (otherBody->entityType == EntityType::WALL) {
+	void OnCollision(Body* otherBody) 
+	{
+		if (otherBody->entityType == EntityType::WALL) 
+		{
 			LOG("PROJECTILE ON WALL");
 		}
-		else {
+		else 
+		{
 			LOG("PROJECTILE ON COLLISION");
 		}
 	};
 };
 
-struct Trampoline {
+struct Trampoline 
+{
 	Body* body;
 
 	Trampoline() : body(nullptr)
@@ -150,9 +161,11 @@ struct Trampoline {
 	}
 };
 
-class Balloon : public Body {
+class Balloon : public Body 
+{
 
 public:
+
 	bool isAlive;
 	SDL_Rect section;
 
@@ -178,16 +191,17 @@ public:
 
 	}
 
-	void OnCollision(Body* otherBody) {
-		if (otherBody->entityType == EntityType::PROJECTILE) {
-			isAlive = false;
-		}
+	void OnCollision(Body* otherBody) 
+	{
+		if (otherBody->entityType == EntityType::PROJECTILE) isAlive = false;
 	};
 };
 
-class World {
+class World 
+{
 
 public:
+
 	World();
 	World(p2Point<float> g);
 
@@ -256,6 +270,7 @@ private:
 class ModulePhysics : public Module
 {
 public:
+
 	ModulePhysics(bool start_enabled = true);
 	~ModulePhysics();
 

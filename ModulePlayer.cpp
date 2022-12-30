@@ -47,7 +47,8 @@ bool ModulePlayer::CleanUp()
 
 update_status ModulePlayer::Update()
 {
-	if (App->scene_intro->lose == false) {
+	if (App->scene_intro->lose == false) 
+	{
 		// Dampening
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_STATE::KEY_IDLE &&
 			App->input->GetKey(SDL_SCANCODE_D) == KEY_STATE::KEY_IDLE)

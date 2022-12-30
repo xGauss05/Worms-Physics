@@ -26,7 +26,6 @@ public:
 	uint ballFx;
 	bool withGlider = false;
 
-	// Projectile
 	SDL_Texture* ballTexture = nullptr;
 
 private:
@@ -36,4 +35,5 @@ private:
 	float movementDampen = 20.0f;
 	float speedCap = 12.0;
 	float idleDampenMultiplier = 3.0f;
+
 };

@@ -29,7 +29,8 @@ bool ModuleSceneIntro::Start()
 	App->audio->PlayMusic("Assets/Audio/Music/bgm.ogg");
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++)
+	{
 		clown[i] = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
 	}
 	clown[5] = new Body(PIXEL_TO_METERS(820), PIXEL_TO_METERS(150), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
@@ -37,11 +38,12 @@ bool ModuleSceneIntro::Start()
 	clown[7] = new Body(PIXEL_TO_METERS(326), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
 	clown[8] = new Body(PIXEL_TO_METERS(160), PIXEL_TO_METERS(30), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
 	clown[9] = new Body(PIXEL_TO_METERS(660), PIXEL_TO_METERS(270), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		clown[i]->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	}
-	
-	//App->physics->world->balloonNum = 10;
+
+
 	player = new Body(PIXEL_TO_METERS(140), PIXEL_TO_METERS(500), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, EntityType::PLAYER, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	Body* newTrampoline = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, EntityType::TRAMPOLINE, 1.0f, 2.0f, 2.0f);
@@ -65,7 +67,8 @@ bool ModuleSceneIntro::Start()
 	balloonPos[8].x = PIXEL_TO_METERS(980);	balloonPos[8].y = PIXEL_TO_METERS(260);
 	balloonPos[9].x = PIXEL_TO_METERS(965);	balloonPos[9].y = PIXEL_TO_METERS(495);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		int colorBalloon = i % 3;
 		balloons[i] = new Balloon(colorBalloon, 0, 0, CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 		balloons[i]->texture = App->textures->Load("Assets/Textures/objects.png");
@@ -75,35 +78,37 @@ bool ModuleSceneIntro::Start()
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
 	// Physical objects
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		App->physics->world->AddBody(clown[i]);
 	}
+
 	App->physics->world->AddBody(player);
 
 	App->physics->world->AddTrampoline(trampoline1, newTrampoline->GetPosition());
 	App->physics->world->AddTrampoline(trampoline2, newTrampoline2->GetPosition());
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		App->physics->world->AddBalloon(balloons[i], balloonPos[i]);
 	}
 
 	p2Point<float> force;
 	force.x = 0;
 	force.y = -10.0;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		clown[i]->ApplyExternalForce(force);
 	}
 	player->ApplyExternalForce(force);
 
-	//Wall left
+	// Game scenario
 	ground1 = new Body(PIXEL_TO_METERS(10), PIXEL_TO_METERS(20), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(500), STATIC, EntityType::WALL, 1.0f, 20.0f, 20.0f);
 	App->physics->world->AddBody(ground1);
 
-	//Wall left 2
 	ground2 = new Body(PIXEL_TO_METERS(10), PIXEL_TO_METERS(650), RECTANGLE, PIXEL_TO_METERS(50), PIXEL_TO_METERS(100), STATIC, EntityType::WALL, 1.0f, 20.0f, 20.0f);
 	App->physics->world->AddBody(ground2);
 
-	//Wall Left
 	ground3 = new Body(PIXEL_TO_METERS(85), PIXEL_TO_METERS(700), RECTANGLE, PIXEL_TO_METERS(150), PIXEL_TO_METERS(50), STATIC, EntityType::WALL, 1.0f, 20.0f, 20.0f);
 	App->physics->world->AddBody(ground3);
 
@@ -156,7 +161,8 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(glider);
 	App->textures->Unload(background);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		delete clown[i];
 		clown[i] = nullptr;
 		balloons[i]->isAlive = false;
@@ -170,10 +176,12 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
 		App->renderer->camera.x = App->renderer->camera.y = 0;
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++)
+		{
 			clown[i]->position.x = PIXEL_TO_METERS(500);	clown[i]->position.y = PIXEL_TO_METERS(300);
 		}
 		clown[5]->position.x = PIXEL_TO_METERS(820);	clown[5]->position.y = PIXEL_TO_METERS(150);
@@ -182,7 +190,8 @@ update_status ModuleSceneIntro::Update()
 		clown[8]->position.x = PIXEL_TO_METERS(160);	clown[8]->position.y = PIXEL_TO_METERS(30);
 		clown[9]->position.x = PIXEL_TO_METERS(660);	clown[9]->position.y = PIXEL_TO_METERS(270);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++)
+		{
 			clown[i]->velocity.SetToZero();
 			clown[i]->acceleration.SetToZero();
 			clown[i]->externalForce.SetToZero();
@@ -196,21 +205,21 @@ update_status ModuleSceneIntro::Update()
 		App->player->withGlider = false;
 		player->SetDragSurface(2.0f, 2.0f);
 		player->SetLocalRestitution(1.0f);
-			for (int i = 0; i < 10; i++) {
+
+		for (int i = 0; i < 10; i++)
+		{
 			delete balloons[i];
 			balloons[i] = nullptr;
-		}	
+		}
 		App->physics->world->UnaliveAllProjectiles();
 		App->physics->world->UnaliveAllBalloons();
 
-
-
 		win = false;
 		lose = false;
-		//App->physics->world->balloonNum = 10;
-		// create all the balloons again
 
-		for (int i = 0; i < 10; i++) {
+		// Create all the balloons again
+		for (int i = 0; i < 10; i++) 
+		{
 			int colorBalloon = i % 3;
 			balloons[i] = new Balloon(colorBalloon, 0, 0, CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 			balloons[i]->texture = App->textures->Load("Assets/Textures/objects.png");
@@ -218,32 +227,28 @@ update_status ModuleSceneIntro::Update()
 			App->physics->world->AddBalloon(balloons[i], balloonPos[i]);
 		}
 
-
 		p2Point<float> force;
 		force.x = 0;
 		force.y = -10.0;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) 
+		{
 			clown[i]->ApplyExternalForce(force);
 		}
 		player->ApplyExternalForce(force);
 
 	}
 
-	if (METERS_TO_PIXELS(player->position.y) > 900) {
-		lose = true;
-	}
-
-	if (App->physics->world->balloonNum == 0) {
-		win = true;
-	}
-
+	if (METERS_TO_PIXELS(player->position.y) > 900) lose = true;
+	
+	if (App->physics->world->balloonNum == 0) win = true;
+	
 	App->renderer->Blit(background, 0, 0);
 
 	int groundR = 33;
 	int groundG = 18;
 	int groundB = 95;
 
-
+	// Draw scenario
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground1->position.x),
 		METERS_TO_PIXELS(ground1->position.y),
@@ -341,7 +346,8 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->world->BlitTrampoline();
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) 
+	{
 		clown[i]->Blit({ 0, 0, 32, 32 });
 	}
 	clown[5]->Blit({ 64, 0, 32, 32 });
@@ -350,7 +356,7 @@ update_status ModuleSceneIntro::Update()
 	clown[8]->Blit({ 32, 32, 32, 32 });
 	clown[9]->Blit({ 64, 32, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
-	
+
 
 	App->physics->world->BlitProjectiles();
 	App->physics->world->UpdateProjectiles();
@@ -358,12 +364,8 @@ update_status ModuleSceneIntro::Update()
 	App->physics->world->BlitBalloon();
 	App->physics->world->UpdateBalloon();
 
-	if (win) {
-		App->renderer->Blit(winScreen, 0, 0);
-	}
-	else if (lose) {
-		App->renderer->Blit(loseScreen, 0, 0);
-	}
-
+	if (win) App->renderer->Blit(winScreen, 0, 0);
+	else if (lose) App->renderer->Blit(loseScreen, 0, 0);
+	
 	return UPDATE_CONTINUE;
 }
