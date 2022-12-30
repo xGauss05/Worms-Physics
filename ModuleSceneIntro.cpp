@@ -198,7 +198,7 @@ update_status ModuleSceneIntro::Update()
 
 		win = false;
 		lose = false;
-		App->physics->world->balloonNum = 10;
+		//App->physics->world->balloonNum = 10;
 		// create all the balloons again
 
 		for (int i = 0; i < 10; i++) {
