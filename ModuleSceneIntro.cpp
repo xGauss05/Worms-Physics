@@ -196,10 +196,11 @@ update_status ModuleSceneIntro::Update()
 		App->player->withGlider = false;
 		player->SetDragSurface(2.0f, 2.0f);
 		player->SetLocalRestitution(1.0f);
-			for (int i = 0; i < 10; i++) {
+		
+		for (int i = 0; i < 10; i++) {
 			delete balloons[i];
 			balloons[i] = nullptr;
-		}	
+		}
 		App->physics->world->UnaliveAllProjectiles();
 		App->physics->world->UnaliveAllBalloons();
 
