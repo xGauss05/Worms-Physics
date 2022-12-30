@@ -25,9 +25,6 @@ ModuleDebug::~ModuleDebug()
 bool ModuleDebug::Start() 
 {
 	debug = false;
-
-	//font = App->fonts->Load("Assets/Textures/font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!- ", 1);
-	//font = App->fonts->Load("Assets/Textures/font1.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-() ", 1);
 	font = App->fonts->Load("Assets/Textures/font2.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,&!-(): ", 1);
 	
 	return true;
@@ -135,16 +132,6 @@ update_status ModuleDebug::Update()
 				trampolineRest = true;
 				coefficients = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-			{
-				coeff3 = true;
-				coefficients = false;
-			}
-			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && currentScreen == Screen::COEFFICIENTS)
-			{
-				coeff4 = true;
-				coefficients = false;
-			}
 
 			currentScreen = Screen::COEFFICIENTS;
 		}
@@ -211,7 +198,7 @@ update_status ModuleDebug::Update()
 			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && App->physics->world->globalRestitution < 2.0f)
 				App->physics->world->globalRestitution += 0.1f;
 
-			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->globalRestitution > 0.0f)
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->globalRestitution > 0.1f)
 				App->physics->world->globalRestitution -= 0.1f;
 		}
 		if (trampolineRest == true)
@@ -226,7 +213,7 @@ update_status ModuleDebug::Update()
 				}
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() > 0.05f)
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution() > 0.5f)
 			{
 				for (p2List_item<Trampoline*>* b = App->physics->world->trampolines.getFirst(); b; b = b->next)
 				{
@@ -234,24 +221,15 @@ update_status ModuleDebug::Update()
 				}
 			}
 		}
-		if (coeff3 == true)
-		{
-			currentScreen = Screen::COEFF3;
-		}
-		if (coeff4 == true)
-		{
-			currentScreen = Screen::COEFF4;
-		}
 
 
 		//Going back
 		if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		{
-			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::TRAMP_RESTITUTION || 
-				currentScreen == Screen::COEFF3 || currentScreen == Screen::COEFF4)
+			if (currentScreen == Screen::WORLD_RESTITUTION || currentScreen == Screen::TRAMP_RESTITUTION)
 			{
 				currentScreen = Screen::COEFFICIENTS;
-				worldRest = false; trampolineRest = false; coeff3 = false; coeff4 = false;
+				worldRest = false; trampolineRest = false;
 				coefficients = true;
 			}
 			else if (currentScreen == Screen::HOME)
@@ -289,11 +267,11 @@ update_status ModuleDebug::Update()
 
 update_status ModuleDebug::PostUpdate() 
 {
-
 	if (debug)
-	{
 		DebugDraw();
-	}
+
+	else
+		App->fonts->BlitText(5, 10, 0, "PRESS F1 TO OPEN DEBUG MENU");
 
 	return UPDATE_CONTINUE;
 }
@@ -332,20 +310,22 @@ void ModuleDebug::DebugDraw()
 
 	//This draws all the debug menu screens
 	SDL_Rect bg;
-	if (timeScreen)				{ bg = { 2,38,270,142 }; }
-	else if (gravity)			{ bg = { 2,38,270,82 }; }
-	else if (coefficients)		{ bg = { 2,38,270,102 }; }
-	else if (integration)		{ bg = { 2,38,270,82 }; }
-	else if (forces)			{ bg = { 2,38,270,102 }; }
-	else if (variables)			{ bg = { 2,38,270,162 }; }
 
-	else if (worldRest)			{ bg = { 2,38,270,82 }; }
-	else if (trampolineRest)	{ bg = { 2,38,270,52 }; }
-	else if (coeff3)			{ bg = { 2,38,270,52 }; }
-	else if (coeff4)			{ bg = { 2,38,270,52 }; }
+	//Menus
+	if (timeScreen)				{ bg = { 2,38,280,142 }; }
+	else if (gravity)			{ bg = { 2,38,280,82 }; }
+	else if (coefficients)		{ bg = { 2,38,280,82 }; }
+	else if (integration)		{ bg = { 2,38,280,82 }; }
+	else if (forces)			{ bg = { 2,38,280,102 }; }
+	else if (variables)			{ bg = { 2,38,280,162 }; }
 
-	else						{ bg = { 2,38,270,102 }; }
-	App->renderer->DrawQuad(bg, 0, 0, 0, 125, true);
+	//Submenus
+	else if (worldRest)			{ bg = { 2,38,280,82 }; }
+	else if (trampolineRest)	{ bg = { 2,38,280,82 }; }
+
+	//Main screen
+	else						{ bg = { 2,38,280,102 }; }
+	App->renderer->DrawQuad(bg, 0, 0, 0, 150, true);
 
 	switch (currentScreen)
 	{
@@ -405,6 +385,7 @@ void ModuleDebug::DebugDraw()
 
 	case Screen::GRAVITY:
 		App->fonts->BlitText(5, 40, 0, "GRAVITY OPTIONS");
+
 		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
 		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
 
@@ -421,10 +402,8 @@ void ModuleDebug::DebugDraw()
 
 		App->fonts->BlitText(5, 80, 0, "1. WORLD RESTITUTION OPTIONS");
 		App->fonts->BlitText(5, 90, 0, "2. TRAMPOLINES RESTITUTION OPTIONS");
-		App->fonts->BlitText(5, 100, 0, "3. COEFF3");
-		App->fonts->BlitText(5, 110, 0, "4. COEFF4");
 
-		App->fonts->BlitText(5, 130, 0, "PRESS BACKSPACE TO GO BACK");
+		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::INTEGRATION:
@@ -513,7 +492,7 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 	case Screen::TRAMP_RESTITUTION:
-		App->fonts->BlitText(5, 40, 0, "TRAMPOLINR RESTITUTION OPTIONS");
+		App->fonts->BlitText(5, 40, 0, "TRAMPOLINE RESTITUTION OPTIONS");
 
 		App->fonts->BlitText(5, 60, 0, "PRESS UP ARROW TO INCREASE AND");
 		App->fonts->BlitText(5, 70, 0, "DOWN ARROW TO DECREASE THE VALUE");
@@ -522,20 +501,6 @@ void ModuleDebug::DebugDraw()
 		App->fonts->BlitText(180, 90, 0, std::to_string(App->physics->world->trampolines.getFirst()->data->body->GetLocalRestitution()).c_str());
 
 		App->fonts->BlitText(5, 110, 0, "PRESS BACKSPACE TO GO BACK");
-		break;
-	case Screen::COEFF3:
-		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 3 TEST");
-
-		App->fonts->BlitText(5, 60, 0, "NOTHING TO SEE HERE, GO BACK");
-
-		App->fonts->BlitText(5, 80, 0, "PRESS BACKSPACE TO GO BACK");
-		break;
-	case Screen::COEFF4:
-		App->fonts->BlitText(5, 40, 0, "COEFFICIENT 4 TEST");
-
-		App->fonts->BlitText(5, 60, 0, "NOTHING TO SEE HERE, GO BACK");
-
-		App->fonts->BlitText(5, 80, 0, "PRESS BACKSPACE TO GO BACK");
 		break;
 
 	case Screen::NONE:

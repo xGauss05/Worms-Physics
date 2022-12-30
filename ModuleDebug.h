@@ -18,8 +18,6 @@ enum class Screen
 
 	WORLD_RESTITUTION,
 	TRAMP_RESTITUTION,
-	COEFF3,
-	COEFF4,
 
 	NONE
 };
@@ -78,8 +76,6 @@ private:
 
 	bool worldRest = false;
 	bool trampolineRest = false;
-	bool coeff3 = false;
-	bool coeff4 = false;
 };
 
 #endif // __MODULE_DEBUG_H__
