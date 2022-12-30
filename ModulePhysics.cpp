@@ -309,7 +309,7 @@ void World::UpdateProjectiles()
 
 	for (p2List_item<Projectile*>* b = projectiles.getFirst(); b; b = b->next)
 	{
-		b->data->lifetime--;
+		b->data->lifetime -= dt;
 
 		if (b->data->lifetime <= 0) {
 			b->data->isAlive = false;
