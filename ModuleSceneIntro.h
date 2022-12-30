@@ -61,7 +61,7 @@ public:
 
 	uint player_lose_fx;
 
-	Body* test1 = nullptr;
+	Body* clown[10];
 	Body* player = nullptr;
 	Trampoline* trampoline1 = nullptr;
 	Trampoline* trampoline2 = nullptr;

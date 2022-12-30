@@ -29,8 +29,18 @@ bool ModuleSceneIntro::Start()
 	App->audio->PlayMusic("Assets/Audio/Music/bgm.ogg");
 	background = App->textures->Load("Assets/Textures/circus_background.png");
 
-	test1 = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
-	test1->texture = App->textures->Load("Assets/Textures/lil_clown.png");
+	for (int i = 0; i < 5; i++) {
+		clown[i] = new Body(PIXEL_TO_METERS(500), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	}
+	clown[5] = new Body(PIXEL_TO_METERS(820), PIXEL_TO_METERS(150), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	clown[6] = new Body(PIXEL_TO_METERS(820), PIXEL_TO_METERS(150), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	clown[7] = new Body(PIXEL_TO_METERS(326), PIXEL_TO_METERS(300), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	clown[8] = new Body(PIXEL_TO_METERS(160), PIXEL_TO_METERS(30), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	clown[9] = new Body(PIXEL_TO_METERS(660), PIXEL_TO_METERS(270), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, ENEMY, 1.0f, 2.0f, 2.0f);
+	for (int i = 0; i < 10; i++) {
+		clown[i]->texture = App->textures->Load("Assets/Textures/lil_clown.png");
+	}
+	
 	player = new Body(PIXEL_TO_METERS(140), PIXEL_TO_METERS(500), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, EntityType::PLAYER, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	Body* newTrampoline = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, EntityType::TRAMPOLINE, 1.0f, 2.0f, 2.0f);
@@ -64,7 +74,9 @@ bool ModuleSceneIntro::Start()
 	glider = App->textures->Load("Assets/Textures/plane.png");
 
 	// Physical objects
-	App->physics->world->AddBody(test1);
+	for (int i = 0; i < 10; i++) {
+		App->physics->world->AddBody(clown[i]);
+	}
 	App->physics->world->AddBody(player);
 
 	App->physics->world->AddTrampoline(trampoline1, newTrampoline->GetPosition());
@@ -77,7 +89,9 @@ bool ModuleSceneIntro::Start()
 	p2Point<float> force;
 	force.x = 0;
 	force.y = -10.0;
-	test1->ApplyExternalForce(force);
+	for (int i = 0; i < 10; i++) {
+		clown[i]->ApplyExternalForce(force);
+	}
 	player->ApplyExternalForce(force);
 
 	//Wall left
@@ -141,8 +155,10 @@ bool ModuleSceneIntro::CleanUp()
 	App->textures->Unload(glider);
 	App->textures->Unload(background);
 
-	delete test1;
-	test1 = nullptr;
+	for (int i = 0; i < 10; i++) {
+		delete clown[i];
+		clown[i] = nullptr;
+	}
 
 	return true;
 }
@@ -153,11 +169,20 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		App->renderer->camera.x = App->renderer->camera.y = 0;
 
-		test1->position.x = PIXEL_TO_METERS(500);
-		test1->position.y = PIXEL_TO_METERS(300);
-		test1->velocity.SetToZero();
-		test1->acceleration.SetToZero();
-		test1->externalForce.SetToZero();
+		for (int i = 0; i < 5; i++) {
+			clown[i]->position.x = PIXEL_TO_METERS(500);	clown[i]->position.y = PIXEL_TO_METERS(300);
+		}
+		clown[5]->position.x = PIXEL_TO_METERS(820);	clown[5]->position.y = PIXEL_TO_METERS(150);
+		clown[6]->position.x = PIXEL_TO_METERS(820);	clown[6]->position.y = PIXEL_TO_METERS(150);
+		clown[7]->position.x = PIXEL_TO_METERS(326);	clown[7]->position.y = PIXEL_TO_METERS(300);
+		clown[8]->position.x = PIXEL_TO_METERS(160);	clown[8]->position.y = PIXEL_TO_METERS(30);
+		clown[9]->position.x = PIXEL_TO_METERS(660);	clown[9]->position.y = PIXEL_TO_METERS(270);
+
+		for (int i = 0; i < 10; i++) {
+			clown[i]->velocity.SetToZero();
+			clown[i]->acceleration.SetToZero();
+			clown[i]->externalForce.SetToZero();
+		}
 
 		player->position.x = PIXEL_TO_METERS(140);
 		player->position.y = PIXEL_TO_METERS(500);
@@ -188,7 +213,9 @@ update_status ModuleSceneIntro::Update()
 		p2Point<float> force;
 		force.x = 0;
 		force.y = -10.0;
-		test1->ApplyExternalForce(force);
+		for (int i = 0; i < 5; i++) {
+			clown[i]->ApplyExternalForce(force);
+		}
 		player->ApplyExternalForce(force);
 
 	}
@@ -305,7 +332,14 @@ update_status ModuleSceneIntro::Update()
 
 	App->physics->world->BlitTrampoline();
 
-	test1->Blit({ 0, 0, 32, 32 });
+	for (int i = 0; i < 5; i++) {
+		clown[i]->Blit({ 0, 0, 32, 32 });
+	}
+	clown[5]->Blit({ 64, 0, 32, 32 });
+	clown[6]->Blit({ 64, 0, 32, 32 });
+	clown[7]->Blit({ 0, 32, 32, 32 });
+	clown[8]->Blit({ 32, 32, 32, 32 });
+	clown[9]->Blit({ 64, 32, 32, 32 });
 	player->Blit({ 32, 0, 32, 32 });
 	
 
