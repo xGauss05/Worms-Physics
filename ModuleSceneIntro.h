@@ -45,7 +45,6 @@ public:
 	bool win = false;
 	bool lose = false;
 
-	uint balloonNum;
 
 	SDL_Texture* winScreen;
 	SDL_Texture* loseScreen;

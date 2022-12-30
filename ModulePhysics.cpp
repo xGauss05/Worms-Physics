@@ -349,6 +349,7 @@ void World::AddBalloon(Balloon* balloon, p2Point<float> position)
 	balloon->position = position;
 	balloons.add(balloon);
 	bodies.add(balloon);
+	balloonNum++;
 }
 
 void World::BlitBalloon()
@@ -367,6 +368,7 @@ void World::UpdateBalloon()
 			if (b->data->isAlive == false) {
 				bodies.del(bodies.findNode(b->data));
 				balloons.del(b);
+				balloonNum--;
 				break;
 			}
 		}

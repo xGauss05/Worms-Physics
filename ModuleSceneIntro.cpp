@@ -43,8 +43,6 @@ bool ModuleSceneIntro::Start()
 	trampoline2->body = newTrampoline2;
 	newTrampoline2->texture = App->textures->Load("Assets/Textures/trampoline.png");
 
-
-
 	balloonPos[0].x = PIXEL_TO_METERS(200);	balloonPos[0].y = PIXEL_TO_METERS(20);
 	balloonPos[1].x = PIXEL_TO_METERS(200);	balloonPos[1].y = PIXEL_TO_METERS(182);
 	balloonPos[2].x = PIXEL_TO_METERS(38);	balloonPos[2].y = PIXEL_TO_METERS(546);
@@ -175,6 +173,7 @@ update_status ModuleSceneIntro::Update()
 
 		win = false;
 		lose = false;
+		App->physics->world->balloonNum = 10;
 		// create all the balloons again
 
 		for (int i = 0; i < 10; i++) {
@@ -196,6 +195,10 @@ update_status ModuleSceneIntro::Update()
 
 	if (METERS_TO_PIXELS(player->position.y) > 900) {
 		lose = true;
+	}
+
+	if (App->physics->world->balloonNum == 0) {
+		win = true;
 	}
 
 	App->renderer->Blit(background, 0, 0);

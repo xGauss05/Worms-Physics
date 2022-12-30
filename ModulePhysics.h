@@ -212,7 +212,8 @@ public:
 	void UnaliveAllBalloons();
 
 	void Step();
-
+	
+	uint balloonNum;
 
 private:
 
