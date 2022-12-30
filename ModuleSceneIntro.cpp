@@ -203,95 +203,100 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(background, 0, 0);
 
+	int groundR = 33;
+	int groundG = 18;
+	int groundB = 95;
+
+
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground1->position.x),
 		METERS_TO_PIXELS(ground1->position.y),
 		METERS_TO_PIXELS(ground1->GetWidth()),
-		METERS_TO_PIXELS(ground1->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground1->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground2->position.x),
 		METERS_TO_PIXELS(ground2->position.y),
 		METERS_TO_PIXELS(ground2->GetWidth()),
-		METERS_TO_PIXELS(ground2->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground2->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground3->position.x),
 		METERS_TO_PIXELS(ground3->position.y),
 		METERS_TO_PIXELS(ground3->GetWidth()),
-		METERS_TO_PIXELS(ground3->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground3->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground4->position.x),
 		METERS_TO_PIXELS(ground4->position.y),
 		METERS_TO_PIXELS(ground4->GetWidth()),
-		METERS_TO_PIXELS(ground4->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground4->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground5->position.x),
 		METERS_TO_PIXELS(ground5->position.y),
 		METERS_TO_PIXELS(ground5->GetWidth()),
-		METERS_TO_PIXELS(ground5->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground5->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground6->position.x),
 		METERS_TO_PIXELS(ground6->position.y),
 		METERS_TO_PIXELS(ground6->GetWidth()),
-		METERS_TO_PIXELS(ground6->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground6->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground7->position.x),
 		METERS_TO_PIXELS(ground7->position.y),
 		METERS_TO_PIXELS(ground7->GetWidth()),
-		METERS_TO_PIXELS(ground7->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground7->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground8->position.x),
 		METERS_TO_PIXELS(ground8->position.y),
 		METERS_TO_PIXELS(ground8->GetWidth()),
-		METERS_TO_PIXELS(ground8->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground8->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground9->position.x),
 		METERS_TO_PIXELS(ground9->position.y),
 		METERS_TO_PIXELS(ground9->GetWidth()),
-		METERS_TO_PIXELS(ground9->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground9->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground10->position.x),
 		METERS_TO_PIXELS(ground10->position.y),
 		METERS_TO_PIXELS(ground10->GetWidth()),
-		METERS_TO_PIXELS(ground10->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground10->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground11->position.x),
 		METERS_TO_PIXELS(ground11->position.y),
 		METERS_TO_PIXELS(ground11->GetWidth()),
-		METERS_TO_PIXELS(ground11->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground11->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground12->position.x),
 		METERS_TO_PIXELS(ground12->position.y),
 		METERS_TO_PIXELS(ground12->GetWidth()),
-		METERS_TO_PIXELS(ground12->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground12->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground13->position.x),
 		METERS_TO_PIXELS(ground13->position.y),
 		METERS_TO_PIXELS(ground13->GetWidth()),
-		METERS_TO_PIXELS(ground13->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground13->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground14->position.x),
 		METERS_TO_PIXELS(ground14->position.y),
 		METERS_TO_PIXELS(ground14->GetWidth()),
-		METERS_TO_PIXELS(ground14->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground14->GetHeight()) }, groundR, groundG, groundB);
 
 	App->renderer->DrawQuad({
 		METERS_TO_PIXELS(ground15->position.x),
 		METERS_TO_PIXELS(ground15->position.y),
 		METERS_TO_PIXELS(ground15->GetWidth()),
-		METERS_TO_PIXELS(ground15->GetHeight()) }, 0, 0, 255);
+		METERS_TO_PIXELS(ground15->GetHeight()) }, groundR, groundG, groundB);
 
 	if (App->player->withGlider)
 	{
