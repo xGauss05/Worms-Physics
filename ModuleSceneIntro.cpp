@@ -45,18 +45,18 @@ bool ModuleSceneIntro::Start()
 
 	p2Point<float> balloonPos[10];
 
-	balloonPos[0].x = 200;	balloonPos[0].y = 20;
-	balloonPos[1].x = 200;	balloonPos[1].y = 182;
-	balloonPos[2].x = 38;	balloonPos[2].y = 546;
-	balloonPos[3].x = 260;	balloonPos[3].y = 560;
-	balloonPos[4].x = 428;	balloonPos[4].y = 320;
-	balloonPos[5].x = 546;	balloonPos[5].y = 154;
-	balloonPos[6].x = 757;	balloonPos[6].y = 370;
-	balloonPos[7].x = 775;	balloonPos[7].y = 62;
-	balloonPos[8].x = 980;	balloonPos[8].y = 260;
-	balloonPos[9].x = 965;	balloonPos[9].y = 495;
-
-	/*balloons[0] = new Balloon(0, PIXEL_TO_METERS(200), PIXEL_TO_METERS(20), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
+	balloonPos[0].x = PIXEL_TO_METERS(200);	balloonPos[0].y = PIXEL_TO_METERS(20);
+	balloonPos[1].x = PIXEL_TO_METERS(200);	balloonPos[1].y = PIXEL_TO_METERS(182);
+	balloonPos[2].x = PIXEL_TO_METERS(38);	balloonPos[2].y = PIXEL_TO_METERS(546);
+	balloonPos[3].x = PIXEL_TO_METERS(260);	balloonPos[3].y = PIXEL_TO_METERS(560);
+	balloonPos[4].x = PIXEL_TO_METERS(428);	balloonPos[4].y = PIXEL_TO_METERS(320);
+	balloonPos[5].x = PIXEL_TO_METERS(546);	balloonPos[5].y = PIXEL_TO_METERS(154);
+	balloonPos[6].x = PIXEL_TO_METERS(757);	balloonPos[6].y = PIXEL_TO_METERS(370);
+	balloonPos[7].x = PIXEL_TO_METERS(775);	balloonPos[7].y = PIXEL_TO_METERS(62);
+	balloonPos[8].x = PIXEL_TO_METERS(980);	balloonPos[8].y = PIXEL_TO_METERS(260);
+	balloonPos[9].x = PIXEL_TO_METERS(965);	balloonPos[9].y = PIXEL_TO_METERS(495);
+	/*
+	balloons[0] = new Balloon(0, PIXEL_TO_METERS(200), PIXEL_TO_METERS(20), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 	balloons[1] = new Balloon(1, PIXEL_TO_METERS(200), PIXEL_TO_METERS(182), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 	balloons[2] = new Balloon(2, PIXEL_TO_METERS(38), PIXEL_TO_METERS(546), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 	balloons[3] = new Balloon(2, PIXEL_TO_METERS(260), PIXEL_TO_METERS(560), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
@@ -66,10 +66,12 @@ bool ModuleSceneIntro::Start()
 	balloons[7] = new Balloon(1, PIXEL_TO_METERS(775), PIXEL_TO_METERS(62), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 	balloons[8] = new Balloon(0, PIXEL_TO_METERS(980), PIXEL_TO_METERS(260), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 	balloons[9] = new Balloon(1, PIXEL_TO_METERS(965), PIXEL_TO_METERS(495), CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
-*/
+	*/
 	for (int i = 0; i < 10; i++) {
-		balloons[i] = new Balloon(0);
+		int colorBalloon = i % 3;
+		balloons[i] = new Balloon(colorBalloon, 0, 0, CIRCLE, PIXEL_TO_METERS(16), STATIC, BALLOON, 0.5f, 20.0f, 20.0f);
 		balloons[i]->texture = App->textures->Load("Assets/Textures/objects.png");
+		balloons[i]->SetLocalRestitution(2.0f);
 	}
 
 	glider = App->textures->Load("Assets/Textures/plane.png");

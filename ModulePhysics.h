@@ -158,7 +158,7 @@ public:
 
 	Balloon(int type1) : Body(), isAlive(true)
 	{
-		section = { 96 + 32 * (type1), 0, 32, 64 };
+		section = { 96 + (32 * type1), 0, 32, 64 };
 	}
 
 	Balloon(int type1, float positionX, float positionY, BodyShape shape, float width, float height, BodyType type, EntityType entityType, float mass = 1.0f, float dragSurfaceX = 1.0f, float dragSurfaceY = 1.0f)
