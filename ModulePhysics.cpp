@@ -657,46 +657,46 @@ void World::SeparateCircleCircle(Body* bodyA, Body* bodyB, p2Point<float> distan
 		if (bodyA->position.x < bodyB->position.x) {
 			bodyB->position.x = bodyB->position.x + distance.x;
 
-			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+			bodyB->velocity.x = abs(bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution());
 		}
 		else if (bodyA->position.x > bodyB->position.x) {
 			bodyB->position.x = bodyB->position.x - distance.x;
 
-			bodyB->velocity.x = -bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution();
+			bodyB->velocity.x = -abs(bodyB->velocity.x * globalRestitution * bodyA->GetLocalRestitution());
 		}
 
 		if (bodyA->position.y < bodyB->position.y) {
 			bodyB->position.y = bodyB->position.y + distance.y;
 
-			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+			bodyB->velocity.y = abs(bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution());
 		}
 		else if (bodyA->position.y > bodyB->position.y) {
 			bodyB->position.y = bodyB->position.y - distance.y;
 
-			bodyB->velocity.y = -bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution();
+			bodyB->velocity.y = -abs(bodyB->velocity.y * globalRestitution * bodyA->GetLocalRestitution());
 		}
 	}
 	else if (bodyB->GetType() != BodyType::DYNAMIC) {
 		if (bodyA->position.x < bodyB->position.x) {
 			bodyA->position.x = bodyA->position.x - distance.x;
 
-			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+			bodyA->velocity.x = -abs(bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution());
 		}
 		else if (bodyA->position.x > bodyB->position.x) {
 			bodyA->position.x = bodyA->position.x + distance.x;
 
-			bodyA->velocity.x = -bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution();
+			bodyA->velocity.x = abs(bodyA->velocity.x * globalRestitution * bodyB->GetLocalRestitution());
 		}
 
 		if (bodyA->position.y < bodyB->position.y) {
 			bodyA->position.y = bodyA->position.y - distance.y;
 
-			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+			bodyA->velocity.y = -abs(bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution());
 		}
 		else if (bodyA->position.y > bodyB->position.y) {
 			bodyA->position.y = bodyA->position.y + distance.y;
 
-			bodyA->velocity.y = -bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution();
+			bodyA->velocity.y = abs(bodyA->velocity.y * globalRestitution * bodyB->GetLocalRestitution());
 		}
 	}
 	else {
