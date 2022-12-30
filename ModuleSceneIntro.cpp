@@ -41,6 +41,7 @@ bool ModuleSceneIntro::Start()
 		clown[i]->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	}
 	
+	//App->physics->world->balloonNum = 10;
 	player = new Body(PIXEL_TO_METERS(140), PIXEL_TO_METERS(500), CIRCLE, PIXEL_TO_METERS(16), DYNAMIC, EntityType::PLAYER, 1.0f, 2.0f, 2.0f);
 	player->texture = App->textures->Load("Assets/Textures/lil_clown.png");
 	Body* newTrampoline = new Body(PIXEL_TO_METERS(300), PIXEL_TO_METERS(585), RECTANGLE, PIXEL_TO_METERS(48), PIXEL_TO_METERS(16), STATIC, EntityType::TRAMPOLINE, 1.0f, 2.0f, 2.0f);
@@ -195,15 +196,14 @@ update_status ModuleSceneIntro::Update()
 		App->player->withGlider = false;
 		player->SetDragSurface(2.0f, 2.0f);
 		player->SetLocalRestitution(1.0f);
-		
+			for (int i = 0; i < 10; i++) {
+			delete balloons[i];
+			balloons[i] = nullptr;
+		}	
 		App->physics->world->UnaliveAllProjectiles();
 		App->physics->world->UnaliveAllBalloons();
 
-		for (int i = 0; i < 10; i++) {
-			balloons[i]->isAlive = false;
-			delete balloons[i];
-			balloons[i] = nullptr;
-		}
+
 
 		win = false;
 		lose = false;
