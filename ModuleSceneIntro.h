@@ -66,6 +66,8 @@ public:
 	Body* player = nullptr;
 	Trampoline* trampoline1 = nullptr;
 	Trampoline* trampoline2 = nullptr;
+
+	p2Point<float> balloonPos[10];
 	Balloon* balloons[10];
 	SDL_Texture* glider = nullptr;
 
